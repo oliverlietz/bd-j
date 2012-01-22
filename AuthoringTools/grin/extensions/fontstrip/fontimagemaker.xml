@@ -1,0 +1,53 @@
+
+<project name="fontstrip" default="dist" basedir=".">
+    
+  <!-- set global properties for this build -->
+    
+    <property name="jdktools-src" location="jdktools/tools/src"/>
+    <property name="jdktools-build" location="build/jdktools"/>
+    <property name="jdktools-dist"  location="dist"/>
+    
+    <property name="main.class" value="com.hdcookbook.grin.fontstrip.Main"/>
+    <property name="grin.classes" location="../../build/grin_library"/> 
+    
+    <target name="init">
+        <mkdir dir="${jdktools-build}"/>
+        <mkdir dir="${jdktools-dist}"/>
+    </target>
+    <target name="compile" depends="init"
+        description="compile the source">
+        <javac srcdir="${jdktools-src}:${metools.src}" destdir="${jdktools-build}" debug="true">
+            <classpath location="${grin.classes}"/>
+        </javac>
+        <copy todir="${jdktools-build}">
+            <fileset dir="${jdktools-src}" includes="**/jaxb.index"/>
+        </copy>
+    </target>
+    <target name="jar" depends="compile"
+        description="make a jar">
+        <jar jarfile="${jdktools-dist}/fontimagemaker.jar" basedir="${jdktools-build}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+            <fileset dir="${grin.classes}" includes="com/hdcookbook/grin/util/*"/>
+        </jar>
+    </target>
+    <target name="schemagen" depends="jar">
+    <!-- use schemagen to generate XML schema from index class -->
+        <exec executable="schemagen">
+            <arg value="-cp"/>
+            <arg value="${jdktools-dist}/fontimagemaker.jar"/>
+            <arg value="com.hdcookbook.grin.fontstrip.xml.InputData"/>
+        </exec>
+        <move file="schema1.xsd" 
+          tofile="fontstripconfig.xsd"/>
+    </target>
+    <target name="dist" depends="jar" if="hdc.distribution.dir"
+        description="copy the jar to the distribution dir">
+        <copy todir="${hdc.distribution.dir}" file="${jdktools-dist}/fontimagemaker.jar"/>
+    </target>
+    <target name="clean">
+        <delete dir="${jdktools-build}"/>
+        <delete dir="${jdktools-dist}"/>
+    </target>
+</project>

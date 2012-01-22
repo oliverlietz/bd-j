@@ -1,0 +1,299 @@
+<html><body>
+<style type="text/css">
+  P.pagebreak {page-break-before: always}
+</style>
+<h2><center>GRIN Animation Framework</center></h2>
+<p><center>
+<img width="543" height="298" src="drawopt.jpg">
+</center></p>
+<h2>Introduction and Scope</h2>
+<p>
+<a href="../package-summary.html">This package</a> contains a highly
+efficient animation framework designed around the needs of Blu-ray Java
+and other TV devices that use PBP.  It provides support for doing 
+double-buffered animation with optimized drawing, so that a minimum of
+pixels are erased and copied with each frame.
+A high-level overview document
+can be found
+<a href="../../../../../../../animator.html">here</a>, or online at
+<a href="https://hdcookbook.dev.java.net/animator.html">
+https://hdcookbook.dev.java.net/animator.html</a>.
+</p>
+<h2>Animation Framework Overview</h2>
+<p>
+GRIN includes an animation framework that manages displaying
+frames of animation on a regular basis.  It supports different
+drawing modes, like repaint draw and direct draw.  
+It allows you to define your own code-based animations
+by implementing an <code>AnimationClient</code> interface.  These custom 
+animations
+can be painted above or below GRIN's Show-based painting.  Of course, 
+you can also define new GRIN features that do their own painting, and
+make them part of a Show.  Here's a UML diagram illustrating the
+animation framework:
+</p>
+<p>
+<center><img src="animator_classes.jpg"></center>
+</p>
+<p>
+The menu xlet in <b>com.hdcookbook.bookmenu.menu</b> uses the GRIN
+animation framework.
+The Gun Bunny game xlet in <b>com.hdcookbook.gunbunny</b> doesn't
+use GRIN, but it has the same kind of frame pump.  Gun Bunny even
+lets you switch <i>dynamically</i> between direct draw, repaint draw and
+SFAA.  With all three, it maintains time-based animation, dropping
+frames if it falls behind.
+</p>
+<p>
+To use the animation framework, you'll need a bit of boilerplate code
+that looks like this:
+</p>
+<pre>
+
+    import com.hdcookbook.grin.animator.AnimationClient; 
+    import com.hdcookbook.grin.animator.AnimationEngine;
+    import com.hdcookbook.grin.animator.AnimationContext;
+    import com.hdcookbook.grin.animator.DirectDrawEngine;
+    import com.hdcookbook.grin.animator.RepaintDrawEngine;
+    import com.hdcookbook.grin.Show;
+
+    ...
+
+    public class MyXlet implements Xlet, Runnable, AnimationContext {
+
+	private XletContext context;
+	private AnimationEngine engine;
+	private Show show;
+
+	...
+
+	public void initXlet(XletContext ctx) throws XletStateChangeException {
+	    this.context = ctx;
+	    DirectDrawEngine dde = new DirectDrawEngine();
+	    	// or repaint draw, ...
+	    dde.setFps(24000);
+	    engine = dde;
+	    engine.initialize(this);
+	}
+
+	public void startXlet() throws XletStateChangeException {
+	    engine.start();
+	}
+
+	public void pauseXlet() {
+	    engine.pause();
+	}
+
+	public void destroyXlet(boolean unconditional)
+		throws XletStateChangeException
+	{
+	    engine.destroy();	// Doesn't return until thread is stopped
+
+	    ... destroy HScene ...
+	}
+
+	    // This is called from the animation manager as the xletInit
+	    // action.  It's run in the animation frame, so it's OK to
+	    // do time-consuming things, l
+	public void animationInitialize() throws InterruptedException {
+	    ...
+
+	    show = ... a new Show instance ...;
+	    ...  initialize show ...;
+	    engine.checkDestroy();
+
+	    engine.initNumTargets(... the number you need ...);
+	    AnimationClient[] clients = ... your clients (Show is a client) ...;
+	    engine.initClients(clients);
+	    Rectangle bounds = ... 1920x1080, or a smaller bounds ...;
+	    Container c = ... the container, probably just the HScene ...;
+	    engine.initContainer(c, bounds);
+	}
+
+	public void animationFinishInitialization() throws InterruptedException
+	{
+	    show.activateSegment(show.getSegment("S:Initialize"));
+	    	// Or whatever the initial segment's name is
+	}
+</pre>
+<p>
+This creates an Animator worker thread that will display the show,
+by default at 23.976 times per second.
+</p><p>
+The animation loop within the <code>AnimationEngine</code> happens
+within a single animation thread, created by the engine.  In pseudocode,
+the flow of the animtion loop is:
+</p>
+<pre>
+    context.animationInitialize();	// Call xlet's initialization code
+    for each AnimationClient c
+        c.initialize()
+    context.animationFinishInitialization();  // sets UI state for first frame
+    for (frame = 0 to infinity) {
+        wait until it's time for the next frame
+        for each AnimationClient c
+            Advance c's model to next frame
+        If the animation isn't behind
+            for each AnimationClient c
+               Tell c we're caught up
+               Ask c where it plans to draw
+            for each AnimationClient c
+                for each rectangle r that needs to be re-drawn
+                    erase drawing buffer as necessary
+                    set a clipping rectangle
+                    Ask c to paint the current frame to drawing buffer
+            for each rectangle needs to be redrawn
+                copy from drawing buffer to the screen
+    }
+</pre>
+    
+<h2><a name="optimized_drawing">Optimized Drawing</a></h2>
+<p>
+To achieve good drawing performance, it's essential to minimize drawing.
+This usually means avoiding the re-drawing of pixels that are the same as
+they were in the last displayed frame of animation.  This can be difficult
+to figure out manually, so the animatiom framework contains support to
+help automate this text.  This is centered around the class
+<code>DrawRecord</code>.
+</p><p>
+An instance of the class <code>DrawRecord</code> represents a bit of
+drawing in a rectangular area of the screen.  Within that rectangle,
+your drawing can be fully opaque, or have some pixels that are transparent,
+or that aren't drawn to at all.  The drawing you do can be the same as it
+was in the last frame, or it can be different.  If you're writing your
+own Java code, you can do what the GRIN show graph nodes do:  Represent
+each logical piece of drawing with a <code>DrawRecord</code>.  If 
+there's some drawing
+that was done in the previous frame that isn't present in the current frame,
+<code>DrawRecord</code> keeps track of this for you, too:  It remembers 
+what was drawn
+in the last frame, and if any of those <code>DrawRecord</code> 
+instances aren't included
+in the set of what is drawn in the current frame, those areas of the screen
+are automatically erased and re-drawn.  In the GRIN scene graph, every
+visual feature maintains its own <code>DrawRecord</code> instance.
+</p><p>
+The best way to visualize what's going on is to see it for yourself, live.
+The GrinView program has a function to do this.  Run the program
+<code>grin/scripts/shell/run_grinviewer.sh test</code>, and double-click
+<code>S:Initialize</code>.  You'll see a silly little animation, with turtles
+and rabbits flying around the screen.  Click on "Stop", then on "Watch 
+drawing," then on "+frame".  Now, just click on "next" a bunch of times.
+For each frame, it will show you the areas of the screen buffer that are
+erased in red, then the areas that are drawn in green, then it will show 
+you the result.
+</p><p>
+By default, this GRIN show selects a segment that makes pretty good use
+of drawing optimization (<code>S:DrawOpt.Opt.TargetAndGuarantee</code>).
+But to start, double-click on <code>S:DrawOpt.Unoptimized</code>.  You'll
+notice that a large area of the screen is updated with each frame:  the
+bounding rectangle of screen objects that change, in fact.
+</p><p>
+The framework <i>could</i> treat each <code>DrawRecord</code> as an independent
+drawing operation, and try to merge only some of them together when
+necessary.  Unfortunately, this is a hard computational problem to solve - the
+most straightforward algorithm has O(n<sup>3</sup>) time complexity, which
+means the amount of time it takes is proportional to the cube of the
+number of inputs.  If you assume a complex scene broken down into 50
+drawing operations, each represented by a <code>DrawRecord</code>, then
+the execution time becomes proportional 50<sup>3</sup>, which is
+125,000 - a pretty big number.
+</p><p>
+There are "heuristic algorithms" that can attempt to do this more quickly,
+but they take CPU power, too.  For the GRIN aniamtion framework, we take
+a different approach.  Realizing that a BD-J disc has an author, we assume
+that the author can spend some time optimizing drawing.  It's not too
+complicated:  The author just needs to specify which drawing operations
+belong together, that is, which sets of <code>DrawRecord</code> instances
+should be grouped into the same bounding rectangle.  These groupings are called
+"draw targets."  For a simple animation there might be only one draw target,
+but if a few things are going on at once, it might make sense to have up to
+four or five draw targets.
+</p><p>
+This is what is done with the segment called <code>S:DrawOpt.Opt.Target</code>.
+Double-click on that, and step through the animation a few times.  You'll see
+that the turtles are in one draw target (the default target for the show,
+<code>T:Default</code>), the bunny spaceship is in a second target
+(<code>T:Bunny</code>), and the fading picture of the bunny with the
+shotgun in a third (<code>T:Picture</code>).  This results in much more
+efficient drawing.
+</p><p>
+Generally, you'll want to put objects that are close to each other in
+the same draw target.  It's OK if objects in different draw targets
+overlap - you'll notice that the objects in this sample move all over
+the place, and sometimes cover each other.  No matter how you assign 
+draw targets, the results will always display <i>correctly</i>, but
+if you assign them well, the screen will be repainted <i>faster</i>.
+</p><p>
+In the sample GRIN script, there's a further level of optimization
+applied in the <code>S:DrawOpt.Opt.TargetAndGuarantee</code> segment.
+Here, a samll additional optimization is made:  A GRIN feature
+is added to tell the animation framework that the two turtle troopers
+completely fill the rectangle they're drawn in with opaque pixels, 
+so there's no need to erase that part of the graphics buffer.  Correctly
+applying this can result in a small speedup.  Note that there's a slight
+wrinkle:  The two turtle troopers are actually in seperate .png image
+files, and there's a gap between the two.  In order to guarantee that a
+contiguous rectangle is completely filled, the "<code>guarantee_fill</code>"
+feature actually fills in an opaque black rectangle between the two images.
+</p>
+<h2>Summary of <code>AnimationEngine</code> control flow</h2>
+<p>
+The control flow of the animation engine is summarized in the following table:
+</p>
+<table border="3">
+    <tr>
+	<td><b>AnimationEngine decides...</b></td>
+	<td><b>Method called in AnimationClient (e.g. Show)</b></td>
+	<td><b>Method called within the AnimationClient (e.g. the 
+	       Show's features)</b></td>
+    </tr>
+	<td>1)  It's time to advance the logical model to the next frame</td>
+	<td>AnimationClient.nextFrame()</td>
+	<td>Each feature on the screen updates its internal data model
+	    to the state it should be in for the next frame</td>
+    <tr>
+    </tr>
+	<td>2) It's not behind in the animation loop, so the next frame
+	    can be drawn to the screen</td>
+	<td></td>
+	<td></td>
+    <tr>
+	<td>2.a) Tell each client it's about to be displayed</td>
+	<td>AnimationClient.setCaughtUp()</td>
+	<td></td>
+    </tr>
+    <tr>
+	<td>2.b) Find out where each AnimationClient plans to draw</td>
+	<td>AnimationClient.addDisplayAreas(RenderingContext)</td>
+	<td>Each visual feature calls RenderContext.addArea(DrawRecord)
+	    to record this frame's drawing operations</td>
+    </tr>
+    <tr>
+	<td>2.c) Compute the optimized set of "damage rectangles" that 
+		 need to be re-drawn to guantee a visually correct result</td>
+	<td></td>
+	<td></td>
+    </tr>
+    <tr>
+	<td>2.d) For each damage rectangle, ask the clients to draw into
+	    the screen buffer</td>
+	<td>AnimationClient.paintFrame(Graphics2D)</td>
+	<td>Each visual feature paints itself, as clipped by the Graphics2D's
+	    clip rect</td>
+    </tr>
+    <tr>
+	<td>2.e) For each damage rectangle, blt the screen buffer out
+	         to the screen.</td>
+	<td></td>
+	<td></td>
+    </tr>
+</table>
+<h2>Conclusion</h2>
+<p>
+This animation framework is really quite general and flexible.  We hope
+it will form the basis of efficiently combining drawing down by 
+scene graph frameworks like the GRIN scene graph, as well as drawing
+done directly in code.
+</p>
+</body></html>

@@ -1,0 +1,36 @@
+
+<project name="id" default="dist" basedir=".">
+
+  <!-- set global properties for this build -->
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="dist"  location="dist"/>
+    <property name="main.class" value="net.java.bd.tools.id.Main"/>
+    <target name="init">
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
+    </target>
+    <target name="compile" depends="init"
+        description="compile the source">
+        <javac srcdir="${src}" destdir="${build}"/>
+        <copy todir="${build}">
+            <fileset dir="${src}" includes="**/jaxb.index"/>
+        </copy>
+    </target>
+    <target name="jar" depends="compile"
+        description="make a jar">
+        <jar jarfile="${dist}/id.jar" basedir="${build}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="dist" depends="jar" if="hdc.distribution.dir"
+        description="copy the jar to the distribution dir">
+        <copy todir="${hdc.distribution.dir}" file="${dist}/id.jar"/>
+    </target>
+    <target name="clean">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+</project>

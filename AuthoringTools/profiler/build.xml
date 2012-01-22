@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!--
+Copyright  1990-2006 Sun Microsystems, Inc. All Rights Reserved.
+DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version
+2 only, as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License version 2 for more details (a copy is
+included at /legal/license.txt).
+
+You should have received a copy of the GNU General Public License
+version 2 along with this work; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301 USA
+
+Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
+Clara, CA 95054 or visit www.sun.com if you need additional
+information or have any questions.
+-->
+
+<project name="Build Profiler" default="all" basedir=".">
+    <property file="user.vars.properties"/>
+    <property file="vars.properties"/>
+
+    <presetdef name="jdktools.javac">
+        <javac debug="on"/>
+    </presetdef>
+
+    <import file="../grin/preset_defs.xml"/>
+    <import file="../grin/build_library.xml"/>
+    <property name="PROFILER_DEST" location="${HDC_BUILD_DIR}/"/>
+    <property name="PROFILER_JAR"  value="${PROFILER_DEST}/profiler.jar"/>
+    
+    <target name="clean">
+            <delete dir="${PROFILER_DEST}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${PROFILER_DEST}/classes"/>
+	<available file="../grin/build/grin_library"
+		type="dir" property="grin_util_present"/>
+	<fail unless="grin_util_present">
+	    Please compile the grin library first; the profiler depends
+	    on: com.hdcookbook.grin.util.Debug class.
+	</fail>
+	<condition property="use.prefuse">
+	        <istrue value="${advanced.ui}"/>
+	</condition>
+	<available file="${PREFUSE_LIB_CLASSES}"
+		  type="file" property="prefuse.present"/>
+	<echo  message="${prefuse.present}"/>
+	<echo  message="${use.prefuse}"/>
+	<echo  message="${advanced.ui}"/>
+	 <fail>
+	    <condition>
+	 	<and>
+		  <isset property="use.prefuse"/>
+		   <not>
+         	   <isset property="prefuse.present"/>
+       		  </not>		    
+		</and>
+	    </condition>
+	    For advance UI the profiler uses Prefuse Visualization Kit
+	    Please download it from "http://prefuse.org"
+	</fail>
+    </target>
+
+    <target name="setcp" if="use.prefuse">
+	<property name="CP" value="${PROFILER_DEST}/classes:${PREFUSE_LIB_CLASSES}"/>
+	<property name="EXCL" value=" "/>
+    </target>
+    <target name="setexclude" unless="use.prefuse">
+	<property name="CP" value="${PROFILER_DEST}/classes"/>
+	<property name="EXCL" value="ProfileBrowser.java,TimeUnit.java,RectRenderer.java"/>
+    </target>
+     <target name="all" depends="compile, install">
+     </target>
+     <target name="compile" depends="init, setcp, setexclude">
+	<echo message="${CP}"/>
+	<echo message="${EXCL}"/>
+        <jdktools.javac destdir="${PROFILER_DEST}/classes"
+	    classpath="${CP}" sourcepath="" excludes="${EXCL}">
+            <src path="src" />
+	    <src path="../grin/library/src"/>
+        </jdktools.javac> 
+        
+        <jar jarfile="${PROFILER_JAR}">
+            <fileset dir="${PROFILER_DEST}/classes"/>
+            <manifest>
+                <attribute name="Main-Class" value="PCProfiler"/>
+            </manifest>
+        </jar>
+     </target>
+     <target name="install" depends="init, compile">
+	<copy todir="../../bin">
+	    <fileset file="${PROFILER_JAR}"/>
+	</copy>
+    </target>
+    
+</project>

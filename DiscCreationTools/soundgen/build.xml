@@ -1,0 +1,44 @@
+<project name="soundgen" default="soundgen-dist" basedir=".">
+    <description>
+	    Build a tool that generates a sound.bdmv file from a set of audio files in any format supported by javax.sound.sampled API.
+    </description>
+    
+  <!-- set global properties for this build -->
+  <property name="soundgen-src" location="src"/>
+  <property name="soundgen-build" location="build"/>
+  <property name="soundgen-dist"  location="dist"/>
+  <property name="main.class"  value="net.java.bd.tools.BDJSoundGenerator"/>
+
+  <target name="soundgen-init">
+	  <echo message="${soundgen-build}"/>
+    <mkdir dir="${soundgen-build}"/>
+  </target>
+
+  <target name="soundgen-compile" depends="soundgen-init"
+        description="compile the source " >
+    <javac srcdir="${soundgen-src}" destdir="${soundgen-build}"/>
+  </target>
+
+  <target name="soundgen-jar" depends="soundgen-compile"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${soundgen-dist}"/>
+    <jar jarfile="${soundgen-dist}/soundgen.jar" basedir="${soundgen-build}">
+        <manifest>
+            <attribute name="Main-Class" value="${main.class}"/>
+        </manifest>
+    </jar>
+  </target>
+  
+  <target name="soundgen-dist" depends="soundgen-jar" if="hdc.distribution.dir"
+        description="copy the jar to the distribution dir">
+        <copy todir="${hdc.distribution.dir}" file="${soundgen-dist}/soundgen.jar"/>
+  </target>   
+
+  <target name="soundgen-clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${soundgen-build}"/>
+    <delete dir="${soundgen-dist}"/>
+  </target>
+</project>

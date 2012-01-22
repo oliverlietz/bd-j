@@ -1,0 +1,44 @@
+
+<project name="BDJOConverter" default="bdjo-dist" basedir=".">
+    <description>
+        Build a tool that converts .bdjo file to a human readable form and back
+    </description>
+    
+  <!-- set global properties for this build -->
+    <property name="bdjo-src" location="src"/>
+    <property name="hdc-lib-src" location="../../AuthoringTools/grin/library/src"/>
+    <property name="bdjo-build" location="build"/>
+    <property name="bdjo-dist"  location="dist"/>
+    <property name="main.class"  value="net.java.bd.tools.bdjo.Converter"/>
+    <target name="bdjo-init">
+        <mkdir dir="${bdjo-build}"/>
+        <mkdir dir="${bdjo-dist}"/>
+    </target>
+    <target name="bdjo-compile" depends="bdjo-init"
+        description="compile the source " >
+        <javac srcdir="${bdjo-src}" destdir="${bdjo-build}" debug="on">
+	    <src path="${hdc-lib-src}"/>
+	</javac>
+        <copy todir="${bdjo-build}">
+            <fileset dir="${bdjo-src}" includes="**/jaxb.index"/>
+        </copy>
+    </target>
+    <target name="bdjo-jar" depends="bdjo-compile">
+        <jar jarfile="${bdjo-dist}/bdjo.jar" basedir="${bdjo-build}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+			  <!-- attribute name="Class-Path" value="lib/script.jar"/ -->
+            </manifest>
+        </jar>
+    </target>
+    <target name="bdjo-dist" depends="bdjo-jar" if="hdc.distribution.dir"
+        description="generate the distribution">
+        <copy todir="${hdc.distribution.dir}" file="${bdjo-dist}/bdjo.jar"/>
+    </target>
+    <target name="bdjo-clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${bdjo-build}"/>
+        <delete dir="${bdjo-dist}"/>
+    </target>
+</project>

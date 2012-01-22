@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="GRIN builds" default="all" basedir=".">
+    
+    <import file="build_jdktools.xml"/>
+    <import file="build_extensions.xml"/>
+    <import file="build_grin_javadoc.xml"/>
+    
+    <target name="all" depends="library-all, jdktools-all, extensions-all" if="hdc.distribution.dir"
+        description="copy the jar to the distribution dir">
+        <copy todir="${hdc.distribution.dir}">
+            <fileset file="${GRIN_VIEWER_JAR}"/>
+            <fileset file="${GRIN_COMPILER_JAR}"/>
+        </copy>
+        <copy todir="${hdc.distribution.dir}/GrinLibrary/JavaSE">
+            <fileset dir="${JDK_LIBRARY_DEST}"/>
+        </copy>
+        <copy todir="${hdc.distribution.dir}/GrinLibrary/JavaME">
+            <fileset dir="${ME_LIBRARY_DEST}"/>
+        </copy>
+    </target>
+           
+    <target name="clean" depends="library-clean, jdktools-clean, extensions-clean">
+        <delete dir="${HDC_BUILD_DIR}"/>
+    </target>
+    
+    <target name="javadoc" depends="generate-grin-javadoc"/>
+        
+</project>

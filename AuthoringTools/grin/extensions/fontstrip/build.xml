@@ -1,0 +1,77 @@
+
+<project name="fontstrip" default="dist" basedir=".">
+    
+  <!-- set global properties for this build -->
+    
+    <property name="jdktools.src"  location="jdktools/library/src"/>
+    <property name="metools.src"  location="library/src"/>
+    <property name="build" location="build"/>
+    <property name="jdktools.build" location="${build}/jdktools"/>
+    <property name="metools.build" location="${build}/metools"/>
+    <property name="dist"  location="dist"/>
+    <property name="jdktools.jar" location="${dist}/sefontstrip.jar"/>
+    <property name="metools.jar" location="${dist}/fontstrip.jar"/>    
+    
+    <!-- Property Definitions -->
+    <property file="../../../user.vars.properties"/>	
+    <property file="../../../vars.properties"/>	
+    <property name="grin.classes" location="../../build/jdktools/library"/>
+   
+    <presetdef name="jdktools.java">
+        <java fork="true" failOnError="true"/>
+    </presetdef>    
+    
+    <presetdef name="metools.javac">
+        <javac classpath="${grin.classes}"
+               source="1.3" target="1.3"
+               debug="on" deprecation="on"/>
+    </presetdef>
+    <presetdef name="jdktools.javac">
+        <javac classpath="${grin.classes}"
+               source="1.5" target="1.5"
+               debug="on" deprecation="on"/>
+    </presetdef>
+    
+    <target name="init">
+        <mkdir dir="${jdktools.build}"/>        
+        <mkdir dir="${metools.build}"/>
+        <mkdir dir="${dist}"/>
+    </target>
+
+    <target name="compile-fontimagemaker"> 
+       <ant antfile="fontimagemaker.xml"/>
+    </target>
+     
+    
+    <target name="compile-se" depends="init, compile-fontimagemaker">
+        <jdktools.javac destdir="${jdktools.build}">                      
+            <src path="${jdktools.src}" />                       
+            <src path="${metools.src}" />
+        </jdktools.javac>
+    </target>
+    <target name="compile-me" depends="init">
+        <metools.javac srcdir="${metools.src}" 
+         destdir="${metools.build}"/>
+    </target>    
+    
+    <target name="jar" depends="jar-se, jar-me"
+        description="make a jar"/>
+    <target name="jar-se" depends="compile-se">
+        <jar jarfile="${jdktools.jar}" basedir="${jdktools.build}"/>
+    </target>
+    <target name="jar-me" depends="compile-me">
+        <jar jarfile="${metools.jar}" basedir="${metools.build}"/>
+    </target>    
+    
+    <target name="dist" depends="jar" if="hdc.distribution.dir"
+        description="copy the jar to the distribution dir">
+        <copy todir="${hdc.distribution.dir}"> 
+           <fileset dir="${dist}"/>
+        </copy>
+    </target>
+    
+    <target name="clean">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+</project>

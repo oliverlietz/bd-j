@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Authoring Tool builds" default="all" basedir=".">
+
+        <target name="all">
+            <antcall target="invoke-all">
+               <param name="hdc.distribution.dir" location="../bin"/>
+            </antcall>
+        </target>
+            
+        <target name="invoke-all">
+            <ant dir="grin"/>
+            <ant dir="profiler"/>
+        </target>           
+        
+	<target name="clean">         
+	  <ant dir="grin" target="clean"/> 
+	  <ant dir="profiler" target="clean"/> 
+	</target>
+
+	<target name="spotless" depends="clean">
+	</target>
+        
+</project>

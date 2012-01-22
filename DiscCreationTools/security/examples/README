@@ -1,0 +1,15 @@
+This is a simple example that to show that the
+certificate signing and the jar signing using 
+the BDSigner works for an applet.
+
+To run the example use:
+	"run.bat" on windows 
+
+and run-unix.sh on Unix platforms
+
+Note "writefile.policy" file grants permission for
+the applet to perform I/O operations on the system.
+
+The permission is granted only if the jar is signed
+by the specified "alias" name present in the specified
+keystore.

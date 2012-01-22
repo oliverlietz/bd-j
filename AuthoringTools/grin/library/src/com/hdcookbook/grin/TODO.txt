@@ -1,0 +1,21 @@
+
+
+    This file is a collecting place for ideas for future enhancements
+
+
+Canonicalization of parse tree
+==============================
+
+Many of the nodes in the GRIN tree are immutable.  For example,
+all commands are, and things like the font specifier of text
+objects could be.  We could gain some memory efficiency by
+combining equivalent immutable objects on the tree.  This could
+become more important if anonymous (that is, unnamed) features were
+introduced.
+
+
+Named Command Lists
+===================
+
+It would be good to have a command list command, that is, a named
+list of commands.  There's a lot of repetition in the scripts now.

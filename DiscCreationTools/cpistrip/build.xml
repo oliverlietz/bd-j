@@ -1,0 +1,41 @@
+
+<project name="CPIStrip" default="cpistrip-dist" basedir=".">
+    <description>
+        Build a tool that strips the copy permission indicator bits
+	from a BD-compatible MPEG-2 transport stream.
+    </description>
+    
+  <!-- set global properties for this build -->
+    <property name="cpistrip-src" location="src"/>
+    <property name="cpistrip-build" location="build"/>
+    <property name="cpistrip-dist"  location="dist"/>
+    <property name="main.class"  value="net.java.bd.tools.cpistrip.Main"/>
+    <target name="cpistrip-init">
+        <echo message="${cpistrip-build}"/>
+        <mkdir dir="${cpistrip-build}"/>
+    </target>
+    <target name="cpistrip-compile" depends="cpistrip-init"
+        description="compile the source " >
+        <javac target="1.5" debug="on" srcdir="${cpistrip-src}" destdir="${cpistrip-build}"/>
+    </target>
+    <target name="cpistrip-jar" depends="cpistrip-compile"
+        description="create a jar file" >
+    <!-- Create the distribution directory -->
+        <mkdir dir="${cpistrip-dist}"/>
+        <jar jarfile="${cpistrip-dist}/cpistrip.jar" basedir="${cpistrip-build}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="cpistrip-dist" depends="cpistrip-jar" if="hdc.distribution.dir"
+        description="generate the distribution">
+        <copy todir="${hdc.distribution.dir}" file="${cpistrip-dist}/cpistrip.jar"/>
+    </target>
+    <target name="cpistrip-clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${cpistrip-build}"/>
+        <delete dir="${cpistrip-dist}"/>
+    </target>
+</project>

@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<!--
+Copyright  1990-2006 Sun Microsystems, Inc. All Rights Reserved.
+DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version
+2 only, as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License version 2 for more details (a copy is
+included at /legal/license.txt).
+
+You should have received a copy of the GNU General Public License
+version 2 along with this work; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301 USA
+
+Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
+Clara, CA 95054 or visit www.sun.com if you need additional
+information or have any questions.
+-->
+
+<project name="Preset ant tasks">
+    
+    <property file="../../user.vars.properties"/>	
+    <property file="../../vars.properties"/>	
+    <property file="grin.properties"/>
+     
+    <target name="init-preset-defs" depends="set-javac, set-java">
+        <tstamp/>
+    </target>
+    
+    <target name="set-javac">
+        <!-- all the tools destined for big jdk (JavaSE) are 
+             compiled against jdk 1.5 -->
+        <presetdef name="jdktools.javac">
+            <javac sourcepath=""
+                   source="1.5" target="1.5"
+                   debug="on" deprecation="off"
+                   debuglevel="${JAVAC_DEBUG_OPTIONS}">
+            </javac>
+        </presetdef>
+        
+        <!-- all the classes destined to be on the blu-ray disc
+             are compiled against jdk 1.3 -->
+             
+                   <!-- bootclasspath="${HDC_BDJ_PLATFORM_CLASSES}" --> 
+        <presetdef name="xlets.javac">
+            <javac sourcepath=""
+                   source="1.3" target="1.3"
+                   debug="on" deprecation="on"
+                          debuglevel="${JAVAC_DEBUG_OPTIONS}"> 
+                   </javac>   
+        </presetdef>
+    </target>
+    
+    <target name="set-java" depends="set-java-assert, set-java-noassert,
+            set-grinview-java, set-grincompiler-java"/>
+            
+    <target name="set-grinview-java" depends="set-debugger-base, 
+            set-grinview-java-debugger, 
+            set-grinview-java-nodebugger"/>
+    
+   <target name="set-grincompiler-java" depends="set-debugger-base,
+                    set-grincompiler-java-debugger, 
+            set-grincompiler-java-nodebugger">
+                
+            <presetdef name="grincompiler.jdktools.java">
+                <grincompiler.jdktools.java.base>                
+                    <arg line="${GRIN_COMPILER_OPTIONS}"/> 
+                </grincompiler.jdktools.java.base>
+            </presetdef>
+    </target>
+    
+    <target name="set-java-assert" if="java.enableassetions">
+        <presetdef name="jdktools.java">
+           <java fork="true" failOnError="true">
+               <assertions>
+                   <enable/>
+               </assertions>
+           </java>
+       </presetdef>   
+    </target>
+
+    <target name="set-java-noassert" unless="java.enableassetions">  
+       <presetdef name="jdktools.java">
+           <java fork="true" failOnError="true"/>
+       </presetdef> 
+    </target>
+    
+    <target name="set-debugger-base">
+        <macrodef name="jdktools.java.debugger.base">
+            <attribute name="classname"/>
+            <attribute name="classpath.ref"/>
+            <element name="java-elements" implicit="true"/> 
+            <sequential>
+                <nbjpdastart name="@{classname}" addressproperty="jpda.address" transport="dt_socket">
+                    <classpath refid="@{classpath.ref}"/>
+                </nbjpdastart>
+                <jdktools.java classname="@{classname}">
+                    <jvmarg value="-Xdebug"/>
+                    <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+                    <classpath refid="@{classpath.ref}"/>
+                    <java-elements/>
+                </jdktools.java>          
+            </sequential>
+        </macrodef>
+        <macrodef name="jdktools.java.nodebugger.base">
+            <attribute name="classname"/>
+            <attribute name="classpath.ref"/>
+            <element name="java-elements" implicit="true"/>  
+            <sequential>
+                <jdktools.java classname="@{classname}">
+                    <classpath refid="@{classpath.ref}"/>
+                    <java-elements/>
+                </jdktools.java>       
+            </sequential>
+        </macrodef>
+    </target>
+    
+    <target name="set-grinview-java-debugger" if="grinview.java.attach.debugger">
+        <presetdef name="grinview.jdktools.java">
+            <jdktools.java.debugger.base/>
+        </presetdef>   
+    </target>
+    
+    <target name="set-grinview-java-nodebugger" unless="grinview.java.attach.debugger">  
+        <presetdef name="grinview.jdktools.java">
+            <jdktools.java.nodebugger.base/>
+        </presetdef>   
+    </target>
+    
+    <target name="set-grincompiler-java-debugger" if="grincompiler.java.attach.debugger">
+        <presetdef name="grincompiler.jdktools.java.base">
+            <jdktools.java.debugger.base/>
+        </presetdef>   
+    </target>
+    
+    <target name="set-grincompiler-java-nodebugger" unless="grincompiler.java.attach.debugger">  
+        <presetdef name="grincompiler.jdktools.java.base">
+            <jdktools.java.nodebugger.base/>
+        </presetdef>   
+    </target>    
+    
+</project>

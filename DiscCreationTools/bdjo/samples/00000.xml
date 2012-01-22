@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bdjo>
+    <appCacheInfo>
+        <entries>
+            <language>*.*</language>
+            <name>00000</name>
+            <type>1</type>
+        </entries>
+    </appCacheInfo>
+    <applicationManagementTable>
+        <applications>
+            <applicationDescriptor>
+                <baseDirectory>00000</baseDirectory>
+                <binding>TITLE_BOUND_DISC_BOUND</binding>
+                <classpathExtension>/00000</classpathExtension>
+                <iconFlags>0x0</iconFlags>
+                <iconLocator></iconLocator>
+                <initialClassName>com.hdcookbook.gunbunny.GunBunnyXlet</initialClassName>
+                <priority>1</priority>
+                <profiles>
+                    <majorVersion>1</majorVersion>
+                    <microVersion>0</microVersion>
+                    <minorVersion>0</minorVersion>
+                    <profile>1</profile>
+                </profiles>
+                <visibility>V_11</visibility>
+            </applicationDescriptor>
+            <applicationId>0x4000</applicationId>
+            <controlCode>0x1</controlCode>
+            <organizationId>0xffff0001</organizationId>
+            <type>0x1</type>
+        </applications>
+    </applicationManagementTable>
+    <fileAccessInfo>.</fileAccessInfo>
+    <keyInterestTable>0xffe00000</keyInterestTable>
+    <tableOfAccessiblePlayLists>
+        <accessToAllFlag>true</accessToAllFlag>
+        <autostartFirstPlayListFlag>false</autostartFirstPlayListFlag>
+        <playListFileNames>00001</playListFileNames>
+    </tableOfAccessiblePlayLists>
+    <terminalInfo>
+        <defaultFontFile>*****</defaultFontFile>
+        <initialHaviConfig>HD_1920_1080</initialHaviConfig>
+        <menuCallMask>false</menuCallMask>
+        <titleSearchMask>false</titleSearchMask>
+    </terminalInfo>
+    <version>V_0200</version>
+</bdjo>
+

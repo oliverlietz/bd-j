@@ -1,0 +1,799 @@
+#  
+# Copyright (c) 2007, Sun Microsystems, Inc.
+# 
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+# 
+#  * Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#  * Neither the name of Sun Microsystems nor the names of its contributors
+#    may be used to endorse or promote products derived from this software
+#    without specific prior written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# 
+#  Note:  In order to comply with the binary form redistribution 
+#         requirement in the above license, the licensee may include 
+#         a URL reference to a copy of the required copyright notice, 
+#         the list of conditions and the disclaimer in a human readable 
+#         file with the binary form of the code that is subject to the
+#         above license.  For example, such file could be put on a 
+#         Blu-ray disc containing the binary form of the code or could 
+#         be put in a JAR file that is broadcast via a digital television 
+#         broadcast medium.  In any event, you must include in any end 
+#         user licenses governing any code that includes the code subject 
+#         to the above license (in source and/or binary form) a disclaimer 
+#         that is at least as protective of Sun as the disclaimers in the 
+#         above license.
+# 
+#         A copy of the required copyright notice, the list of conditions and
+#         the disclaimer will be maintained at 
+#         https://hdcookbook.dev.java.net/misc/license.html .
+#         Thus, licensees may comply with the binary form redistribution
+#         requirement with a text file that contains the following text:
+# 
+#             A copy of the license(s) governing this code is located
+#             at https://hdcookbook.dev.java.net/misc/license.html
+# 
+
+#
+#  This is the show file for Ryan's Life.  See package.html 
+#  under com/hdcookbook/grin for the syntax of this file.
+#
+
+# Start of show file...
+show
+
+#
+#  FEATURES:
+#
+
+feature fixed_image F_idle 0 378 
+        "Menus/MenuActivate/MenuActivate_04.png" ;
+
+feature image_sequence F_menu_activation_00_04
+        0 378
+        "Menus/MenuActivate/MenuActivate_" {
+            00 01 02 03 04
+        } ".png" repeat
+        end_commands { segment_done ; } ;
+
+feature image_sequence F_menu_activation
+        0 378
+        "Menus/MenuActivate/MenuActivate_" {
+            05 06 07 08 09 10 11 
+            12 13 14 15 16 17 18 19 20 21 22 23
+            24 25 26 27 28 29 30 31 32
+        } ".png" repeat
+        end_commands { segment_done ; }  ;
+
+feature image_sequence F_play_mode_menu_activation
+        0 378
+        "Menus/PlayMenu/PlayMenuActivate/PlayMenuActivate_" {
+            00 01 02 03 04 05 06 07 08 09 10 11 
+            12 13 14 15 
+        } ".png" repeat
+        end_commands { segment_done ; }  ;
+
+feature assembly F_play_mode_menu_interaction {
+        select_mov  F_play_mode_menu_movie_sel
+        select_int  F_play_mode_menu_interactive_sel
+        invoke_mov  F_play_mode_menu_movie_act
+        invoke_int  F_play_mode_menu_interactive_act
+} ;
+
+feature fixed_image F_play_mode_menu_interactive_sel 0 378 
+            "Menus/PlayMenu/PlayMenu_InteractiveMode_sel.png" ;
+feature fixed_image F_play_mode_menu_movie_sel 0 378 
+            "Menus/PlayMenu/PlayMenu_MovieMode_sel.png" ;
+
+#
+# A bit of a trick follows.  When a button is pressed,
+# we're supposed to show it pressed for half a second, then move
+# on. To do that, we "animate" between 12 copies of the same image,
+# then tell the controller that we're done.
+#
+feature image_sequence F_play_mode_menu_interactive_act 0 378 
+            "Menus/PlayMenu/PlayMenu_InteractiveMode_" {
+                act act act sel sel sel act act act sel 
+            } ".png"  repeat
+            linked_to F_play_mode_menu_movie_act ;
+
+feature image_sequence F_play_mode_menu_movie_act 0 378 
+            "Menus/PlayMenu/PlayMenu_MovieMode_" {
+                act act act sel sel sel act act act sel 
+            } ".png"  repeat
+            end_commands { segment_done ; }  ;
+
+feature image_sequence F_play_mode_menu_deactivation    
+        0 378
+        "Menus/PlayMenu/PlayMenuActivate/PlayMenuActivate_" {
+            15 14 13
+            12 11 10 09 08 07 06 05 04 03 02 01 00
+        } ".png" repeat
+        end_commands { segment_done ; }  ;
+
+feature image_sequence F_menu_deactivation
+        0 378
+        "Menus/MenuActivate/MenuActivate_" {
+            32 31 30 29 28 27 26 25 24 23 22 21
+            20 19 18 17 16 15 14 13 12 11 10 09
+            08 07 06 05 04
+        } ".png" repeat
+        end_commands { segment_done ; }  ;
+
+feature image_sequence F_menu_deactivation_03_00
+        0 378
+        "Menus/MenuActivate/MenuActivate_" {
+            03 02 01 00
+        } ".png" repeat
+        end_commands { segment_done ; }  ;
+
+#
+# Next is a feature that's only used in an init clause.
+# this provides a shortcut for pre-loading the images needed
+# in the commentary segments.  There are too many of them to
+# try to load between "play mode" and "commentary mode" menus,
+# alas.  I just dumped more commentary features into this
+# faux-feature, until image loading (artifically delayed
+# to 800 ms/image on my mac) happened in time.
+#
+feature assembly F_commentary_init {
+        not_used_0   F_commentary_menu_activation
+        not_used_1   F_commentary_menu_deactivation
+        not_used_2   F_commentary_menu_count_up_off
+        not_used_3   F_commentary_menu_count_up_on
+} ;
+
+feature image_sequence F_commentary_menu_activation
+        0 378
+        "Menus/CommMenu/CommMenuActivate/CommMenuActivate_" {
+            00 01 02 03 04 05 06 07 08 09 10
+            11 12 13 14 15 
+        } ".png" repeat
+        end_commands { segment_done ; }  ;
+
+feature assembly F_commentary_menu_interaction {
+        select_0  F_commentary_menu_nick_sel
+        invoke_0  F_commentary_menu_nick_act
+} ;
+
+feature fixed_image F_commentary_menu_nick_sel 0 378 
+            "Menus/CommMenu/CommMenu_NickWauters_sel.png" ;
+#
+# A bit of a trick follows.  When a button is pressed,
+# we're supposed to show it pressed for half a second, then move
+# on. To do that, we "animate" between 12 copies of the same image,
+# then tell the chapter that we're done.
+#
+feature image_sequence F_commentary_menu_nick_act 
+          0 378 
+            "Menus/CommMenu/CommMenu_NickWauters_" {
+                act act act sel sel sel act act act sel 
+            } ".png"  repeat
+            end_commands {
+                activate_part F_commentary_menu_interaction select_0 ;
+            } ;
+
+feature image_sequence F_commentary_menu_deactivation
+        0 378
+        "Menus/CommMenu/CommMenuActivate/CommMenuActivate_" {
+            15 14 13 12 11 10 09 08 07 06 05
+            04 03 02 01 00
+        } ".png" repeat
+        end_commands { segment_done ; }  ;
+
+
+# -- Commentary Menu Count Up/Down timer object animations
+
+feature assembly F_commentary_menu_count_up {
+        off  F_commentary_menu_count_up_off
+        on   F_commentary_menu_count_up_on
+} ;
+
+feature image_sequence F_commentary_menu_count_up_off
+        600 0
+        "Menus/CountUp/CountUp_OFF/CountUp_OFF_" {
+            ZZ + + + + + + + + + + + + + + + + + + + + + + + + 
+            00 + + + + + + + + + + + + + + + + + + + + + + + + 
+            01 + + + + + + + + + + + + + + + + + + + + + + + + 
+            02 + + + + + + + + + + + + + + + + + + + + + + + + 
+            03 + + + + + + + + + + + + + + + + + + + + + + + +
+            04 + + + + + + + + + + + + + + + + + + + + + + + + 
+            05 + + + + + + + + + + + + + + + + + + + + + + + + 
+            06 + + + + + + + + + + + + + + + + + + + + + + + + 
+            07 + + + + + + + + + + + + + + + + + + + + + + + + 
+            08 + + + + + + + + + + + + + + + + + + + + + + + + 
+            09 + + + + + + + + + + + + + + + + + + + + + + + + 
+        } ".png" repeat
+        end_commands { segment_done ; }  ;
+
+feature image_sequence F_commentary_menu_count_up_on
+        600 0
+        "Menus/CountUp/CountUp_ON/CountUp_ON_" {
+            ZZ + + + + + + + + + + + + + + + + + + + + + + + + 
+            00 + + + + + + + + + + + + + + + + + + + + + + + + 
+            01 + + + + + + + + + + + + + + + + + + + + + + + + 
+            02 + + + + + + + + + + + + + + + + + + + + + + + + 
+            03 + + + + + + + + + + + + + + + + + + + + + + + + 
+            04 + + + + + + + + + + + + + + + + + + + + + + + + 
+            05 + + + + + + + + + + + + + + + + + + + + + + + + 
+            06 + + + + + + + + + + + + + + + + + + + + + + + + 
+            07 + + + + + + + + + + + + + + + + + + + + + + + + 
+            08 + + + + + + + + + + + + + + + + + + + + + + + + 
+            09 + + + + + + + + + + + + + + + + + + + + + + + + 
+        } ".png" repeat
+        linked_to F_commentary_menu_count_up_off ;
+
+feature assembly F_commentary_menu_active {
+        off  F_commentary_menu_active_off
+        on   F_commentary_menu_active_on
+} ;
+
+feature image_sequence F_commentary_menu_active_off 
+        600 0
+        "Menus/CountUp/CountUp_OFF/CountUp_OFF_0" {
+            8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+            9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+        } ".png" repeat ;
+
+feature image_sequence F_commentary_menu_active_on 
+        600 0
+        "Menus/CountUp/CountUp_ON/CountUp_ON_0" {
+            8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+            9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+        } ".png" repeat
+        linked_to F_commentary_menu_active_off ;
+
+feature assembly F_commentary_menu_count_down {
+        off  F_commentary_menu_count_down_off
+        on   F_commentary_menu_count_down_on
+} ;
+
+feature image_sequence F_commentary_menu_count_down_off
+        600 0
+        "Menus/CountUp/CountUp_OFF/CountUp_OFF_0" {
+            9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+            8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+            7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+            6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 
+            5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+            4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+            1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+            0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+        } ".png"   repeat
+        end_commands { segment_done ; }  ;
+
+feature image_sequence F_commentary_menu_count_down_on
+        600 0
+        "Menus/CountUp/CountUp_ON/CountUp_ON_0" {
+            9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+            8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+            7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+            6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 
+            5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+            4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+            1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+            0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+        } ".png"  repeat
+        linked_to F_commentary_menu_count_down_off ;
+
+# -- Commentary director's head
+
+feature assembly F_commentary_director {
+        director_0  F_commentary_director_0
+        director_1  F_commentary_director_1
+        director_2  F_commentary_director_2
+        director_3  F_commentary_director_3
+        director_4  F_commentary_director_4
+        director_5  F_commentary_director_5
+        director_6  F_commentary_director_6
+} ;
+
+feature fixed_image F_commentary_director_0
+          0 0 
+            "Commentary/Director_ZZ.png" ;
+
+feature fixed_image F_commentary_director_1_still
+          470 122 
+            "Commentary/Director_00.png" 
+          ;
+
+feature translation F_commentary_director_1.Coords
+        {
+             0 470 122 linear
+             6 480 130 linear
+            12 480 110 linear
+            18 460 110 linear
+            24 470 122 linear
+        }  repeat 1 ;   # This makes for a cycle of 24 frames
+
+feature translator F_commentary_director_1.T
+        F_commentary_director_1.Coords { F_commentary_director_1_still } ;
+
+feature group F_commentary_director_1 {
+        F_commentary_director_1.Coords F_commentary_director_1.T
+    } ;
+
+feature fixed_image F_commentary_director_2_still
+          60 118 
+            "Commentary/Director_01.png" 
+           ;
+
+feature translation F_commentary_director_2.Coords
+        {
+             0 60 118 linear
+            36 160 30 linear
+        } ;
+
+feature translator F_commentary_director_2.T
+        F_commentary_director_2.Coords { F_commentary_director_2_still } ;
+
+feature group F_commentary_director_2 {
+        F_commentary_director_2.Coords F_commentary_director_2.T
+    } ;
+
+feature fixed_image F_commentary_director_3 
+          44 64 
+            "Commentary/Director_02.png" 
+           ;
+
+feature fixed_image F_commentary_director_4 
+          -20 -10 
+            "Commentary/Director_03.png" 
+           ;
+
+feature fixed_image F_commentary_director_5 
+          460 120 
+            "Commentary/Director_04.png" 
+           ;
+
+feature fixed_image F_commentary_director_6 
+          440 124 
+            "Commentary/Director_05.png" 
+           ;
+
+feature text F_test_text 100 100 
+        { "This is a test" "of multi-line" "text" }
+        vspace 8
+        Braggadocio plain 30 {
+            { 255 0 0   0 }
+            { 255 0 0   5 }
+            { 255 0 0  10 }
+            { 255 0 0  20 }
+            { 255 0 0  30 }
+            { 255 0 0  40 }
+            { 255 0 0  50 }
+            { 255 0 0  60 }
+            { 255 0 0  70 }
+            { 255 0 0  80 }
+            { 255 0 0  90 }
+            { 255 0 0 100 }
+            + + + + + + 
+            + + + + + + 
+            + + + + + + 
+            + + + + + +
+            { 255 0 0 110 }
+            { 255 0 0 120 }
+            { 255 0 0 130 }
+            { 255 0 0 140 }
+            { 255 0 0 150 }
+            { 255 0 0 160 }
+            { 255 0 0 170 }
+            { 255 0 0 180 }
+            { 255 0 0 190 }
+            { 255 0 0 200 }
+            { 255 0 0 210 }
+            { 255 0 0 220 }
+            { 255 0 0 230 }
+            { 255 0 0 240 }
+            { 255 0 0 250 }
+            { 255 0 0 255 }
+        } ;
+
+feature timer F_test_text_timer 200 {
+    segment_done ;
+} ;
+
+feature fixed_image F_outline_test_static 0 0 "outline_100_100.png" ;
+
+feature translation F_outline_test.Coords
+        {
+             0 100 100 linear
+             120 340 340 linear
+             240 100 100 linear
+             360 220 220 linear
+             480 100 100 linear
+        }  repeat 1 
+        end_commands {
+            activate_segment test_text ;
+        }
+;
+
+feature translator F_outline_test.T
+        F_outline_test.Coords { F_outline_test_static } ;
+
+feature group F_outline_test {
+    F_outline_test.T
+    F_outline_test.Coords
+} ;
+        
+
+
+#
+# SEGMENTS:
+#
+
+segment xx_initialize # @@
+    setup { F_outline_test }
+    next {
+        ryan:start_video ;
+    }
+;
+
+segment xx_start_show  # @@
+    active { F_outline_test }
+;
+
+segment initialize
+    #  This is an alias to the first segment for initialization
+    next { activate_segment play_mode_menu_setup ; }
+;
+
+segment start_show
+    # This is an alias to the first segment that presents UI in the show.
+    # It's useful for testing; just point this at the sequence you want to
+    # test, to avoid going through the whole script
+    setup { F_idle F_menu_activation_00_04 F_menu_activation 
+            F_play_mode_menu_activation  
+            F_play_mode_menu_interaction F_play_mode_menu_deactivation
+            F_menu_deactivation F_menu_deactivation_03_00 
+            F_commentary_init }
+    next { activate_segment play_mode_menu_activation ; }
+    # next { activate_segment test_text ; }
+;
+
+segment empty
+    # This is really only used at show tear-down, so not including
+    # F_idle is OK.
+;
+
+# Idle segment when "Interactive Mode" is selected
+
+segment idle
+    active { F_idle }
+    setup { F_menu_activation F_menu_deactivation F_commentary_init }
+;
+
+# Idle segment when "Movie Mode" is selected - no interaction available
+
+segment movie_mode
+    active { }
+    setup { F_menu_activation_00_04 F_menu_activation 
+            F_menu_deactivation F_menu_deactivation_03_00 }
+;
+
+# ==========  play_mode segments  =================
+
+segment play_mode_menu_setup
+    setup { F_idle F_menu_activation_00_04 F_menu_activation 
+            F_play_mode_menu_activation  
+            F_play_mode_menu_interaction F_play_mode_menu_deactivation
+            F_menu_deactivation F_menu_deactivation_03_00 
+            F_commentary_init }
+    chapter ch_play_mode_setup
+    next {
+        ryan:start_video ;
+    }
+    # A segment with no active features executes the next commands when
+    # all of its features are set up.  Otherwise, a segment with active
+    # features runs the commands when a feature runs the segment_done command.
+;
+
+# When the ch_play_mode_setup chapter is done, the video
+# should be started.  It shouldn't be started before this,
+# because the application isn't ready to present the menu
+# to take us out of play mode.
+#
+# When the video gets to the right point, the app should send us
+# to play_mode_menu_activation.
+
+segment play_mode_menu_activation
+    active { F_menu_activation_00_04 }
+    setup { F_idle  F_menu_activation_00_04
+            F_menu_activation F_play_mode_menu_activation  
+            F_play_mode_menu_interaction F_menu_deactivation
+            F_play_mode_menu_deactivation F_menu_deactivation_03_00 
+            F_commentary_init }
+    chapter ch_play_mode_menu_activation
+    next {
+        activate_segment play_mode_menu_activation_bis ;
+    } ;
+
+segment play_mode_menu_activation_bis
+    active { F_menu_activation }
+    setup { F_idle  F_menu_activation_00_04
+            F_menu_activation F_play_mode_menu_activation  
+            F_play_mode_menu_interaction F_menu_deactivation
+            F_play_mode_menu_deactivation F_menu_deactivation_03_00 
+            F_commentary_init }
+    chapter ch_play_mode_menu_activation
+    next {
+        activate_segment play_mode_menu_activation_bis2 ;
+    } ;
+
+segment play_mode_menu_activation_bis2
+    active { F_play_mode_menu_activation }
+    setup { F_idle  F_menu_activation_00_04
+            F_menu_activation F_play_mode_menu_activation  
+            F_play_mode_menu_interaction F_menu_deactivation
+            F_play_mode_menu_deactivation F_menu_deactivation_03_00 
+            F_commentary_init }
+    chapter ch_play_mode_menu_activation
+    next {
+        activate_segment play_mode_menu_interaction ;
+    }
+;
+
+rc_handler visual play_mode_menu_interaction_handler
+        grid { { ( 1 1 ) ( 0 1 ) }      # Up flips state
+               { movie   interactive }  # right/left don't wrap
+               { ( 1 1 )  ( 0 1 ) }     # Down flips state
+             }                          
+        assembly F_play_mode_menu_interaction
+        select {
+            movie       select_mov
+            interactive select_int
+        } activate {
+            movie       invoke_mov     { ryan:play_mode_interactive false ; }
+            interactive invoke_int     { ryan:play_mode_interactive true ; }
+        }
+        mouse {                                # Image is at 0 378
+            movie       ( 155 461 301 504 )    # movie button 155,83 to 301, 126
+            interactive ( 302 461 885 504 )    # interactive button 302, 83 to 507, 126
+        }
+        timeout 300 frames {
+            set_visual_rc play_mode_menu_interaction_handler current selected ;
+        } ;
+
+#
+# The following makes it so that the "1" key or "red" causes
+# invoke_0 to be activated in the above, "2" or "green"
+# causes invoke_1 to be activated.
+#
+# Note that the UI doesn't reflect these choices.
+# I put this in for testing.
+#
+rc_handler key_pressed play_mode_menu_interaction_handler_keys_1
+    { 1 red } execute { 
+        set_visual_rc play_mode_menu_interaction_handler  
+                      state movie activated ;
+    } ;
+rc_handler key_pressed play_mode_menu_interaction_handler_keys_2
+    { 2 green } execute { 
+        set_visual_rc play_mode_menu_interaction_handler 
+                      state interactive activated ;
+    } ;
+
+
+segment play_mode_menu_interaction
+    active { F_play_mode_menu_interaction }
+    setup { F_idle  F_menu_activation_00_04
+            F_menu_activation F_play_mode_menu_activation  
+            F_play_mode_menu_interaction F_menu_deactivation
+            F_play_mode_menu_deactivation F_menu_deactivation_03_00 
+            F_commentary_init }
+    chapter ch_play_mode_menu_interaction
+    rc_handlers { play_mode_menu_interaction_handler
+                  play_mode_menu_interaction_handler_keys_1
+                  play_mode_menu_interaction_handler_keys_2  }
+    next {
+        activate_segment play_mode_menu_deactivation ;
+    }
+    #
+    # When the user activates one of the options, then the animation
+    # defined for activate_0 or activate_1 will automatically cause a 
+    # segment_done.  If the timeout expires, an enter key is faked, and the
+    # same thing happens.
+;
+
+segment play_mode_menu_deactivation
+    active { F_play_mode_menu_deactivation }
+    setup { F_menu_activation F_menu_deactivation F_idle 
+            F_commentary_init }
+    next {
+        activate_segment play_mode_menu_deactivation_bis ;
+    }
+;
+
+segment play_mode_menu_deactivation_bis
+    active { F_menu_deactivation }
+    setup { F_menu_activation F_idle F_commentary_init }
+    next { activate_segment commentary_menu_setup ; }
+;
+
+# Deactivation from Play Mode Menu when "Movie Mode" is selected.
+
+segment play_mode_menu_deactivation_to_movie_mode
+    active { F_play_mode_menu_deactivation }
+    setup { F_menu_deactivation F_menu_deactivation_03_00 }
+    next { activate_segment play_mode_menu_deactivation_to_movie_mode_bis ; }
+;
+
+segment play_mode_menu_deactivation_to_movie_mode_bis
+    active { F_menu_deactivation }
+    setup { F_menu_deactivation_03_00 }
+    next { activate_segment play_mode_menu_deactivation_to_movie_mode_bis2 ; }
+;
+
+segment play_mode_menu_deactivation_to_movie_mode_bis2
+    active { F_menu_deactivation_03_00 }
+    setup { }
+    next { activate_segment movie_mode ; }
+;
+
+# =============  commentary segments  ==============
+
+segment commentary_menu_setup
+    active { F_idle }
+    setup {
+        F_idle F_menu_activation F_commentary_menu_activation
+        F_commentary_menu_count_up F_commentary_menu_active 
+        F_commentary_director 
+        F_commentary_menu_count_down F_commentary_menu_deactivation
+        F_menu_deactivation F_commentary_menu_interaction
+    }
+;
+
+segment commentary_menu_activation
+    active { F_menu_activation }
+    setup {
+        F_idle F_menu_activation F_commentary_menu_activation
+        F_commentary_menu_count_up F_commentary_menu_active 
+        F_commentary_director 
+        F_commentary_menu_count_down F_commentary_menu_deactivation
+        F_menu_deactivation F_commentary_menu_interaction
+    }
+    chapter ch_commentary_menu
+    next { activate_segment commentary_menu_activation_bis ; }
+;
+
+segment commentary_menu_activation_bis
+    active { F_commentary_menu_activation }
+    setup {
+        F_idle F_menu_activation F_commentary_menu_activation
+        F_commentary_menu_count_up F_commentary_menu_active 
+        F_commentary_director 
+        F_commentary_menu_count_down F_commentary_menu_deactivation
+        F_menu_deactivation F_commentary_menu_interaction
+    }
+    chapter ch_commentary_menu
+    next { 
+        activate_segment commentary_menu_count_up ; 
+    }
+;
+
+rc_handler assembly_grid commentary_menu_interaction_handler
+        assembly F_commentary_menu_interaction
+        select { { select_0 } }
+        invoke { { invoke_0 } }
+        when_invoked {
+            invoke_0   { ryan:toggle_commentary ; } 
+        }
+;
+
+segment commentary_menu_count_up
+    active { F_commentary_menu_interaction F_commentary_menu_count_up }
+    setup {
+        F_idle F_menu_activation F_commentary_menu_activation
+        F_commentary_menu_count_up F_commentary_menu_active 
+        F_commentary_menu_interaction F_commentary_director 
+        F_commentary_menu_count_down F_commentary_menu_deactivation
+        F_menu_deactivation F_test_group
+    }
+    chapter ch_commentary_menu
+    rc_handlers { commentary_menu_interaction_handler }
+    next { 
+        activate_segment commentary_menu_active ; 
+        ryan:commentary_start ;
+    }
+;
+
+#
+# Gratituously define a group, instead of just listing the three
+# features in the segment.  This is just done to test the "group"
+# feature.
+#
+feature group F_test_group {
+        F_commentary_menu_interaction 
+        F_commentary_menu_active 
+        F_commentary_director 
+} ;
+
+segment commentary_menu_active
+    active { F_test_group }
+    setup {
+        F_idle F_menu_activation F_commentary_menu_activation
+        F_commentary_menu_count_up F_commentary_menu_active
+        F_commentary_menu_interaction F_commentary_director 
+        F_commentary_menu_count_down F_commentary_menu_deactivation
+        F_menu_deactivation
+    }
+    chapter ch_commentary_menu
+    rc_handlers { commentary_menu_interaction_handler }
+;
+
+segment commentary_menu_count_down
+    active { F_commentary_menu_interaction 
+             F_commentary_menu_count_down 
+             F_commentary_director }
+    setup {
+        F_idle F_menu_activation F_commentary_director 
+        F_commentary_menu_count_down F_commentary_menu_interaction 
+      F_commentary_menu_deactivation F_menu_deactivation
+    }
+    chapter ch_commentary_menu
+    rc_handlers { commentary_menu_interaction_handler }
+    next { activate_segment commentary_menu_deactivation ; }
+;
+
+segment commentary_menu_deactivation
+    active { F_commentary_menu_deactivation }
+    setup {
+        F_idle F_menu_activation 
+        F_commentary_menu_deactivation
+        F_menu_deactivation
+    }
+    next { activate_segment commentary_menu_deactivation_bis ; }
+;
+
+segment commentary_menu_deactivation_bis
+    active { F_menu_deactivation }
+    setup {
+        F_idle F_menu_activation 
+        F_menu_deactivation
+        F_test_text
+    }
+    next { activate_segment test_text ; }
+;
+
+segment test_text
+    active { F_test_text F_test_text_timer }
+    setup { F_outline_test }
+    next { activate_segment test_boundary ; }
+;
+
+segment test_boundary
+    active { F_outline_test }
+    setup { F_test_text F_test_text_timer }
+;
+
+
+# ==========  the segment for shutting down, as the video ends  ==========
+
+segment main_menu_deactivation
+    next { activate_segment empty ; } 
+;
+
+# End of show file...
+end_show

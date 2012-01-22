@@ -1,0 +1,42 @@
+<html>
+<body>
+<p>
+This package contains support for testing GRIN on "big JDK," more
+formally known as Java SE.  This can be a useful thing to do while
+debugging scripts, because with big JDK, you typically have access
+to a much richer suite of debugging tools, and more convenient
+access to an IDE like NetBeans.
+</p><p>
+The downside of developing on big JDK is that the GEM and Blu-ray
+APIs aren't available.  For GRIN, we put some minimal stub classes
+in <code>org.dvb</code> in the workspace, but these are by no means a complete
+implementation of those APIs.  Rather, they're just enough to bootstrap
+a functional method for testing GRIN using desktop Java.
+</p><p>
+In this package, there are two ways of launching the "Ryan's Life"
+demo:
+</p>
+<pre>
+    java -cp (dir) com.hdcookbook.grin.test.bigjdk.GrinTestRyan
+
+    java -cp (dir) com.hdcookbook.grin.test.bigjdk.GuiGenericMain \
+        -assets ../test/assets/ ryan_show.txt 6
+</pre>
+<p>
+The first is a more complete test of Ryan's Life, with a program
+that implements the ryan-specific command extensions in the script.
+It correctly runs Ryan at the normal PAL/SECAM SD resolution.
+</p><p>
+The second test is a cool little program that displays the parse
+tree of the Ryan script in a Swing hierarchy widget.  You can
+double-click on a segment to activate that segment, and you can
+single-step through animations frame-by-frame.  This can be a useful
+debugging tool if you have a one-frame "flash" artifact in your
+script, and you don't understand why.  This "generic" version assumes
+a 24p HD display (1920x1280), and it does graphics  plane compositing
+in software, so it's slow.  I find I have to back the frame rate down
+to about 6 fps, even on a fast PC.  That's what the last command-line
+argument is for.
+</p>
+</body>
+</html>

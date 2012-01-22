@@ -1,0 +1,1242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+     This is an XML schema for GRIN (GRaphical INteractivity) Show XML format.
+     This document was generated and edited using NetBeans 6.1 XML Schema editor.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://grin.hdcookbook.com/io/xml"
+            xmlns:tns="http://grin.hdcookbook.com/io/xml"
+            xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+            xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+            jxb:version="1.0"
+            elementFormDefault="qualified">
+    <xsd:annotation>
+        <xsd:appinfo>
+            <jxb:globalBindings choiceContentProperty="true">
+            </jxb:globalBindings>
+        </xsd:appinfo>
+    </xsd:annotation>
+                
+    <!-- simple types -->
+    <xsd:simpleType name="XAlignmentType">
+        <xsd:annotation>
+            <xsd:documentation>Constant for the alignment of the X coordinate.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value = "left"/>
+            <xsd:enumeration value = "middle"/>
+            <xsd:enumeration value = "right"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="YAlignmentType">
+        <xsd:annotation>
+            <xsd:documentation>Constant for the alignment of the Y coordinate.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="top"/>
+            <xsd:enumeration value="middle"/>
+            <xsd:enumeration value="bottom"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="AlphaType">
+        <xsd:annotation>
+            <xsd:documentation>Opacity level #00 to #FF
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:token">
+            <xsd:pattern value="#[0-9a-fA-F]{2}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <!-- Color #rrggbb or #rrggbbaa -->
+    <xsd:simpleType name="ColorType">
+        <xsd:restriction base="xsd:token">
+            <xsd:pattern value="#[0-9a-fA-F]{6}|#[0-9a-fA-F]{8}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="CountOrInfiniteType">
+        <xsd:union memberTypes="xsd:NMTOKEN">
+            <xsd:simpleType>
+                <xsd:restriction  base="xsd:int"/>
+            </xsd:simpleType>
+            <xsd:simpleType>
+                <xsd:restriction  base="xsd:token">
+                    <xsd:enumeration value="infinite"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:union>
+    </xsd:simpleType>
+    <xsd:simpleType name="FontStyleType">
+        <xsd:annotation>
+            <xsd:documentation>Font style (one of "plain", "bold", "italic" or "bold-italic").</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="plain"/>
+            <xsd:enumeration value="bold"/>
+            <xsd:enumeration value="italic"/>
+            <xsd:enumeration value="bold-italic"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="RCKeyEventType">
+        <xsd:annotation>
+            <xsd:documentation>Remote control key events.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="0"/>
+            <xsd:enumeration value="1"/>
+            <xsd:enumeration value="2"/>
+            <xsd:enumeration value="3"/>
+            <xsd:enumeration value="4"/>
+            <xsd:enumeration value="5"/>
+            <xsd:enumeration value="6"/>
+            <xsd:enumeration value="7"/>
+            <xsd:enumeration value="8"/>
+            <xsd:enumeration value="9"/>
+            <xsd:enumeration value="right"/>
+            <xsd:enumeration value="left"/>
+            <xsd:enumeration value="up"/>
+            <xsd:enumeration value="down"/>
+            <xsd:enumeration value="enter"/>
+            <xsd:enumeration value="red"/>
+            <xsd:enumeration value="green"/>
+            <xsd:enumeration value="yellow"/>
+            <xsd:enumeration value="blue"/>
+            <xsd:enumeration value="popup_menu"/>
+            <xsd:enumeration value="play"/>
+            <xsd:enumeration value="stop"/>
+            <xsd:enumeration value="still_off"/>
+            <xsd:enumeration value="track_next"/>
+            <xsd:enumeration value="track_prev"/>
+            <xsd:enumeration value="fast_fwd"/>
+            <xsd:enumeration value="rewind"/>
+            <xsd:enumeration value="pause"/>
+            <xsd:enumeration value="secondary_video_enable_disable"/>
+            <xsd:enumeration value="secondary_audio_enable_disable"/>
+            <xsd:enumeration value="pg_textst_enable_disable"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <!-- general complex types -->
+    <xsd:complexType name="NodeType">
+        <xsd:attributeGroup ref="tns:IDExportDescAttrGroup"/>
+    </xsd:complexType>
+    <xsd:complexType name="PartType">
+        <xsd:group ref="tns:FeatureChoiceGroup" minOccurs="0" maxOccurs="1"/>
+        <xsd:attribute name="ref" type="xsd:IDREF" use="required">
+            <xsd:annotation>
+                <xsd:documentation>Reference to a feature.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="FeatureListType">
+        <xsd:group ref="tns:FeatureChoiceGroup" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:complexType>
+    <xsd:complexType name="FeatureRefListType">
+        <xsd:sequence>
+            <xsd:annotation>
+                <xsd:documentation>A list of feature references or inlined anonymous features.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:element name="feature" type="tns:PartType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="RCHandlerRefListType">
+        <xsd:sequence>
+            <xsd:element name="rc-handler" minOccurs="0" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:attribute name="ref" type="xsd:IDREF" use="required"/>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="TextYAlignmentType">
+        <xsd:annotation>
+            <xsd:documentation>Alignment enumeration for Y direction text alignment.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="top"/>
+            <xsd:enumeration value="baseline"/>
+            <xsd:enumeration value="bottom"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <!-- element groups -->
+    <xsd:group name="FeatureChoiceGroup">
+        <xsd:choice>
+            <xsd:element name="assembly" type="tns:AssemblyType"/>
+            <xsd:element name="box" type="tns:BoxType"/>
+            <xsd:element name="clipped" type="tns:ClippedType"/>
+            <xsd:element name="ext-feature" type="tns:ExtensionFeatureType"/>
+            <xsd:element name="ext-modifier" type="tns:ExtensionModifierType"/>
+            <xsd:element name="fade" type="tns:FadeType"/>
+            <xsd:element name="fixed-image" type="tns:FixedImageType"/>
+            <xsd:element name="guarantee-fill" type="tns:GuaranteeFillType"/>
+            <xsd:element name="group" type="tns:GroupType"/>
+            <xsd:element name="image-sequence" type="tns:ImageSequenceType"/>
+            <xsd:element name="interpolated-model" type="tns:InterpolatedModelType"/>
+            <xsd:element name="menu-assembly" type="tns:MenuAssemblyType"/>
+            <xsd:element name="scaling-model" type="tns:ScalingModelType"/>
+            <xsd:element name="set-target" type="tns:SetTargetType"/>
+            <xsd:element name="src-over" type="tns:SrcOverType"/>
+            <xsd:element name="text" type="tns:TextType"/>
+            <xsd:element name="timer" type="tns:TimerType"/>
+            <xsd:element name="translator" type="tns:TranslatorType"/>
+            <xsd:element name="translator-model" type="tns:TranslatorModelType"/>
+        </xsd:choice>
+    </xsd:group>
+    <xsd:group name="PartListGroup">
+        <xsd:sequence>
+            <xsd:annotation>
+                <xsd:documentation>A list of feature references or inlined anonymous features.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:element name="part" type="tns:PartType" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:group>
+    
+    <!-- script type -->
+    <xsd:complexType name="ScriptType">
+        <xsd:annotation>
+            <xsd:documentation>Embedded script in GRIN show document.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="type" type="xsd:string" use="optional" default="text/java">
+                    <xsd:annotation>
+                        <xsd:documentation>MIME of the language in which script is written (eg. text/java, text/javascript and so on).</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="runat" type="xsd:string" use="optional" default="runtime">
+                    <xsd:annotation>
+                        <xsd:documentation>Specifies where do you want to run this script block? (eg. "runtime", "build" etc.)</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    
+    <!-- Extension parameter description -->
+    <xsd:complexType name="ParamType">
+        <xsd:annotation>
+            <xsd:documentation>Parameter for an extension (command, feature etc.)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="name" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>name of the parameter.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="value" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>Value of the parameter.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+    
+    <!-- attribute groups -->
+    <xsd:attributeGroup name="IDAttrGroup">
+        <xsd:attribute name="id" type="xsd:ID" use="optional">
+            <xsd:annotation>
+                <xsd:documentation>Unique ID for this GRIN item.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="ExportAttrGroup">
+        <xsd:attribute name="export" type="xsd:boolean" use="optional" default="true">
+            <xsd:annotation>
+                <xsd:documentation>Is this GRIN node visible to Xlet code at runtime?</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="ClassAttrGroup">
+        <xsd:attribute name="class" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:documentation>Java class associated with this element.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="DescAttrGroup">
+        <xsd:attribute name="description" type="xsd:string" use="optional">
+            <xsd:annotation>
+                <xsd:documentation>Simple one line description/document for this element.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="IDExportDescAttrGroup">
+        <xsd:attributeGroup ref="tns:IDAttrGroup"/>
+        <xsd:attributeGroup ref="tns:ExportAttrGroup"/>
+        <xsd:attributeGroup ref="tns:DescAttrGroup"/>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="PlacementOptAttrGroup">
+        <xsd:attributeGroup ref="tns:ScaleAttrGroup"/>
+        <xsd:attributeGroup ref="tns:AlignAttrGroup"/>
+        <xsd:attributeGroup ref="tns:PointOptAttrGroup"/>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="ScaleModelAttrGroup">
+        <xsd:attribute name="scale-model" type="xsd:IDREF" use="optional">
+            <xsd:annotation>
+                <xsd:documentation>Specifies scale model for this feature.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="SrcAttrGroup">
+        <xsd:attribute name="src" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:documentation>Path of the image file.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="PointOptAttrGroup">
+        <xsd:attribute name="x" type="xsd:int" use="optional">
+            <xsd:annotation>
+                <xsd:documentation>X coordinate in pixels.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="y" type="xsd:int" use="optional">
+            <xsd:annotation>
+                <xsd:documentation>Y coordinate in pixels.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="PointAttrGroup">
+        <xsd:attribute name="x" type="xsd:int" use="required">
+            <xsd:annotation>
+                <xsd:documentation>X coordinate in pixels.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="y" type="xsd:int" use="required">
+            <xsd:annotation>
+                <xsd:documentation>Y coordinate in pixels.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="RectAttrGroup">
+        <xsd:attributeGroup ref="tns:PointAttrGroup"/>
+        <xsd:attribute name="width" type="xsd:int" use="required">
+            <xsd:annotation>
+                <xsd:documentation>Width in pixels</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="height" type="xsd:int" use="required">
+            <xsd:annotation>
+                <xsd:documentation>Height in pixels</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="XAlignAttrGroup">
+        <xsd:attribute name="x-align" type="tns:XAlignmentType" use="optional" default="left">
+            <xsd:annotation>
+                <xsd:documentation>X direction alignment constant.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="YAlignAttrGroup">
+        <xsd:attribute name="y-align" type="tns:YAlignmentType" use="optional" default="top">
+            <xsd:annotation>
+                <xsd:documentation>Y direction alignment constant.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="AlignAttrGroup">
+        <xsd:attributeGroup ref="tns:XAlignAttrGroup"/>
+        <xsd:attributeGroup ref="tns:YAlignAttrGroup"/>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="ScaleAttrGroup">
+        <xsd:attribute name="x-scale" type="xsd:int" use="optional" default="1000">
+            <xsd:annotation>
+                <xsd:documentation>X scale in mills.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="y-scale" type="xsd:int" use="optional" default="1000">
+            <xsd:annotation>
+                <xsd:documentation>Y scale in mills.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="PlacementAttrGroup">
+        <xsd:attributeGroup ref="tns:AlignAttrGroup"/>
+        <xsd:attributeGroup ref="tns:ScaleAttrGroup"/>
+        <xsd:attributeGroup ref="tns:PointAttrGroup"/>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="FrameAttrGroup">
+        <xsd:attribute name="frame" type="xsd:int" use="required">
+            <xsd:annotation>
+                <xsd:documentation>Key frame number for this animation.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="LoopCountAttrGroup">
+        <xsd:attribute name="loop-count" type="tns:CountOrInfiniteType" use="optional" default="1"/>
+    </xsd:attributeGroup>
+    <xsd:attributeGroup name="RepeatFrameAttrGroup">
+        <xsd:attribute name="repeat-frame" type="xsd:int" use="optional"/>
+    </xsd:attributeGroup>
+    
+    <!-- feature types -->
+    <xsd:complexType name="FeatureType">
+        <xsd:annotation>
+            <xsd:documentation>Abstract base type for all GRIN features.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:NodeType"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ModifierType">
+        <xsd:annotation>
+            <xsd:documentation>Abstract super type for all GRIN modifier nodes.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:sequence>
+                    <xsd:element name="part" type="tns:PartType">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="AssemblyType">
+        <xsd:annotation>
+            <xsd:documentation> An assembly is a feature composed of other features.  
+ It is a bit like a switch statement:  Only one child of an assembly can be
+ active at a time.  This can be used to compose a menu that can
+ be in one of several visual states.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:sequence>
+                    <xsd:element name="part" minOccurs="1" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:complexContent>
+                                <xsd:extension base="tns:PartType">
+                                    <xsd:attribute name="name" type="xsd:string" use="required">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Name of this assembly part</xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:attribute>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="BoxType">
+        <xsd:annotation>
+            <xsd:documentation>Draws a box.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:attributeGroup ref="tns:RectAttrGroup"/>
+                <xsd:attribute name="outline-color" type="tns:ColorType" use="optional"/>
+                <xsd:attribute name="fill-color" type="tns:ColorType" use="optional"/>
+                <xsd:attribute name="outline" type="xsd:int" use="optional" default="1"/>
+                <xsd:attributeGroup ref="tns:ScaleModelAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ClippedType">
+        <xsd:annotation>
+            <xsd:documentation>Represents a clipped version of another feature.
+When painting, a clipping rectangle is set.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:ModifierType">
+                <xsd:attributeGroup ref="tns:RectAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="FixedImageType">
+        <xsd:annotation>
+            <xsd:documentation>This feature draws a static image.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:attributeGroup ref="tns:PlacementAttrGroup"/>
+                <xsd:attributeGroup ref="tns:ScaleModelAttrGroup"/>
+                <xsd:attributeGroup ref="tns:SrcAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ExtensionFeatureType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:sequence>
+                    <xsd:annotation>
+                        <xsd:documentation>Zero or more parameters for this extension feature.</xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:element name="param" type="tns:ParamType" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attributeGroup ref="tns:ClassAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ExtensionModifierType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:ModifierType">
+                <xsd:sequence>
+                    <xsd:annotation>
+                        <xsd:documentation>Zero or more parameters for this extension feature.</xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:element name="param" type="tns:ParamType" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attributeGroup ref="tns:ClassAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="FadeType">
+        <xsd:annotation>
+            <xsd:documentation>This feature modifies a child feature by applying an alpha value when drawing in
+it.  This lets you animate a fade-in and fade-out effect.  It works
+by specifying alpha values at a few keyframes, and doing linear
+interpolation between those keyframes.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:ModifierType">
+                <xsd:sequence>
+                    <xsd:element name="keyframes">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="keyframe" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="frame" type="xsd:int" use="required">
+                                            <xsd:annotation>
+                                                <xsd:documentation>Key frame number.</xsd:documentation>
+                                            </xsd:annotation>
+                                        </xsd:attribute>
+                                        <xsd:attribute name="alpha" type="tns:AlphaType"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="end-commands" type="tns:CommandListType" minOccurs="0"/>
+                </xsd:sequence>
+                <xsd:attribute name="src-over" type="xsd:boolean" default="false" use="optional"/>
+                <xsd:attributeGroup ref="tns:LoopCountAttrGroup"/>
+                <xsd:attributeGroup ref="tns:RepeatFrameAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="GroupType">
+        <xsd:annotation>
+            <xsd:documentation>This feature represents a group of features 
+that are all activated at the same time.  It is
+useful to group features together so that they
+can be turned on and off as a unit within an 
+assembly.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:group ref="tns:PartListGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="GuaranteeFillType">
+        <xsd:annotation>
+            <xsd:documentation>Guarantees that its children will completely fill a given rectangle
+on the screen with source-mode drawing.  In other words, this node and
+its children guarantee that they will completely paint every pixel within
+a given rectangle.
+ 
+This node has a feature to paint transparent pixels (in the current
+drawing mode) in rectangular areas.  This allows an author to guarantee
+filling a large rectangular area composed of small rectangular items
+(like images drawn in Src mode) that have small gaps between them -- in
+this case, the GuaranteeFill node can fill in those gaps.  This node
+paints those fill areas before it paints its children.
+ 
+If this node is a child of a node that sets SrcOver drawing mode,
+then the guarantee will not apply.  In other words, it is OK as
+far as correctness is concerned to put a structure including a
+GuaranteeFill node under a SrcOver node or a Fade node, but you
+won't see any increase in redraw efficiency due to the GuaranteeFill
+node in this case.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:ModifierType">
+                <xsd:sequence>
+                    <xsd:element name="fill-rect" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:attributeGroup ref="tns:RectAttrGroup"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+                <xsd:attributeGroup ref="tns:RectAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ImageSequenceType">
+        <xsd:annotation>
+            <xsd:documentation> An image sequence does "cell" animation.  It consists of a number
+ of images that are displayed one after another.  All of the images
+ in a sequence are assumed to be the same size.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:sequence>
+                    <xsd:element name="images">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="img" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attributeGroup ref="tns:SrcAttrGroup"/>
+                                        <xsd:attributeGroup ref="tns:PlacementOptAttrGroup"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="end-commands" type="tns:CommandListType" minOccurs="0"/>
+                </xsd:sequence>
+                <xsd:attributeGroup ref="tns:LoopCountAttrGroup"/>
+                <xsd:attributeGroup ref="tns:ScaleModelAttrGroup"/>
+                <xsd:attribute name="repeat" type="xsd:boolean" use="optional" default="false"/>
+                <xsd:attribute name="model" type="xsd:IDREF" use="optional"/>
+                <xsd:attributeGroup ref="tns:PlacementOptAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="InterpolatedModelType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:sequence>
+                    <xsd:element name="keyframes">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="keyframe" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="values">
+                                                <xsd:simpleType>
+                                                    <xsd:list itemType="xsd:int"/>
+                                                </xsd:simpleType>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                        <xsd:attributeGroup ref="tns:FrameAttrGroup"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="end-commands" type="tns:CommandListType" minOccurs="0"/>
+                </xsd:sequence>
+                <xsd:attributeGroup ref="tns:RepeatFrameAttrGroup"/>
+                <xsd:attributeGroup ref="tns:LoopCountAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="FeatureSetType">
+        <xsd:group ref="tns:PartListGroup"/>
+        <xsd:attribute name="id" type="xsd:string" use="required"/>
+    </xsd:complexType>
+    <xsd:complexType name="MenuAssemblyType">
+        <xsd:annotation>
+            <xsd:documentation>Simpler way to create menus with GRIN.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:sequence>
+                    <xsd:element name="template">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="item" type="tns:FeatureSetType" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="parts">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="part" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="replacement" type="tns:FeatureSetType" maxOccurs="unbounded" minOccurs="0"/>
+                                        </xsd:sequence>
+                                        <xsd:attribute name="name" type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ScalingModelType">
+        <xsd:annotation>
+            <xsd:documentation>Scaling model for "scale" animation.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:sequence>
+                    <xsd:element name="keyframes">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="keyframe" maxOccurs="unbounded">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Key frame number and X, Y scale values.</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:complexType>
+                                        <xsd:attributeGroup ref="tns:PointAttrGroup"/>
+                                        <xsd:attributeGroup ref="tns:ScaleAttrGroup"/>
+                                        <xsd:attributeGroup ref="tns:FrameAttrGroup"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="end-commands" type="tns:CommandListType" minOccurs="0"/>
+                </xsd:sequence>
+                <xsd:attributeGroup ref="tns:LoopCountAttrGroup"/>
+                <xsd:attributeGroup ref="tns:RepeatFrameAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="SetTargetType">
+        <xsd:annotation>
+            <xsd:documentation>This feature causes its child use a different target in its RenderContext.
+This allows groups of features that are together on the screen
+to put themselves in a different damage rectangle than unrelated
+features elsewhere on the screen, thus further minimizing the drawing
+area per frame.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:ModifierType">
+                <xsd:attribute name="target" type="xsd:string" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="SrcOverType">
+        <xsd:annotation>
+            <xsd:documentation>This feature causes its child to be painted 
+in SRC_OVER mode, that is, with graphic-to-graphics 
+alpha blending.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:ModifierType"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="TextType">
+        <xsd:annotation>
+            <xsd:documentation>Renders single or multiple line text.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:all>
+                    <xsd:element name="value" type="xsd:string"/>
+                </xsd:all>
+                <xsd:attribute name="vspace" type="xsd:int" use="optional" default="0">
+                    <xsd:annotation>
+                        <xsd:documentation>Vertical space in pixels between successive lines.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="background" type="tns:ColorType" use="optional"/>
+                <xsd:attributeGroup ref="tns:LoopCountAttrGroup"/>
+                <xsd:attributeGroup ref="tns:XAlignAttrGroup"/>
+                <xsd:attribute name="y-align" type="tns:TextYAlignmentType" default="top" use="optional">
+                    <xsd:annotation>
+                        <xsd:documentation>Text alignment in Y direction (one of "top", "baseline" or "bottom").</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="font" type="xsd:string" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation>Font name - default is title font.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="size" type="xsd:int" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation>Font size in points.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="style" type="tns:FontStyleType" use="required"/>
+                <xsd:attribute name="colors">
+                    <xsd:simpleType>
+                        <xsd:restriction>
+                            <xsd:simpleType>
+                                <xsd:list itemType="tns:ColorType"/>
+                            </xsd:simpleType>
+                            <xsd:minLength value="1"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+                <xsd:attributeGroup ref="tns:PointAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="TimerType">
+        <xsd:annotation>
+            <xsd:documentation>Times node triggers after number of frames specified and executes commands on 
+timer expiry.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:sequence>
+                    <xsd:element name="end-commands" type="tns:CommandListType"/>
+                </xsd:sequence>
+                <xsd:attribute name="repeat" use="optional" default="false" type="xsd:boolean">
+                    <xsd:annotation>
+                        <xsd:documentation>Tells whether the timer should restart after expiry or not.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="num-frames" type="xsd:int" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation>Number of frames to count after which the timer expires.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="TranslatorType">
+        <xsd:annotation>
+            <xsd:documentation>A Translator feature adds movement taken from
+a translator model to the specified feature.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:ModifierType">
+                <xsd:attribute name="model" type="xsd:IDREF" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation>Reference to translator model associated with this
+translator feature.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="TranslatorModelType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:FeatureType">
+                <xsd:sequence>
+                    <xsd:element name="keyframes">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="keyframe" maxOccurs="unbounded">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Key frame number and X, Y values.</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:complexType>
+                                        <xsd:attributeGroup ref="tns:PointAttrGroup"/>
+                                        <xsd:attributeGroup ref="tns:FrameAttrGroup"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="end-commands" type="tns:CommandListType" minOccurs="0"/>
+                </xsd:sequence>
+                <xsd:attributeGroup ref="tns:RepeatFrameAttrGroup"/>
+                <xsd:attributeGroup ref="tns:LoopCountAttrGroup"/>
+                <xsd:attribute name="relative" type="xsd:boolean" default="true" use="optional"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <!-- command types -->
+    <xsd:complexType name="CommandType">
+        <xsd:annotation>
+            <xsd:documentation>Abstract super type for all GRIN command types.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:attributeGroup ref="tns:DescAttrGroup"/>
+        <xsd:attributeGroup ref="tns:IDAttrGroup"/>
+    </xsd:complexType>
+    <xsd:complexType name="ActivatePartCommandType">
+        <xsd:annotation>
+            <xsd:documentation>This command activates specified part in the
+specified assembly.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:CommandType">
+                <xsd:attribute name="assembly" type="xsd:IDREF" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation>Reference to the assembly whose part is activated by this
+command.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="part-name" type="xsd:string" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation>Name of the part feature that is activated.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ActivateSegmentCommandType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:CommandType">
+                <xsd:attribute name="segment" type="xsd:IDREF" use="optional">
+                    <xsd:annotation>
+                        <xsd:documentation>Command to make a new segment be the active one within a show.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="pop" type="xsd:boolean" use="optional" default="false"/>
+                <xsd:attribute name="push" type="xsd:boolean" default="false" use="optional"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="SegmentDoneCommandType">
+        <xsd:annotation>
+            <xsd:documentation>Command to indicate that the current segment is done.  This causes
+the segement to execute the commands from its next clause, which
+will typically contain a command to move to a different segment.
+This is useful for things like reacting when a set of assets finishes
+loading.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:CommandType"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ResetFeatureCommandType">
+        <xsd:annotation>
+            <xsd:documentation>A GRIN command to reset a feature to the state it is in when activated.
+Grouping features, like Group and Assembly, reset their children
+as appropriate (e.g. an Assembly resets its f sub-feature).
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:CommandType">
+                <xsd:attribute name="feature" type="xsd:IDREF" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation>Reference to the feature that will be reset by this command.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="SetVisualRCStateCommandType">
+        <xsd:annotation>
+            <xsd:documentation>This command is used to set the state of a visual RC handler.  It is
+useful when going into a segment that contains such a handler, to
+put things into a known state.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:CommandType">
+                <xsd:attribute name="rc-handler" type="xsd:IDREF" use="required"/>
+                <xsd:attribute name="run-commands" type="xsd:boolean" use="optional" default="false"/>
+                <xsd:attribute name="state" type="xsd:string" use="optional"/>
+                <xsd:attribute name="activate" type="xsd:boolean" use="optional" default="false"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ExtensionCommandType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:CommandType">
+                <xsd:sequence minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>Zero or more parameters for this extension command.</xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:element name="param" type="tns:ParamType" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attributeGroup ref="tns:ClassAttrGroup"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ScriptCommandType">
+        <xsd:annotation>
+            <xsd:documentation>Command expressed in embedded script.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:CommandType">
+                <xsd:sequence>
+                    <xsd:element name="script" type="tns:ScriptType" minOccurs="1" maxOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="CommandListType">
+        <xsd:annotation>
+            <xsd:documentation>A list of GRIN commands.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice minOccurs="1" maxOccurs="unbounded">
+            <xsd:annotation>
+                <xsd:appinfo>
+                    <jxb:property name="commands"/>
+                </xsd:appinfo>
+            </xsd:annotation>
+            <xsd:element name="activate-segment" type="tns:ActivateSegmentCommandType"/>
+            <xsd:element name="activate-part" type="tns:ActivatePartCommandType"/>
+            <xsd:element name="segment-done" type="tns:SegmentDoneCommandType"/>
+            <xsd:element name="reset-feature" type="tns:ResetFeatureCommandType"/>
+            <xsd:element name="set-visual-rc" type="tns:SetVisualRCStateCommandType"/>
+            <xsd:element name="ext-command" type="tns:ExtensionCommandType"/>
+            <xsd:element name="script-command" type="tns:ScriptCommandType"/>
+        </xsd:choice>
+    </xsd:complexType>
+    
+    <!-- RC Handler types -->
+    <xsd:complexType name="RCHandlerType">
+        <xsd:annotation>
+            <xsd:documentation>Super type for GRIN RCHandler types.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:NodeType"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="CommandRCHandlerType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:RCHandlerType">
+                <xsd:sequence>
+                    <xsd:element name="execute" type="tns:CommandListType"/>
+                </xsd:sequence>
+                <xsd:attribute name="keys">
+                    <xsd:simpleType>
+                        <xsd:restriction>
+                            <xsd:simpleType>
+                                <xsd:list itemType="tns:RCKeyEventType"/>
+                            </xsd:simpleType>
+                            <xsd:minLength value="1"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="VisualRCHandlerCellType"/>
+    <xsd:complexType name="NullCellType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:VisualRCHandlerCellType"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ActivateCellType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:VisualRCHandlerCellType"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="WallCellType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:VisualRCHandlerCellType"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="LocationRefCellType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:VisualRCHandlerCellType">
+                <xsd:attribute name="x" type="xsd:int" use="required"/>
+                <xsd:attribute name="y" type="xsd:int" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="StateRefCellType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:VisualRCHandlerCellType">
+                <xsd:attribute name="state" type="xsd:string" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="StateCellType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:VisualRCHandlerCellType">
+                <xsd:sequence>
+                    <xsd:element name="select-commands" type="tns:CommandListType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Commands to execute when this state is selected.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="activate-commands" type="tns:CommandListType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Commands to execute when this state is activated.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mouse-rect" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:attributeGroup ref="tns:RectAttrGroup"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+                <!-- RC Overrides -->
+                <xsd:attribute name="up" type="xsd:string" use="optional"/>
+                <xsd:attribute name="down" type="xsd:string" use="optional"/>
+                <xsd:attribute name="left" type="xsd:string" use="optional"/>
+                <xsd:attribute name="right" type="xsd:string" use="optional"/>
+                <xsd:attribute name="id" type="xsd:string" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation>Unique id for this state.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="select" type="xsd:string" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation>Name of the assembly part selected when this state is entered.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="activate" type="xsd:string" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation>Name of the assembly part activated when this state is activated.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="VisualRCHandlerType">
+        <xsd:complexContent>
+            <xsd:extension base="tns:RCHandlerType">
+                <xsd:sequence>
+                    <xsd:element name="grid">
+                        <xsd:annotation>
+                            <xsd:documentation>Visual grid definition to map states to up, down,
+right, left arrow f and mouse rects.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="row" minOccurs="1" maxOccurs="unbounded">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Represents one row in visual grid.</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:complexType>
+                                        <xsd:choice minOccurs="1" maxOccurs="unbounded">
+                                            <xsd:annotation>
+                                                <xsd:appinfo>
+                                                    <jxb:property name="cells"/>
+                                                </xsd:appinfo>
+                                            </xsd:annotation>
+                                            <xsd:element name="activate" type="tns:ActivateCellType"/>
+                                            <xsd:element name="null" type="tns:NullCellType"/>
+                                            <xsd:element name="wall" type="tns:WallCellType"/>
+                                            <xsd:element name="at" type="tns:LocationRefCellType"/>
+                                            <xsd:element name="ref" type="tns:StateRefCellType"/>
+                                            <xsd:element name="state" type="tns:StateCellType"/>
+                                        </xsd:choice>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="timeout" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:complexContent>
+                                <xsd:extension base="tns:CommandListType">
+                                    <xsd:attribute name="frames" type="xsd:int" use="required"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+                <xsd:attribute name="assembly" type="xsd:IDREF" use="optional">
+                    <xsd:annotation>
+                        <xsd:documentation>Reference to the assembly this visual RC handler uses.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="start-selected" type="xsd:boolean" use="optional"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="RCHandlerListType">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+                <xsd:appinfo>
+                    <jxb:property name="rcHandler"/>
+                </xsd:appinfo>
+            </xsd:annotation>
+            <xsd:element name="key-pressed" type="tns:CommandRCHandlerType"/>
+            <xsd:element name="visual" type="tns:VisualRCHandlerType"/>
+        </xsd:choice>
+    </xsd:complexType>
+   
+    <!-- segment type -->
+    <xsd:complexType name="SegmentType">
+        <xsd:annotation>
+            <xsd:documentation>A segment within a show.  A show is composed of segments, and at all
+times exactly one segment is active.  When a segment is active, its
+features are showing, and its remote control handlers receive events.
+When a new segment is activated, any features that are active in both
+segments are not re-initialized, so that animations will just continue,
+for example.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="tns:NodeType">
+                <xsd:sequence>
+                    <xsd:element name="active" type="tns:FeatureRefListType" minOccurs="0" maxOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>References to features that are active in this segment.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="setup" type="tns:FeatureRefListType" minOccurs="0" maxOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>References to features that are setup in this segment.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="rc-handlers" type="tns:RCHandlerRefListType" minOccurs="0" maxOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>References to RC handlers active in this segment.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:choice minOccurs="0" maxOccurs="1">
+                        <xsd:element name="next" type="tns:CommandListType">
+                            <xsd:annotation>
+                                <xsd:documentation>Commands to be executed when this segment is done.</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="setup-done" type="tns:CommandListType">
+                            <xsd:annotation>
+                                <xsd:documentation>Commands to be executed when this segment finishes setup.</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:choice>
+                    <xsd:element name="on-entry" minOccurs="0" maxOccurs="1" type="tns:CommandListType">
+                        <xsd:annotation>
+                            <xsd:documentation>Commands to be executed when this segment is activated.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+        
+    <!-- ShowType -->
+    <xsd:complexType name="ShowType">
+        <xsd:annotation>
+            <xsd:documentation>Represents a show.  A show is the top-level node in an enhancement.
+It is composed of a number of segments.  A show progresses by moving
+through segments; a show has exactly one active segment while it is
+running.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="commands" minOccurs="0" type="tns:CommandListType"/>
+            <xsd:element name="sticky-images" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="item" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="script" type="tns:ScriptType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="features" type="tns:FeatureListType" maxOccurs="1" minOccurs="0"/>
+            <xsd:element name="rc-handlers" type="tns:RCHandlerListType" minOccurs="0"/>
+            <xsd:element name="segments" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="segment" type="tns:SegmentType" minOccurs="1" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="draw-targets" use="optional">
+            <xsd:simpleType>
+                <xsd:restriction>
+                    <xsd:simpleType>
+                        <xsd:list itemType="xsd:string"/>
+                    </xsd:simpleType>
+                    <xsd:minLength value="1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="segment-stack-depth" type="xsd:int" use="optional" default="0"/>
+        <xsd:attributeGroup ref="tns:DescAttrGroup"/>
+    </xsd:complexType>
+        
+    <!-- root element -->
+    <xsd:element name="show" type="tns:ShowType"/>
+</xsd:schema>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+     This is an XML schema for FontImageGenerator associated with 
+     GRIN's FontStrip extension feature.
+     This document was generated and edited using NetBeans 6.1 XML Schema editor.
+-->
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="inputData" type="inputData"/>
+
+  <xs:complexType name="inputData">
+    <xs:sequence>
+      <xs:element name="fontDescription" type="fontDescription" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="fontImageFile" type="fontImageFile" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="fontDescription">
+    <xs:sequence>
+      <xs:element name="backgroundColorValue" type="xs:string" minOccurs="0">
+        <xs:annotation>
+            <xs:documentation>
+               Background color to use for the designImage, in hex format.
+            </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="boundingRectColorValue" type="xs:string" minOccurs="0">
+        <xs:annotation>
+            <xs:documentation>
+               Color for drawing each character's bounding rectangle for the designImage, in hex format.  This color is replaced with transparency for the final image.
+            </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="pixelRectColorValue" type="xs:string" minOccurs="0"/>
+        <xs:annotation>
+            <xs:documentation>
+               Color for drawing each character's pixel rectangle for the designImage, in hex format.  This color is replaced with transparency for the final image.
+            </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="charactorColorValue" type="xs:string" minOccurs="0">
+        <xs:annotation>
+            <xs:documentation>
+               Color for drawing each character for the designImage, in hex format.  
+            </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="fontFileName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+            <xs:documentation>
+               Font file name, in .ttf or .otf, to load and use.  If "fontFileName" element is present, than value specified in "physicalName" element will be ignored.
+            </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="fontSize" type="xs:int">
+        <xs:annotation>
+            <xs:documentation>
+                Size of the font to draw.
+            </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="margin" type="xs:int>
+        <xs:annotation>
+            <xs:documentation>
+               The number of pixels to leave around each character in the designImage.  
+            </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="physicalName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+            <xs:documentation>
+               Font name that the jdk can use to look for the font.  If font file is not specified in the "fontFileName" element, then the tool tries to load sysystem font denoted by this element.
+            </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>
+               Name of this FontDescription.
+            </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="fontImageFile">
+    <xs:sequence>
+      <xs:element name="charList" type="xs:string" minOccurs="0">
+      <xs:element name="designImage" type="xs:string" minOccurs="0">
+      <xs:element name="finalImage" type="xs:string" minOccurs="0">
+      <xs:element name="fontName" type="xs:string" minOccurs="0">
+      <xs:element name="maxImageHeight" type="xs:int">
+      <xs:element name="maxImageWidth" type="xs:int">
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

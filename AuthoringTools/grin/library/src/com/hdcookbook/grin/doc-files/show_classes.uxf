@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><umlet_diagram><element><type>com.umlet.element.base.Class</type><coordinates><x>20</x><y>50</y><w>310</w><h>70</h></coordinates><panel_attributes>/Director/
+--
+ -currentChapter : ChapterManager
+--
+/+getExtensionsBuilder() : ExtensionsBuilder/</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>30</x><y>180</y><w>280</w><h>180</h></coordinates><panel_attributes>Show
+--
+ -currFrame : integer
+--
++initialize(Component)
++destroy()
++getSegment(name: String) : Segment
++activateSegement(Segment)
++compile(String) : Command
++runCommand(Command)
++paintFrame(Graphics2D g)
++advanceToFrame(int)</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>430</x><y>220</y><w>180</w><h>70</h></coordinates><panel_attributes>Segment
+--
+ -name : String
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>150</x><y>340</y><w>40</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..n</panel_attributes><additional_attributes>20;20;20;90</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>280</x><y>270</y><w>214</w><h>210</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n
+&lt;active</panel_attributes><additional_attributes>20;190;170;190;170;20</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>280</x><y>270</y><w>263</w><h>240</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n
+&lt;setup</panel_attributes><additional_attributes>20;220;220;220;220;20</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>510</x><y>270</y><w>132</w><h>337</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n
+&lt;when
+done
+</panel_attributes><additional_attributes>20;300;90;300;90;20</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>290</x><y>230</y><w>160</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..n</panel_attributes><additional_attributes>20;20;140;20</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>40</x><y>430</y><w>260</w><h>70</h></coordinates><panel_attributes>/Feature/
+--
+ 
+--
+#done()</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>120</x><y>100</y><w>70</w><h>100</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+r1=controls</panel_attributes><additional_attributes>20;80;50;20</additional_attributes></element><element><type>com.umlet.element.base.Note</type><coordinates><x>20</x><y>590</y><w>230</w><h>80</h></coordinates><panel_attributes>Only some features, like
+ImageSequence and Sound
+reach a "done" state that can
+trigger commands.
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>370</x><y>540</y><w>160</w><h>70</h></coordinates><panel_attributes>/Command/
+--
+ 
+--
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>108</x><y>480</y><w>282</w><h>100</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n
+when done&gt;</panel_attributes><additional_attributes>262;80;62;80;62;20</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>90</x><y>540</y><w>100</w><h>70</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>80;20;20;50</additional_attributes></element></umlet_diagram>

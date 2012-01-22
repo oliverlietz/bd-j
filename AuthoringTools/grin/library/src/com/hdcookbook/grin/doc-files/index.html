@@ -1,0 +1,1090 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+
+<style type="text/css">
+  P.pagebreak {page-break-before: always}
+</style>
+<h2><center>GRIN - an extensible Java Scene Graph for TV</center></h2>
+<p><center>
+<img width="271" height="200" src="grin_bear.jpg">
+</center></p>
+<h2>Introduction and Scope</h2>
+<p>
+<a href="../package-summary.html">This package</a> and its subpackages 
+contain "grin".  The name stands
+for "Graphical Interactivity," and it's also sort of a play on SMIL.
+The connection between GRIN and SMIL is very loose.
+GRIN does deal with some of the same time-based and
+media-centric concerns that are generally associated with SMIL,
+but GRIN is really very different.  
+GRIN was written to support applications that
+are a fusion of procedural Java code and declarative elements - it doesn't
+try to be an all-encompassing declarative environment, complete with
+scripting.
+</p>
+<p>
+An overview of GRIN is available
+<a href="../../../../../../../grin.html">here</a>, or online at
+<a href="https://hdcookbook.dev.java.net/grin.html">
+https://hdcookbook.dev.java.net/grin.html</a>.
+</p>
+<p>
+GRIN provides:
+</p>
+<ul>
+    <li>Some declarative glue to help structure an application
+    <li>A synchronization model so you don't have to deal too much 
+        with multithreading
+    <li>A consistent drawing/animation model
+    <li>Translation and handling of remote control events
+    <li>Some simple presentation elements.  
+</ul>
+<p>
+GRIN is designed to be 
+extended with other presentation elements, including programmatic 
+elements, which can be arbitrarily complex - even up to a small video game.  
+GRIN really doesn't try
+to address the overall control of an application; that's left for
+the developer to do in code.  The framework does provide a simple
+state machine and timeline that might help structure application
+control, but use of this is entirely optional.  It's based on the
+Director construct, but a Show can be used without ever
+touching any of that.
+</p><p>
+GRIN is intended to be used in highly interactive enhancements for
+TV, on GEM platforms like Blu-Ray, MHP and OCAP.  It's mostly meant
+for enhancements that are tied to video, though it could certainly
+be used when video is not present.  It might be applicable to non-TV 
+platforms, too.
+</p>
+
+<h2>License and Credits</h2>
+<p>
+This work is covered by the BSD license.
+A copy can be found at 
+<a href="https://hdcookbook.dev.java.net/misc/license.html">https://hdcookbook.dev.java.net/misc/license.html</a>
+or in the file 
+LICENSE.html
+at the top source code directory (named "src").
+</p><p>
+Additionally, please consider the request in the file
+<a href="credits.html">credits.html</a>.
+</p>
+<h2>Application Structure</h2>
+<p>
+An application can be structured like this:
+</p>
+<pre>
+       Component c = ...  the right kind of component
+       Show s = new Show();
+         ...  initialize s
+       AnimationClient[] clients = new AnimationClient[] { show };
+       engine = new DirectDrawEngine();
+       engine.setFps(24000);
+       engine.initClients(clients);
+       engine.initialize(this);
+       engine.start();
+
+</pre>
+<p>
+A more complete example can be found in the HelloGrinWorld xlet
+in this repository, and setup of the animation framework is described
+in the <a href="../animator/doc-files/index.html">Animation Framework
+Usage</a> document.
+</p>
+<p>
+If an application gets an expose event, there's a 
+<code>repaintFrame()</code> method defined on <code>AnimationEngine</code>
+that will do the right thing.  When a remote control or keyboard event
+is received that the <code>Show</code> should consider processing,
+it can call <code>s.handleRCEvent()</code>.  Image loading an other 
+initialization happen automatically in a background thread.
+</p>
+<h2>Show</h2>
+<p>
+The center of the GRIN framework is called a "Show."  The central function
+of a show is to display a "Feature".  A feature is something that presents
+something sensory to the user, like an image, some text, or a sound.
+A set of features that are presented together are collected into a "Segment."
+A show can:
+</p>
+<ul>
+    <li>Move from any segment to any other segment in a thread-safe
+        manner, without worrying about synchronization.
+    <li>Manage initialization, e.g. loading large in-memory objects
+        like images and sounds.
+    <li>Automatically move to another segment when initialization or an
+        animation within the segment finishes.
+    <li>Assemble visual elements using a simple text file that
+        is parsed when the show is created (usually shortly after
+	the application starts).
+</ul>
+<p>
+A show doesn't provide any real control logic or application state.  That's
+left to the Director.  Director is just an interface declaration; it has
+to be implemented by an application implementing this framework.  Director
+is an interface that needs to be implemented by the xlet; it's the show's
+"handle" back to the xlet, and can be used by commands within the show
+to refer back to the containing xlet, e.g. to call methods.
+</p><p>
+A UML class diagram illustrating the some aspects of the design is given below: 
+</p><p>
+<center><img src="show_classes.jpg"></center>
+</p><p class="pagebreak">
+A show can be assembled from a simple show file.  This file is parsed and
+turned into an efficient binary representation that can be quickly loaded
+by an xlet.  This text file format is adequate, especially for hand-written
+samples, but it's not really designed to be incorporated into a  professional
+workflow.  A functional equivalent using XML has been developed by
+<a href="http://www.javelindvd.com/">Javelin</a>, and we plan to use
+the FX/Script language to express a show file soon.
+</p><p class="pagebreak">
+Here's BNF describing the syntax of a show file:
+</p>
+<pre>
+    show ::= "show" setting*  [ exports ] [ java_generated_class ]
+    	     ( segment | feature | rc_handler | named_command 
+		   | mosaic_hint | show_top )* 
+    	     "end_show"
+
+    setting ::=    segment_stack_depth_setting 
+                 | draw_targets_setting
+		 | sticky_images_setting
+		 | binary_grin_file_setting 
+		 | grinview_background_setting
+
+    segment_stack_depth_setting := "setting" "segment_stack_depth" integer ";"
+
+    draw_targets_setting ::= "setting" "draw_targets" "{" string* "}" ";"
+    	# If this isn't set, it defaults to { T:Default }
+
+    sticky_images_setting ::= "setting" "sticky_images" "{" string* "}" ";"
+	# This sets the list of file names for the images that are to be
+	# "sticky".  Sticky images aren't unloaded, even when no feature
+	# that uses them is in the the setup or active clause of the
+	# active segment.  Thus, the first time a sticky image is
+	# prepared it is loaded normally, but subsequent prepares happen
+	# instantly.
+
+    binary_grin_file_setting ::= "setting" "binary_grin_file" string ";"
+	# Sets the file name of the binary grin file that's produced by
+	# the compiler.  This can be used to make the extension be ".grn"
+	# instead of ".grin".
+
+    grinview_background_setting 
+	::= "setting" "grinview_background" "{" grinview_background* "}" ";"
+
+    grinview_background ::= string
+	# An image file name.  
+        
+    show_top ::= "show_top" string ;
+        # Sets the name of show's top node for rendering.
+        # The string should correspond to one of the feature names
+        # in this show.  When the show_top element is present, then
+        # a showtop_group feature should also be defined in the show.
+        # This can be used to add a special effect to the show tree.
+
+    exports ::= "exports" "segments" name_list
+    			"features" name_list
+			"handlers" name_list
+			[ "named_commands" name_list ]
+			";"
+	# If this isn't set, then everything is public
+	# The names in name_list may contain wildcards like
+	# "*", "?", "[wxz]" and "[1-5]".
+         
+    java_generated_class ::= "java_generated_class" name "[[" java_source "]]"
+        # This contains the full text of the class declaration.  The class
+        # must extend com.hdcookbook.grin.commands.ShowCommands, and must
+        # contain the string JAVA_COMMAND_BODY.  JAVA_COMMAND_BODY gets
+        # replaced with the automatically-generated method execute() and
+        # the methods grinCommandNN() for each command.
+    
+    java_source ::= string*
+        # May contain the special sequences:
+        #   XLET_ONLY_[[ java_source ]]
+        #   GRINVIEW_ONLY_[[ java_source ]]
+        #   GRIN_COMMAND_[[ command ]]
+	# 
+	# See the comments at the end of the main class documentation of
+	# com.hdcookbook.grin.GrinXHelper for comments on how these are
+	# used, and for the Abstract Director pattern that can also be used
+	# to make xlets that work under GrinView.
+
+    segment ::= "segment" name ["active" feature_list] ["setup" feature_list]
+    			[ "rc_handlers" name_list ]
+			[ "on_entry" commands ]
+			[ ( "next" | "setup_done")  commands]  ";"
+
+
+    feature_list ::= name_list
+
+    feature ::= fixed_image | image_sequence | box | assembly | menu_assembly
+    		  | sound | text | translator_model | translator | group 
+		  | timer | clipped | src_over | fade | scaling_model
+		  | guarantee_fill | set_target | showtop_group
+		  | extension_feature | extension_modifier
+
+    fixed_image ::= "feature" "fixed_image" name image_placement file_name 
+    		        [ "scaling_model" name ] ";"
+
+    image_sequence ::= "feature" "image_sequence" name image_seq_placement
+		         file_name "{" name_or_continuation * "}" 
+			 	   extension [ "repeat" ]
+    		       [ "scaling_model" name ]
+		       ( "model" feature_name | image_seq_end ) ";"
+	    # "linked_to" is accepted for "model", for backwards compatibility.
+	    # In both cases, the model, if specified,  must be a different 
+	    # image_sequence with the same number of images in the sequence.
+
+    image_seq_placement ::= image_placement | "{" image_placement* "}"
+    	    # if there is a list of image placements in a image_sequence,
+	    # it must have the same length as the images array.
+
+    image_seq_end ::= [ loop_count ] [ "end_commands" commands ]
+
+    image_placement ::= x y | "(" im_x im_y [ "scale" x y "mills" ] ")"
+	    # A scale factor or -1000 in either or both directions can be
+	    # used to filp the image.  A scale factor other than 1000 
+	    # or -1000 may be slow at runtime on some players.
+
+    im_x ::= ( "left" | "middle" | "right" ) x
+    im_y ::= ( "top" | "middle" | "bottom" ) y
+
+    box ::= "feature" "box" name rectangle
+    		[ "outline" width color_value ]
+		[ "fill" color_value ]
+	        [ "scaling_model" name ] ";"
+
+    name_or_continuation ::= "+" | "-" | name	# "+" means "repeat last frame",
+     						# "-" means "empty"
+
+    assembly ::= "feature" "assembly" name "{" assembly_part * "}" ";"
+
+    assembly_part ::= name sub_feature
+
+    menu_assembly ::= "feature" "menu_assembly" name
+    				"template" "{" menu_assembly_features * "}"
+				"parts" "{" menu_assembly_part "}" ";"
+
+    menu_assembly_features ::= id "{" sub_feature * "}"
+
+    menu_assembly_part ::= name "{" menu_assembly_features * "}"
+
+	# For a menu_assembly, the template features provide a "base" set 
+	# of features included in each part (each branch).  Then,  each 
+	# branch defines an assembly part name, and the specifies what 
+	# is to be replaced out of that template for the given branch.
+	#
+	# A menu_assembly is converted into a normal assembly with a bunch
+	# of automatically-generated anonymous groups as its parts.
+
+    text ::= "feature" "text" name text_pos text_strings font_spec color_spec 
+    		[ "background" color_entry ] ";"
+
+    text_pos ::= [ "left" | "middle" | "right" ] x
+    		 [ "top" | "baseline" | "bottom" ] y
+
+    text_strings ::= string | "{" string * "}" [ "vspace" integer ]
+
+    font_spec ::= font_name font_style font_size 
+
+    font_style ::= "plain" | "bold" | "italic" | "bold-italic"
+
+    font_size ::= int		# Size in points (which is the same as pixels)
+
+    color_spec ::= "{" color_entry * "}"  [ loop_count ]
+
+    color_entry ::= "+" | color_value
+
+    loop_count ::= "loop_count" ( "infinite" | integer )
+
+    group ::= "feature" "group" name "{" sub_feature * "}" ";"
+
+    timer ::= "feature" "timer" name num_frames [ "repeat" ] commands ";"
+
+    clipped ::= "feature" "clipped" name sub_feature rectangle ";"
+
+    src_over ::= "feature" "src_over" name sub_feature ";"
+
+    fade ::= "feature" "fade" name sub_feature
+    		[ "src_over" ] "{" ( frame_number alpha_int tween_type ) * "}" 
+		[ "repeat" frame_number ] 
+		[ loop_count ]
+		[ "end_commands" commands ] ";"
+
+    scaling_model ::= "feature" "scaling_model" name 
+		"{" scale_key_frame* "}"
+		[ "repeat" frame_number ] 
+		[ loop_count ]
+		[ "end_commands" commands ] ";"
+	# There must be >= 1 scale_key_frame
+    
+    scale_key_frame ::=  frame_number x y x_scale y_scale [ tween_type ] "mills"
+    	# The first frame must be zero
+	# The scale factor is in mills (1/1000); a factor of 1000 is 1:1 scale
+	# The x,y values are the anchor point for the scaling operation.  
+	#     Scaled objects get bigger and smaller, centered at this anchor
+	#     point.  You can also think of it as the "origin for scaling."
+
+    key_frame ::= frame_number x y interpolation_type
+
+    guarantee_fill ::= "feature" "guarantee_fill" name sub_feature
+    				rectangle 	    # guaranteed area
+				{ rectangle * } ";" # areas to be cleared
+
+    set_target ::= "feature" "set_target" name sub_feature target_name ";"
+
+    target_name ::= name
+
+    translator_model ::= "feature" "translator_model" name 
+			    "{" trans_key_frame * "}" 
+			    [ "repeat" frame_number ] 
+			    [ loop_count ]
+			    [ "end_commands" commands ] ";"
+	# "translator_model" can be replaced by the old name "translation"
+	#
+	# If you want to set the x,y position programmatically, just have
+	# one key frame.
+        # Use "offscreen" keyword for x,y position to place a feature 
+        # off the screen without causing the animation engine to repaint extra
+        # region.  Use Integer.MIN_VALUE for x,y position to off-screen 
+        # programatically. 
+
+    trans_key_frame ::= frame_number x y trans_tween
+
+    trans_tween ::=    "linear-relative"  [ "max-error" integer ]
+    		     | tween_type
+    	# linear and linear-relative are special for translations.  You
+	# should always use linear-relative; that's linear interpolation
+	# using relative coordinates for the child nodes (that is, the
+	# interpolation specifies delta-x and delta-y for each child).
+	#
+	# "linear" is deprecated, and is kept for backwards compatibility
+	# with old show files.  In "linear", the coordinates are absolute
+	# coordinates for the upper-left hand corner of the children.  
+	# Trying to do this this was a bad idea - it's not always possible
+	# to determine the upper-left hand corner of the children.  When it's
+	# not, the compiler will report an error that suggests switching
+	# to linear-relative.
+
+    tween_type ::=
+              "linear"  [ "max-error" integer ]
+	    | "start"
+	    | "ease-in-quad" [ "max-error" integer ]
+	    | "ease-out-quad" [ "max-error" integer ]
+	    | "ease-in-out-quad" [ "max-error" integer ]
+	    | "ease-in-cubic" [ "max-error" integer ]
+	    | "ease-out-cubic" [ "max-error" integer ]
+	    | "ease-in-out-cubic" [ "max-error" integer ]
+	    | "ease-in-quart" [ "max-error" integer ]
+	    | "ease-out-quart" [ "max-error" integer ]
+	    | "ease-in-out-quart" [ "max-error" integer ]
+	    | "ease-in-quint" [ "max-error" integer ]
+	    | "ease-out-quint" [ "max-error" integer ]
+	    | "ease-in-out-quint" [ "max-error" integer ]
+	    | "ease-in-sine" [ "max-error" integer ]
+	    | "ease-out-sine" [ "max-error" integer ]
+	    | "ease-in-out-sine" [ "max-error" integer ]
+	    | "ease-in-expo" [ "max-error" integer ]
+	    | "ease-out-expo" [ "max-error" integer ]
+	    | "ease-in-out-expo" [ "max-error" integer ]
+	    | "ease-in-circ" [ "max-error" integer ]
+	    | "ease-out-circ" [ "max-error" integer ]
+	    | "ease-in-out-circ" [ "max-error" integer ]
+	    | "ease-in-elastic" [ "amplitude" double ] [ "period" double ] 
+	    			[ "max-error" integer ]
+	    | "ease-out-elastic" [ "amplitude" double ] [ "period" double ] 
+	    			 [ "max-error" integer ]
+	    | "ease-in-out-elastic" [ "amplitude" double ] [ "period" double ] 
+	    			    [ "max-error" integer ]
+	    | "ease-in-back" [ "overshoot" double ] [ "max-error" integer ]
+	    | "ease-out-back" [ "overshoot" double ] [ "max-error" integer ]
+	    | "ease-in-out-back" [ "overshoot" double ] [ "max-error" integer ]
+	    | "ease-in-bounce" [ "max-error" integer ]
+	    | "ease-out-bounce" [ "max-error" integer ]
+	    | "ease-in-out-bounce" [ "max-error" integer ]
+	    | "ease-points" "{" tween-point * "}" [ "max-error" integer ]
+        # The tween type give the algorithm used for the transition from the
+	# previous key frame to the present one.
+	#
+	# start is a synonym for linear.  It's intended to be
+	# used for the first keyframe, since the tween type for the
+	# first keyframe is meaningless.
+	#
+	# The other tweening types are described in 
+	# com.robertpenner.PennerEasing, and in his book, which you can
+	# find out about at http://robertpenner.com.
+	#
+	# max-error says how many units of error you're willing to tolerate
+	# when the compiler uses linear interpolation segments to approximate
+	# tweening.  It defaults to 0, that is, no error.  Setting a higher
+	# tolerance will result in a smaller .grin file and less runtime
+	# memory usage.  The grin compiler tells you how many key frames
+	# are added for interpolation due to tweening; if the number looks
+	# huge, consider increasing the error tolerance.
+
+    tween_point ::= "(" integer * ")"
+
+    translator ::= "feature" "translator" name translator_model_name 
+    			"{" sub_feature "}" ";"
+                        
+    showtop_group :: "feature" "showtop_group" name ";"
+        # This can be used to give a name to the group of features
+        # that represents a set of active features at runtime.
+        # When a segment in this show is activated, it's active features
+        # get slotted into this group.  See also "show_top".
+
+    extension_feature ::= "feature" "extension" namespace:type_name name 
+    			  <syntax of extension> ";"
+
+    modifier_feature ::= "feature" "modifier" namespace:type_name name 
+    				sub_feature string ";"
+
+    name_list ::= "{" name * "}"
+
+
+    commands ::= "{" command * "}"
+
+    command ::= activate_segment | activate_part | segment_done 
+    		    | deprecated_invoke_assembly_cell | set_visual_rc_state
+		    | reset_feature | sync_display | run_named_commands
+		    | other_command | java_command
+
+    activate_segment ::= "activate_segment" segment_name [ "&lt;push&gt;" ] ";"
+    			 | "activate_segment" "&lt;pop&gt;"  ";"
+
+    activate_part ::= "activate_part" assembly_name part_name ";"
+
+    segment_done ::= "segment_done" ";"
+
+    deprecated_invoke_assembly_cell 
+        ::= "invoke_assembly" ("selected_cell" | "cell" x y) handler_name ";"
+    # This has been replaced by set_visual_rc_state
+
+    set_visual_rc_state
+	 ::= "set_visual_rc" handler_name 
+	 	("state" state_name | "current")
+	        ("selected" | "activated") 
+		[ "grid_alternate" name ]
+                [ "run_commands" ] ";"
+    #
+    # grid_alternate can be used to swap in a different grid in the visual
+    # RC handler.  See the "visual_grid_alternates" part of visual_rc_handler
+    #
+
+    reset_feature ::= "reset_feature" feature_name ";"
+
+    sync_display ::= "sync_display" ";"
+
+    run_named_commands ::= "run_named_commands" name ";"
+
+    other_command ::= namespace:type_name
+    				(syntax as determined by director) ";"
+	#  The custom command shouldn't include a ";" token.  If it does,
+	#  testing with GenericMain will be more difficult.
+         
+    java_command ::= "java_command" "[[" java_source "]]"
+
+    rc_handler ::=  visual_rc_handler | command_rc_handler
+                    | deprecated_assembly_grid_handler ";"
+
+    visual_rc_handler
+	::= "rc_handler" "visual" name
+		( visual_rc_grid | visual_grid_alternates )
+	        [ "assembly" assembly_name [ "start_selected" boolean ] ]
+	        "select" action_by_state
+	        "activate" action_by_state
+	        [ "mouse" mouse_locations ]
+	        [ "timeout" integer "frames" commands ]  ";"
+	# start_selected defaults false.  If true, when the handler is
+	# activated, if the assembly is in one of the activated states, it
+	# will be taken to the corresponding selected state.
+
+    visual_rc_grid ::= "grid" visual_grid [ "rc_override" visual_overrides ]
+
+    visual_grid ::= "{" visual_grid_row * "}"
+
+    visual_grid_row ::= "{" visual_grid_entry * "}"
+
+    visual_grid_entry ::= state_name | "[" state_name "]" 
+    			  | "(" x y ")" | "<activate>"
+			  | "<wall>" | "<null>"
+	    # <activate> means "make the assembly activated"
+	    # <wall> means "if cell navigated to, stay in current state"
+	    # <null> means "it's an error if this cell can be navigated to"
+	    # The "( x y )" syntax is deprecated.  When such a cell is
+	    #   navigated to, it goes to the state that is located at
+	    #   the cell x,y (counting from 0).  The same effect can be
+	    #   achieved in a clearer way with the "[ state_name ]" syntax.
+
+    visual_grid_alternates ::= "grid_alternates" "{" visual_grid_alternate * "}"
+	    # see also the visual_grid_alternate parameter to the
+	    # set_visual_rc command.  This lets you swap in a different
+	    # grid, e.g. to disable certain buttons.  By default the first
+	    # grid is active.  The active grid can ge changed by the
+	    # set_visual_rc command, or from Java.
+
+    visual_grid_alternate ::= name visual_grid_with_override
+
+    visual_grid_with_override ::= 
+    	    "{" ( visual_grid_entry * ) [ "rc_override" visual_overrides ] "}"
+
+    visual_overrides ::= "{" visual_override * "}"
+
+    visual_override ::= "{" state_name visual_override_direction state_name "}"
+	# When in the first state, the given key will transition to the
+	# second state
+    
+    visual_override_direction ::= "up" | "down" | "left" | "right"
+
+    action_by_state ::= "{" state_and_action * "}"
+
+    state_and_action ::= state_name visual_action
+
+    visual_action ::= part_name | commands | part_name commands
+
+    mouse_locations ::= "{" ( state_name rectangle ) * "}"
+    	# It's OK to have more than one rectangle for a given state
+
+    deprecated_assembly_grid_handler 
+	::= "rc_handler" "assembly_grid" name
+	        "assembly" assembly_name
+		"select" part_name_matrix 
+		"invoke" part_name_matrix
+		[ "timeout" integer "frames" commands ] 
+		[ "when_invoked" "{" invoked_commands * "}" ] ";"
+
+    part_name_matrix ::= "{" part_name_list * "}"
+
+    invoked_commands ::= part_name commands
+
+    part_name_list ::= "{" part_name * "}"
+
+    command_rc_handler ::= "rc_handler" [ "key_pressed" | "key_released" ]
+    				name "{" rc_key * "}" 
+    				"execute" commands ";"
+	#  Note that only key_pressed is guaranteed to be available
+	#  on all devices.  OCAP and MHP don't guarantee key_released, and
+	#  BD part J.1.2 looks like it's not guaranteed in BD-J, either.
+
+    rc_key ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+               | "right" | "left" | "up" | "down" | "enter"
+	       | "red" | "green" | "yellow" | "blue" | "popup_menu"
+	       | "play" | "stop" | "still_off" | "track_next"
+	       | "track_prev" | "fast_fwd" | "rewind" | "pause"
+	       | "secondary_video_enable_disable"
+	       | "secondary_audio_enable_disable"
+	       | "pg_textst_enable_disable"
+
+    rectangle ::= "(" x y x y ")"	# upper left and lower right points
+    					# inside rectangle
+
+    color_value ::= "{" red_int green_int blue_int alpha_int "}"
+
+    mosaic_hint ::= "mosaic_hint" name width height "{" file_name * "}" ";"
+	# mosaic_hint is deprecated.  See "mosaics"
+
+    named_command ::= "named_command" name commands ";"
+
+    sub_feature ::= feature_name
+    		    | "sub_feature" feature_without_name
+
+    feature_without_name ::= ... exactly like feature, without the feature name
+
+    segment_name ::= string
+    feature_name ::= string
+    assembly_name ::= string
+    translator_model_name ::= string
+    part_name ::= string
+    state_name ::= string
+    file_name ::= string
+    font_name ::= string
+    handler_name ::= string
+    name ::= string
+    id ::= string
+    namespace:type_name ::= string containing ":"
+    red_int ::= integer		    # 0..255
+    green_int ::= integer	    # 0..255
+    blue_int ::= integer	    # 0..255
+    alpha_int ::= integer	    # 0..255, 0 is transparent, 255 is opaque
+    num_frames ::= integer
+    frame_number ::= integer
+    width ::= integer
+    x_scale ::= integer
+    y_scale ::= integer
+    x ::= integer
+    y ::= integer
+    boolean ::= "true" | "false"
+
+</pre>
+<p>
+A string can be a sequence of characters delimited by whitespace,
+or it can be enclosed in double-quotes, with backslash as an
+escape characer if you need double-quote or backslash within a
+string.  Strings may contain newlines.
+</p>
+<p>
+A show can include a <code>$include</code> directive that looks like this:
+<pre>
+
+    ...
+
+    $include some_file.txt ;
+
+</pre>
+<p>
+The string "<code>$include</code>" must not be inside quotation marks, 
+but the file name
+(like other normal strings) may be.  The included file is searched for on
+the search path used for all show assets.
+</p>
+
+<h2>Features</h2>
+<p>
+The entities actually displayed by a director are called
+"features."  The GRIN framework provides some simple features,
+for images, image sequences, assemblies of a collection of features,
+and text.  It also provides support for application-defined
+features that can be made a part of the text file describing a
+show.
+</p><p>
+<center><img src="feature_classes.jpg"></center>
+</p>
+<h2>Remote Control Handling</h2>
+<p>
+The GRIN framework can do two things with remote control
+keypresses:  It can translate them into an appication-defined
+command, or it can use them to select visual elements.  The latter
+is done with an AssemblyGridRCHandler instance.  It supports
+arrow-key navigation, plus a special case for the colored keys.
+When new elements are selected and/or activated, it can (for
+example) change the part of an assembly that's activated.  This
+can be used to build buttons, while still giving the application
+author complete control over the UI appearance.
+</p><p>
+<center><img src="rc_classes.jpg"></center>
+</p>
+<h2>Commands</h2>
+<p>
+Commands are used as a glue to bind the framework together.  Actions,
+like selecting a segment or a part of a feature assembly are done using
+a command.  Events are also sent from a Show to its director using
+commands.
+</p><p>
+When a command is executed, it is done in a thread-safe manner.  If
+a Scene isn't in a state where it's safe to execute the command,
+execution is deferred until it is safe.  One example of a time it's
+not safe to execute a command is when a segment is drawing to the screen
+(or a screen buffer); if the state of the segment changed in the middle
+of drawing, inconsistent results might be drawn.
+</p><p>
+The commands defined by GRIN are illustrated below:
+</p><p>
+<center><img src="command_classes.jpg"></center>
+</p><p>
+Commands must be "compiled", including application-defined commands.
+This really just means turning a command string into an instance of
+a subclass of Command.  It should include resolving any references in
+the command; this is faster, and it allows errors to be caught more
+easily.
+</p><p>
+The show compiler has an innovative feature to conveniently write
+commands in Java:  the <code>java_command</code>.  This lets you put a
+bit of Java source code in the show file, and have that code get triggered
+like any other GRIN command.  Behind the scenes, the GRIN show compiler
+generates a single Java class that contains all of these code snippets,
+and selection code to execute the right one.  The generated code can
+reference the method parameter <code>grinCaller</code> to get a reference
+to the Show in which the command was enqueued.
+</p>
+<h2>Synchronization</h2>
+<p>
+GRIN has a very simple synchronization model.  The most important
+external lock is the lock on the show object.  Everything that might
+need to synchronize on the show lock needs to synchronize on it first.
+</p><p>
+Any change to a show's state (or the "show model" if you prefer that
+term out of MVC theory) needs to be synchronized on the show.  Further,
+changes other than purely visual changes need to be synchronized into the
+"frame pump" loop, which is basically:
+</p>
+<pre>
+          for frame 1 to to infinity
+	      wait until it's time to display frame
+	      update model
+	      render show to screen
+	  rof
+</pre>
+<p>
+This is facilitated with a command model.  At any time, you can
+always call <code>show.runCommand(Command)</code>, from any thread.  This does
+not require the show lock; it only synchronizes on the internal lock
+used for a queue, so this is very thread-safe and simple.  When you
+call <code>runCommand()</code>, it queues the command for later execution,
+at the right point in the frame pump loop.
+The queue class it uses was even designed so that it will almost never
+need to allocate a Java heap object, so don't worry about generating
+garbage by using it.
+</p><p>
+As an example of the reliance on commands, consider the method
+used to move a show to a new segment, 
+<code>show.activateSegment(Segment)</code>.  This works by queueing
+up a command to activate the given segment when the frame pump is in
+the right state.  By the way, it doesn't allocate a new command object
+to do this - again, we're careful about generating heap traffic.
+</p>
+
+<h2>Image Mosaics</h2>
+<p>
+Image loading can take a significant part of the start-up time of
+an xlet.  With typical players, it's faster to load one big image
+rather than several small images.  Thus, it's a good idea to combine
+several images into an "image mosaic".  The GRIN scene graph can use
+an image within a mosaic anywhere an image can be used.  At runtime, you 
+can use images
+within an image mosaic even if you don't use the rest of the GRIN
+library, by just using the image classes 
+in <code>com.hdcookbook.grin.util</code>.  At compile time, you can combine
+images into one or more mosaics by making a special "mosaics" file.
+This file is compiled just like a GRIN show file.
+</p>
+<p>
+In your xlet, you might want to have more than one show file.  If you
+do this, you might want to have multiple show files pool their images
+in one set of mosaics, or you might want to have seperate sets of mosaics.
+You can do either with the show compiler <code>GrinCompiler</code>.  If
+you want a set of shows to share mosaic defintions, simply compile them
+all at the same time, by passing in the different show files on the
+command line in one compiler run.  Even if you only have one show file,
+you'll probably want to also have a mosaics file, so you can control
+the name of the generated mosaics file, and its parameters.  Just pass
+the mosaics defintion file on the command line along with the show
+files, and <code>GrinCompiler</code> will build up a set of image
+mosaics for the show(s) according to the declarations in the mosaics
+file.
+</p>
+<p>
+A mosaics file has the following syntax:
+</p>
+<pre>
+
+    mosaics ::= "mosaics" mosaic* "end_mosaics"
+
+    mosaic ::= "mosaic" file_name mosaic_part* ";"
+    	# file_name is the name of the PNG image that will contain the mosaic.
+	# If the same mosaic_part is repeated, the result is undefined.
+
+    mosaic_part ::=   max_width | max_height | max_pixels
+    		    | min_width | num_widths | take_all_images
+    		    | image_files | add_image_files | skip_image_files
+
+    max_width ::= "max_width" integer	
+    	# <= 4096 recommended, cf. 3-2 G.6
+
+    max_height ::= "max_height" integer 
+    	# <= 4096 recommended, cf. 3-2 G.6
+
+    max_pixels ::= "max_pixels" integer
+	# Total <= 5,963,776 (profile 1) or <= 8,060,928 (profile2)
+	# recommended, cf. 3-2 G.6
+
+    min_width ::= "min_width" integer
+    	# Minimum width to consider using for mosaic
+
+    num_widths ::= "num_width" integer
+    	# Number of different widths to consider when looking for 
+	# best mosaic.  See com.hdcookbook.grin.mosaic.Mosaic.
+
+    take_all_images ::= "take_all_images" boolean
+	# If set to true, this mosaic will include all images that aren't
+	# part of another mosaic.
+
+    image_files ::= "image_files" "{" file_name* "}"
+    	# A list of the image files to consider for inclusion in this
+	# mosaic.  An image file is only included if it is actually used
+	# in a show.
+
+    add_image_files ::= "add_image_files" "{" file_name* "}"
+	# A list of image files to include in the mosaic, whether or not
+	# it's actually used in a show.  Use this for images you want
+	# to include to use from your xlet, using the ManagedImage class.
+	# Each image will appear in only one mosaic, even if it's listed in
+	# the add_image_files part of multiple mosaics.
+
+    skip_image_files ::= "skip_image_files" "{" file_name* "}"
+	# A list of image files 
+
+</pre>
+<p>
+For brevity, the lower-level syntax elements of the show file are used
+in this BNF, and not repeated here.
+</p>
+<p>
+
+
+<h2>Memory Management and GC</h2>
+<p>
+As was alluded to above, the GRIN framework tries very hard to avoid
+creating unnecessary heap objects.  This should avoid the possibility
+of objectionable pauses due to GC.  As is usually the case in any
+xlet, it's a good idea to call <code>System.gc()</code> after
+initialization, because initialization code tends to generate a lot
+of garbage, and if you're going to pause for a bit, initialization is
+the time to do it.  For a show, this point comes after parsing the show
+file.
+</p>
+
+<h2>Animation Loop</h2>
+<p>
+For the animation loop GRIN relies on the 
+<a href="../animator/doc-files/index.html">Animation Framework</a>
+in <code>com.hdcookbook.grin.animator</code>.  A GRIN <code>Show</code>
+implements the <code>AnimationClient</code> interface.  Because the
+framework's <code>AnimationEngine</code> can support multiple clients
+that draw in a defined stacking order, GRIN drawing can appear above or
+below drawing down by any other Java code.
+</p>
+
+<h2>Programmatically Controlling Show Nodes</h2>
+<p>
+GRIN is a declarative scene graph, but you can also programmatically
+set certain node values.  This, in effect, uses Java code in the way
+that scripting languages are commonly used.  When you do this, it's 
+very important to observe some strict rules around threading.  In 
+the GRIN model, you're only permitted to make changes to show 
+nodes with the Show lock held, either from the body of an executing 
+command, or from within the method
+<code>Director.notifyNextFrame()</code>.
+</p><p>
+An example of changing parameters of show nodes using Java is
+in the "Playground" test (xlets/tests/functional/Playground).  See
+the show <code>main_show.txt</code> for an example of a scene graph
+that's set up to be modified from Java.  This modification is done
+in the show file itself (inside a <code>java_command</code>), and in a
+method of <code>MainDirector</code> that's invoked from that
+<code>java_command</code>.  The <code>java_command</code> is
+invoked in every frame, by simply having a repeating timer of length 1.
+</p>
+<ul>
+    <li>The x and y position of the center point used for scaling in a
+        <code>scaling_model</code>.  A <code>scaling_model</code> can
+	be attached to features of type <code>fixed_image</code>, 
+	<code>image_sequence</code> or <code>box</code>.
+    <li>The x any y scale factor of a <code>scaling_model</code>.
+    <li>The x and y offset values int a <code>translator_model</code>
+        attached to one or more <code>translator</code> features.
+    <li>The text contents of a <code>text</code> feature.
+    <li>The AlphaComposite value of a <code>fade</code> feature.
+    <li>The currently active sub-feature of an <code>assembly</code>
+        feature.  You can change this with either an <code>activate_part</code>
+	command or by calling <code>Assembly.setCurrentFeature()</code>
+	directly.
+</ul>
+<p>
+Many of the nodes that can be programmed also do linear interpolation with
+built-in ranges.  As a rule, if you want to set a value from Java, you can't
+also be trying to change it with an active interpolation.  Further, when you
+set a value from Java, it stays set to that new value throughout the execution
+of the xlet; there is no mechanism to recover the default value set in the
+show file.
+</p>
+
+<h2>Extending GRIN</h2>
+<p>
+GRIN was designed to be extended, by adding new feature types and
+new remote control handler types.  Adding a new feature does require
+that you adhere to some needed structure.  In addition to writing a
+runtime class to implement your new feature, you need to write a method
+to read instantiate a feature from the GRIN binary file, and you need
+to write a Java SE subclass of your feature that knows how to write out
+that binary file format.
+</p><p>
+The SE version of your feature can, if you wish, include compile-time
+processing.  That is, when the GRIN compiler is run to create a binary
+file, the SE subclass of your feature can do any computation you want it
+to do.  This can include modifying the scene graph, even by injecting
+a new node as the parent of your feature, and making every every node
+in the show that referred to your feature refer to this new parent, instead.
+In this way, you can declare a new node type in the show file, but implement
+your node as a collection of already existing node types.
+</p><p>
+To see an example of adding a feature, see 
+<code>xlets/tests/functional/Playground</code>.  As of this writing, this
+included three extension features, <code>Arc</code>,
+<code>BouncingArc</code> and 
+<code>ImageFrame</code>.  In the <code>src</code> directory,
+you'll find <code>Arc.java</code> and <code>ImageFrame.java</code>, which
+are the runtime support for these features.  In the <code>se_src</code> 
+directory, you'll find <code>SEArc.java</code>,
+<code>SEBouncingArc.java</code> and 
+<code>SEImageFrame.java</code>,
+which are the SE versions of these extensions, complete with the
+<code>writeInstanceData()</code> methods.  The bouncing arc feature
+compiles into an arc under a translation, with a translator model that has
+pre-computed bounce coordinates.  You'll also find the
+extension parser for these new features, in 
+<code>PlaygroundExtensionParser.java</code>.  
+</p><p>
+A more substantive example of a "standard" extension is the media
+player, in <code>AuthoringTools/grin/extensions/media</code>.  It's
+used in the GrinBunny game in 
+<code>xlets/grin_samples/GrinBunny</code>, which can serve as a model
+for how to set up the vars.properties file to build in extensions from
+multiple sources.
+</p>
+
+<h2>Building Notes</h2>
+<p>
+When you build the javadocs, be sure to copy the directory
+<code>com/hdcookbook/grin/docs</code>.  If you build the test
+program in com.hdcookbook.grin.test, be sure to include
+<code>com/hdcookbook/grin/test/assets</code> in the JAR file.
+</p>
+<h2>Future Ideas</h2>
+<p>
+Please see the issues database associated with the
+hdcookbook.dev.java.net repository.
+
+<h2>License</h2>
+<p>
+The contents of hdcookbook.dev.java.net are covered
+by <a href="https://hdcookbook.dev.java.net/misc/license.html">this license</a>.
+</p>
+
+<h2>Launching GRIN</h2>
+<p>
+A test program for the GRIN framework is provided in the package
+<b>com.hdcookbook.grin.test</b>.  Please consult the package documentation
+for details.  You can launch GRIN using Java SE - this is documented in
+the package documentation for <b>com.hdcookbook.grin.test.bigjdk</b>.
+The <code>GuiGenericMain</code> class there is a nice little tool for
+browsing around a show file, and seeing what different segments look
+like.  Finally, you can see a pretty complete demonstration of using
+GRIN in the xlet in <b>com.hdcookbook.bookmenu.menu</b>.
+</p>
+
+<h2>Note about UML diagrams</h2>
+<p>
+The UML diagrams were made with a program called "umlet",
+which I got from 
+<a href="http://www.umlet.com/">http://www.umlet.com/</a>.
+
+<h2>Change Log</h2>
+<p>
+Beginning with version 1.0, only major chages will be captured here.  
+For information about the detailed changes in each putback since then, 
+please consult the source code repository.
+</p>
+<ul>
+  <li><b>Version 0.0, circa October 2004</b>  First version of GRIN developed
+      for "Ryan's Life" demo, in collaboration with Mark Johnson at Technicolor
+      and C&eacute;dric Monnier and Nicolas M&eacute;riau at NDS France 
+      (n&eacute;e Canal+ 
+      Technologies).  Segments were called "phases," and assemblies and 
+      image sequences existed already.  This version was shown at a demo 
+      at the DVD Forum, running on a commercial
+      CanalSatellite STB running pJava and MHP.
+  <li><b>Version 0.1, Dec. 19 2006</b>
+  <ul>
+    <li>Added popup_menu key
+    <li>Added "+" and "-" within ImageSequence
+    <li>Added translation feature.
+    <li>Added new argument to Show.setDisplayArea() so the show knows
+        the bounds of its display area.
+  </ul>
+  <li><b>Version 0.1.1, Dec. 21 2006</b>
+  <ul>
+     <li>Added timeout feature
+     <li>Several bugfixes
+  </ul>
+  <li><b>Version 0.1.2, Dec. 22 2006</b>
+  <ul>
+     <li>Fixed off-by-one in addDisplalyArea and frame pump
+     <li>Added warning in lexer about id's ending in ;
+  </ul>
+  <li><b>Version 0.1.3, Dec. 31 2006</b>
+  <ul>
+     <li>Added warning when an uninitialized feature is activated
+     <li>Split translation into translator and translation
+  </ul>
+  <li><b>Version 0.1.4, Jan. 1 2007</b>
+  <ul>
+     <li>Added a GUI to let you explore a show's segments, and drive
+         the animation.  See GuiGenericMain.
+     <li>Added end_commands to translation feature.
+     <li>Made translator take a list of features to be translated, instead
+         of just one.
+  </ul>
+  <li><b>Version 0.1.4, Jan. 1 2007</b> fixes a minor bug in Translator
+  <li><b>Version 0.1.5, May 3 2007</b> BSD license update
+  <li><b>Version 0.1.6, May 18 2007</b> Added new (and very cool)
+      visual rc handler.  See com.hdcookbook.grin.VisualRCHandler for
+      details.  Mouse handling isn't quite done yet, but otherwise it
+      works great.
+  <li><b>Version 0.1.7, May 19, 2007</b> 
+  <ul>
+      <li>Made mouse events work
+      with visual RC handler.  Run GrinTestRyan to see it work; the
+      first menu was set up with mouse coords on the visual rc handler.
+      <li>Added support for multi-line text features.
+  </ul>
+  <li><b>Version 0.1.8, May 29, 2007</b>  Added support for image
+      mosaics, including mosaic builder in
+      com.hdcookbook.grin.build.mosaic.
+  <li><b>Version 0.9, June 18 2007</b>  Many changes that have not
+      been documented yet.  Finalizing hdcookbook for the HD Cookbook
+      DVD.  Update coming soon with documentation, but I'm putting this
+      one out now to restore hdcookbook.dev.java.net, which just
+      changed from CVS to SVN.
+  <li><b>Version 0.9.1, June 25 2007</b>  Fleshed out the javadoc
+      comments.  Here are some of the major new features introduced
+      in version 0.9:
+      <ul>
+        <li> An automatic image mosaic creator, to speed xlet load times.
+	<li> A new "visual" remote control handler that's very powerful
+	     and general.
+	<li> A feature for fade in/fade out effects, a feature for
+	     SRC_OVER graphics-to-graphics blending of features, and
+	     one for clipping.
+	<li> Good support for xlet feature extensions that modify the
+	     behavior of other features.  This is a very powerful
+	     technique.
+	<li> Some nice additions to "GuiGenereicMain," the show
+	     script browser for  big JDK.  It now lets you see
+	     the UI composited over a background image when you
+	     stop the frame pump, or you take a snapshot.  This is
+	     really useful for generating "screenshots" if you're
+	     writing a book :-)
+	<li> Added <code>Command.deferNextCommands()</code> so that
+	     the frame pump can be allowed to catch up after a
+	     time-consuming command.
+	<li> Many cleanups and documentation improvements
+      </ul>
+      Version 0.9.1 is very close to what will be on the DVD in the book.
+      I know this to be true, because the deadline for getting the disc
+      image out is this Friday, in four days.
+  <li> <b>Version 1.0, June 27 2007</b>  
+       <ul>
+         <li>Fixed up some bugs in the BDJO
+	   and such that were caught for us by a disc verifier.  This is
+	   the version going in the book.  I'll archive it to a ZIP file
+	   soon.
+	 <li>Mosaic maker now reads its asses with java.io.File rather
+	     than Class.getResource()
+	 <li>Build scripts now work on Windows (using the Unix utils
+	     from <a href="http://unxutils.sourceforge.net/">http://unxutils.sourceforge.net/</a>).
+      </ul>
+  <li> <b>Version 1.1.0, November 4, 2007</b>
+      Added the animation framework.  Subsequent putbacks will make Show
+      take advantage of the optimized drawing that this framework helps enable.
+  <li> <b>Versions after 1.1.0</b>
+       Moved project to subversion repository.  For versions after Nov. 4,
+       see the subversion revision log, e.g. with the <code>svn log</code>
+       command from the base directory of the repository.
+</ul>
+</p>
+</body></html>

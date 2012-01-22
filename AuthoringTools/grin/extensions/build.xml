@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="GRIN extensions" default="all" basedir=".">
+
+        <target name="all">
+           <antcall target="invoke-all">
+               <param name="hdc.distribution.dir" location="../../../bin"/>
+           </antcall>
+        </target>
+            
+        <target name="invoke-all">
+            <ant dir="fontstrip"/>    
+        </target>        
+        
+	<target name="clean">         
+	  <ant dir="fontstrip" target="clean"/> 
+	</target>
+
+	<target name="spotless" depends="clean">
+	</target>
+
+</project>

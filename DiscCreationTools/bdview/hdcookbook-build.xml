@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="BDView" default="bdview-dist" basedir=".">
+    <description>
+        Build a simple UI to view the data structures of a Blu-ray Disc based on the DiscCreatinTools.
+    </description>
+
+    <!-- set global properties for this build -->
+    <property name="bdview-src" location="src"/>
+    <property name="bdview-build" location="build"/>
+    <property name="bdview-dist"  location="dist"/>
+    <property name="main.class"  value="net.java.bd.tools.bdview.BDViewApp"/>
+
+    <property name="lib.EventBus.jar" value="lib/EventBus-1.3beta.jar"/>
+    <property name="lib.appframework.jar" value="lib/appframework-1.0.3.jar"/>
+    <property name="lib.beansbinding.jar" value="lib/beansbinding-1.2.1.jar"/>
+    <property name="lib.swing-worker.jar" value="lib/swing-worker-1.1.jar"/>
+
+    <property name="lib.bdjo.jar" value="../../bin/bdjo.jar"/>
+    <property name="lib.id.jar" value="../../bin/id.jar"/>
+    <property name="lib.index.jar" value="../../bin/index.jar"/>
+    <property name="lib.movieobject.jar" value="../../bin/movieobject.jar"/>
+    <property name="lib.playlist.jar" value="../../bin/playlist.jar"/>
+
+    <path id="project.class.path">
+        <pathelement location="${lib.EventBus.jar}"/>
+        <pathelement location="${lib.appframework.jar}"/>
+        <pathelement location="${lib.beansbinding.jar}"/>
+        <pathelement location="${lib.swing-worker.jar}"/>
+        <pathelement location="${lib.bdjo.jar}"/>
+        <pathelement location="${lib.id.jar}"/>
+        <pathelement location="${lib.index.jar}"/>
+        <pathelement location="${lib.movieobject.jar}"/>
+        <pathelement location="${lib.playlist.jar}"/>
+    </path>
+    <target name="bdview-init">
+        <mkdir dir="${bdview-build}"/>
+        <mkdir dir="${bdview-dist}"/>
+    </target>
+    <target name="bdview-compile" depends="bdview-init"
+        description="compile the source " >
+        <javac srcdir="${bdview-src}" destdir="${bdview-build}" debug="on">
+            <classpath refid="project.class.path"/>
+	</javac>
+        <copy todir="${bdview-build}">
+            <fileset dir="${bdview-src}" includes="**/jaxb.index"/>
+            <fileset dir="${bdview-src}" includes="**/*.properties"/>
+            <fileset dir="${bdview-src}" includes="**/*.png"/>
+        </copy>
+    </target>
+    <target name="bdview-jar" depends="bdview-compile">
+        <unzip src="${lib.EventBus.jar}" dest="${bdview-build}"/>
+        <unzip src="${lib.appframework.jar}" dest="${bdview-build}"/>
+        <unzip src="${lib.beansbinding.jar}" dest="${bdview-build}"/>
+        <unzip src="${lib.swing-worker.jar}" dest="${bdview-build}"/>
+        <unzip src="${lib.bdjo.jar}" dest="${bdview-build}"/>
+        <unzip src="${lib.id.jar}" dest="${bdview-build}"/>
+        <unzip src="${lib.index.jar}" dest="${bdview-build}"/>
+        <unzip src="${lib.movieobject.jar}" dest="${bdview-build}"/>
+        <unzip src="${lib.playlist.jar}" dest="${bdview-build}"/>
+        <jar jarfile="${bdview-dist}/bdview.jar" basedir="${bdview-build}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="bdview-dist" depends="bdview-jar" if="hdc.distribution.dir"
+        description="generate the distribution">
+        <copy todir="${hdc.distribution.dir}" file="${bdview-dist}/bdview.jar"/>
+    </target>
+    <target name="bdview-clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${bdview-build}"/>
+        <delete dir="${bdview-dist}"/>
+    </target>
+</project>

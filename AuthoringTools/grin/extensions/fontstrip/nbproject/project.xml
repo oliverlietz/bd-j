@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.ant.freeform</type>
+    <configuration>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
+            <!-- Do not use Project Properties customizer when editing this file manually. -->
+            <name>fontstrip</name>
+            <properties/>
+            <folders>
+                <source-folder>
+                    <label>library\src</label>
+                    <type>java</type>
+                    <location>library/src</location>
+                </source-folder>
+                <source-folder>
+                    <label>jdktools\library\src</label>
+                    <type>java</type>
+                    <location>jdktools/library/src</location>
+                </source-folder>
+                <source-folder>
+                    <label>jdktools\tools\src</label>
+                    <type>java</type>
+                    <location>jdktools/tools/src</location>
+                </source-folder>
+            </folders>
+            <ide-actions>
+                <action name="build">
+                    <target>jar</target>
+                </action>
+                <action name="clean">
+                    <target>clean</target>
+                </action>
+                <action name="rebuild">
+                    <target>clean</target>
+                    <target>jar</target>
+                </action>
+            </ide-actions>
+            <export>
+                <type>jar</type>
+                <location>dist/fontimagemaker.jar</location>
+                <build-target>jar</build-target>
+            </export>
+            <view>
+                <items>
+                    <source-folder style="packages">
+                        <label>library\src</label>
+                        <location>library/src</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>jdktools\library\src</label>
+                        <location>jdktools/library/src</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>jdktools\tools\src</label>
+                        <location>jdktools/tools/src</location>
+                    </source-folder>
+                    <source-file>
+                        <location>build.xml</location>
+                    </source-file>
+                </items>
+                <context-menu>
+                    <ide-action name="build"/>
+                    <ide-action name="rebuild"/>
+                    <ide-action name="clean"/>
+                </context-menu>
+            </view>
+            <subprojects/>
+        </general-data>
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
+            <compilation-unit>
+                <package-root>library/src</package-root>
+                <package-root>jdktools/library/src</package-root>
+                <package-root>jdktools/tools/src</package-root>
+                <classpath mode="compile">../../build/jdktools/library;../../build/grin_library</classpath>
+                <built-to>dist/fontimagemaker.jar</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+        </java-data>
+    </configuration>
+</project>

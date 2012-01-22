@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="ShowXML" default="all" basedir=".">
+
+  <!-- Property Definitions -->
+
+  <property name="app.name"  value="showxml"/>
+  <property name="src.dir"  value="src"/>
+  <property name="build.dir"  value="build"/>
+  <property name="gen.src.dir"  value="${build.dir}/generated_src"/>
+  <property name="dist.jar" value="${build.dir}/${app.name}.jar"/>
+  <property name="classes.dir"  value="${build.dir}/classes"/>
+
+  <target name="prepare">
+    <mkdir dir="${classes.dir}"/>
+    <ant antfile="build_jdktools.xml" dir="../../.."/>
+  </target>
+
+  <target name="clean">
+     <delete dir="${build.dir}"/>
+  </target>
+
+  <path id="javac.classpath">
+     <pathelement path="../../../build/jdktools/compiler/grincompiler.jar" />
+  </path>
+
+  <target name="compile" depends="prepare" description="Compiles the sources">
+    <delete dir="${gen.src.dir}"/>
+    <mkdir dir="${gen.src.dir}"/>
+    <exec failifexecutionfails="false" executable="xjc" searchpath="true">
+      <arg value="-d"/>
+      <arg value="${gen.src.dir}"/>
+      <arg value="${src.dir}/com/hdcookbook/grin/io/xml/show.xsd"/>
+    </exec>
+    <available file="${gen.src.dir}/com/hdcookbook/grin/io/xml/ShowType.java"
+               type="file" property="jaxb.showtype.ok"/>
+    <fail unless="jaxb.showtype.ok">
+
+
+    Building ShowXML feature requires "xjc" tool from JDK 6. Please define
+your JAVA_HOME environment variable to point to a JDK 6 (or above) 
+installation directory.
+
+
+    </fail>
+    <javac
+        destdir="${classes.dir}"
+        debug="on" deprecation="on">
+      <src path="${src.dir}"/>
+      <src path="${gen.src.dir}"/>
+      <classpath refid="javac.classpath" />
+    </javac>
+  </target>
+
+  <target name="deploy" depends="compile" description="Creates a deployment bundle">
+    <jar jarfile="${dist.jar}"
+         basedir="${classes.dir}"/>
+  </target>
+
+  <target name="all" depends="deploy" description="Builds sources and deployment jar"/>
+
+</project>

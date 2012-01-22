@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!--
+Copyright  1990-2006 Sun Microsystems, Inc. All Rights Reserved.
+DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version
+2 only, as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License version 2 for more details (a copy is
+included at /legal/license.txt).
+
+You should have received a copy of the GNU General Public License
+version 2 along with this work; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301 USA
+
+Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
+Clara, CA 95054 or visit www.sun.com if you need additional
+information or have any questions.
+-->
+
+<project name="Build GRIN libraries and tools" basedir="." default="jdktools-all">
+   
+    <import file="build_library.xml"/>
+   
+    <property name="JDKTOOLS_BUILD_DIR" location="${HDC_BUILD_DIR}/jdktools"/>
+    <property name="JDK_LIBRARY_DEST"   location="${JDKTOOLS_BUILD_DIR}/library"/>
+    <property name="GRIN_VIEWER_DEST"   location="${JDKTOOLS_BUILD_DIR}/grin_viewer"/>
+    <property name="GRIN_COMPILER_DEST" location="${JDKTOOLS_BUILD_DIR}/compiler"/>
+    <property name="GRIN_VIEWER_JAR"    value="${GRIN_VIEWER_DEST}/grinviewer.jar"/>
+    <property name="GRIN_COMPILER_JAR"  value="${GRIN_COMPILER_DEST}/grincompiler.jar"/>
+    
+    <target name="jdktools-all" depends="compile-grin-compiler, compile-grinview"/>
+    
+    <target name="jdktools-clean">
+        <delete dir="${JDKTOOLS_BUILD_DIR}"/>
+    </target>
+
+    <target name="init-grinview">
+        <mkdir dir="${GRIN_VIEWER_DEST}/classes"/>
+    </target>
+    
+    <target name="compile-grinview" depends="init-grinview, compile-jdk-library">
+        <jdktools.javac
+               classpath="${JDK_LIBRARY_DEST}"
+               destdir="${GRIN_VIEWER_DEST}/classes">
+            <src path="jdktools/grinviewer/src" />
+        </jdktools.javac>
+        
+        <jar jarfile="${GRIN_VIEWER_JAR}">
+            <fileset dir="${GRIN_VIEWER_DEST}/classes"/>
+            <fileset dir="${JDK_LIBRARY_DEST}"/>
+            <manifest>
+                <attribute name="Main-Class" value="com.hdcookbook.grin.test.bigjdk.GrinView"/>
+            </manifest>
+        </jar>
+        
+    </target>
+    
+    <target name="init-grin-compiler">
+        <mkdir dir="${GRIN_COMPILER_DEST}/classes"/>
+    </target>
+    
+    <target name="compile-grin-compiler" depends="init-grin-compiler, compile-jdk-library">
+        <jdktools.javac      
+               classpath="${JDK_LIBRARY_DEST}"
+               destdir="${GRIN_COMPILER_DEST}/classes">
+            <src path="jdktools/binaryconverter/src" />
+            <include name="com/hdcookbook/grin/**/*.java"/>
+        </jdktools.javac> 
+        
+        <jar jarfile="${GRIN_COMPILER_JAR}">
+            <fileset dir="${GRIN_COMPILER_DEST}/classes"/>
+            <fileset dir="${JDK_LIBRARY_DEST}"/>
+            <manifest>
+                <attribute name="Main-Class" value="com.hdcookbook.grin.binaryconverter.Main"/>
+            </manifest>
+        </jar>
+    </target>
+    
+</project>

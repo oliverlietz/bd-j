@@ -1,0 +1,114 @@
+<project name="BDtoAVCHD" default="convert" basedir=".">
+
+  <!-- set global properties for this build -->
+
+  <!-- The BDMV directory that you'd want to convert.  -->
+  <property name="srcdir"   location="unspecified"/>
+
+  <!-- The destination directory to place the converted disc image. -->
+  <property name="destdir"  location="./AVCHD"/>
+
+  <!-- indexconverter.jar location.  -->
+  <property name="indexconverter.jar" location="dist/indexconverter.jar"/>
+
+  <target name="init">
+    <mkdir dir="${build}"/>
+    <mkdir dir="${dist}"/>
+  </target>
+
+  <target name="check-properties">
+        <available file="${srcdir}/BDMV" type="dir"
+                   property="srcdir.ok"/>
+        <fail unless="srcdir.ok"> 
+.
+       ${srcdir}/BDMV not found.  
+       Point the variable "srcdir" to a directory containing a valid 
+       blu-ray disc's BDMV structure.
+
+        </fail>
+
+        <available file="${indexconverter.jar}" type="file"
+                   property="converter.ok"/>
+        <fail unless="converter.ok"> 
+.
+           ${indexconverter.jar} not found.  
+           Build the converter tool first, by invoking "ant", and then
+           point "indexconverter.jar" property to the compiled jar file.
+
+        </fail>
+  </target>
+
+  <target name="convert" depends="check-properties"
+     description="Converts BD file structure to an AVCHD compatible one.
+                  Copy over an existing BD structure to a new directory
+                  with 8.3 file name, and update the content of the
+                  index.bdmv file using the converter tool.">
+     
+     <!-- Directories that could be required for AVCHD -->
+     <mkdir dir="${destdir}/BDMV/CLIPINF"/>
+     <mkdir dir="${destdir}/BDMV/PLAYLIST"/>
+     <mkdir dir="${destdir}/BDMV/STREAM"/> 
+     
+     <!-- Update and rename index.bdmv file -->
+     <java fork="true" failOnError="true"
+        jar="${indexconverter.jar}">
+        <arg value="${srcdir}/BDMV/index.bdmv"/>
+        <arg value="${destdir}/BDMV/INDEX.BDM"/>
+     </java>
+
+
+     <!-- copy some files without renaming -->
+     <copy todir="${destdir}">  
+        <fileset dir="${srcdir}">
+           <include name="CERTIFICATE/**/*"/>
+           <include name="BDMV/AUXDATA/*"/>
+           <include name="BDMV/BDJO/*"/>
+           <include name="BDMV/JAR/*"/>
+           <include name="BDMV/META/*"/>
+        </fileset>
+     </copy>
+     
+     <!-- MovieObject should be called MOVIEOBJ.BDM -->
+     <copy file="${srcdir}/BDMV/MovieObject.bdmv"
+           tofile="${destdir}/BDMV/MOVIEOBJ.BDM"/>
+
+     <!-- CLIPINF files need .CPI extension -->
+     <copy todir="${destdir}/BDMV/CLIPINF">  
+        <fileset dir="${srcdir}/BDMV/CLIPINF"/>
+        <globmapper from="*.clpi" to="*.CPI"/>
+     </copy>
+
+     <!-- PLAYLIST files need .MPL extension -->
+     <copy todir="${destdir}/BDMV/PLAYLIST">  
+        <fileset dir="${srcdir}/BDMV/PLAYLIST"/>
+        <globmapper from="*.mpls" to="*.MPL"/>
+     </copy>
+
+     <!-- STREAM files need .MTS extension -->
+     <copy todir="${destdir}/BDMV/STREAM">  
+        <fileset dir="${srcdir}/BDMV/STREAM"/>
+        <globmapper from="*.m2ts" to="*.MTS"/>
+     </copy>
+
+     <!-- Make a BACKUP directory -->
+     <copy todir="${destdir}/BDMV/BACKUP">
+        <fileset dir="${destdir}/BDMV">
+            <include name="INDEX.BDM"/>
+            <include name="MOVIEOBJ.BDM"/>
+            <include name="BDJO/**"/>
+            <include name="CLIPINF/**"/>
+            <include name="JAR/**"/>
+            <include name="PLAYLIST/**"/>
+        </fileset>
+     </copy>
+
+     <echo>
+  Created an converted Blu-ray disc structure at 
+  ${destdir}.
+  Put the directory including "AVCHD" to a USB
+  memory stick, a SD card, DVD-R, etc, and insert it to 
+  an AVCHD-compatible Blu-ray Disc player for a playback.
+     </echo>
+  </target>
+  
+</project>

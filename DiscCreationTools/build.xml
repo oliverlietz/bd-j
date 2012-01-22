@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="BD Tool builds" default="all" basedir=".">
+
+        <target name="all">
+           <antcall target="invoke-all">
+               <param name="hdc.distribution.dir" location="../bin"/>
+           </antcall>
+        </target>
+            
+        <target name="invoke-all">
+            <ant dir="bdjo"/>    
+            <ant dir="security/make"/>
+            <ant dir="id"/>  
+            <ant dir="index"/>
+            <ant dir="movieobject"/>
+            <ant dir="playlist"/>            
+            <ant dir="cpistrip"/>  
+            <ant dir="soundgen"/>
+            <ant dir="soundsplit"/>  
+            <ant dir="bumf"/>  
+            <ant dir="logger"/>
+
+            <ant dir="bdview" antfile="hdcookbook-build.xml"/>
+        </target>        
+        
+	<target name="clean">         
+	  <ant dir="bdjo" target="bdjo-clean"/> 
+          <ant dir="cpistrip" target="cpistrip-clean"/>  
+	  <ant dir="security/make" target="clean"/> 
+          <ant dir="soundgen" target="soundgen-clean"/>
+          <ant dir="soundsplit" target="soundsplit-clean"/>
+          <ant dir="id" target="clean"/>
+          <ant dir="index" target="clean"/>
+          <ant dir="movieobject" target="clean"/>
+          <ant dir="bumf" target="clean"/>  
+          <ant dir="playlist" target="clean"/>             
+          <ant dir="logger" target="clean"/>         
+          <ant dir="xmldata/bumf" target="clean"/>
+          
+          <ant dir="bdview" target="bdview-clean" antfile="hdcookbook-build.xml"/>
+	</target>
+
+	<target name="spotless" depends="clean">
+	</target>
+
+</project>

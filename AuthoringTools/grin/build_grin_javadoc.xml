@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!--
+Copyright  1990-2006 Sun Microsystems, Inc. All Rights Reserved.
+DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version
+2 only, as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License version 2 for more details (a copy is
+included at /legal/license.txt).
+
+You should have received a copy of the GNU General Public License
+version 2 along with this work; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301 USA
+
+Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
+Clara, CA 95054 or visit www.sun.com if you need additional
+information or have any questions.
+-->
+
+<project name="Generates GRIN javadoc" basedir="." default="generate-grin-javadoc">
+
+<property file="../../user.vars.properties"/>	
+<property file="../../vars.properties"/>	
+
+<property name="HDC_BUILD_DIR" value="build"/>
+<property name="GRIN_JAVADOC_DEST" value="${HDC_BUILD_DIR}/grin_javadoc"/>
+<property name="GRIN_JAVADOC_JDK_DEST" value="${GRIN_JAVADOC_DEST}/javase"/>
+<property name="GRIN_JAVADOC_ME_DEST" value="${GRIN_JAVADOC_DEST}/javame"/>
+<property name="GRIN_JAVADOC_PUBLIC" value="../../www/javadocs/grin"/>
+
+<target name="generate-grin-javadoc">
+	<mkdir dir="${GRIN_JAVADOC_JDK_DEST}"/>
+	<javadoc 	  
+	  packagenames="com.hdcookbook.*"
+	  destdir="${GRIN_JAVADOC_JDK_DEST}">
+		  <sourcepath location="library/src"/>
+		  <sourcepath location="jdktools/library/src" />
+		  <sourcepath location="jdktools/mosaic/src"/>   
+		  <sourcepath location="jdktools/binaryconverter/src"/>
+		  <sourcepath location="jdktools/grinviewer/src"/>
+		  <sourcepath location="extensions/media/src"/>
+		  <sourcepath location="extensions/media/se_src"/>
+		  <sourcepath location="extensions/fontstrip/library/src"/>
+		  <sourcepath location="extensions/fontstrip/jdktools/library/src"/>
+		  <sourcepath location="extensions/fontstrip/jdktools/tools/src"/>
+	</javadoc>	
+        
+	<mkdir dir="${GRIN_JAVADOC_ME_DEST}"/>
+	<javadoc 	  
+	  packagenames="com.hdcookbook.*"
+	  bootclasspath="${HDC_BDJ_PLATFORM_CLASSES}"
+	  destdir="${GRIN_JAVADOC_ME_DEST}">
+		  <sourcepath location="library/src"/>
+		  <sourcepath location="library/bd_xlet_src"/>
+		  <sourcepath location="extensions/media/src"/>
+		  <sourcepath location="extensions/media/xlet_src"/>
+		  <sourcepath location="extensions/fontstrip/library/src"/>
+		  <sourcepath location="../../xlets/GrinXlet/src/debug"/>
+	</javadoc>        
+	<echo message=""/>
+	<copy file="../../xlets/GrinXlet/README.txt"
+	      todir="${GRIN_JAVADOC_ME_DEST}/com/hdcookbook/grinxlet"/>
+	<echo message="Desktop javadocs are in ${GRIN_JAVADOC_JDK_DEST}"/>
+	<echo message="Xlet javadocs are in ${GRIN_JAVADOC_ME_DEST}"/>
+	<echo message=""/>
+</target>
+
+<target name="javadoc-deploy" depends="generate-grin-javadoc">
+	<copy todir="${GRIN_JAVADOC_PUBLIC}">
+            <fileset dir="${GRIN_JAVADOC_DEST}"/>
+	</copy>
+
+</target>
+
+<target name="clean">
+       <delete dir="${GRIN_JAVADOC_DEST}"/>
+</target>
+
+</project>

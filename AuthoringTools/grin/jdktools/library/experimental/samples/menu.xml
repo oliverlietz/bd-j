@@ -1,0 +1,2131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<show segment-stack-depth="1" draw-targets="T:Default T:MovingMenu" xmlns="http://grin.hdcookbook.com/io/xml">
+    <!--
+	This is a GRIN show document expressed in Show XML syntax.
+        This Show XML document was generated from menu.txt and hand-edited.
+
+        This XML document can be converted to GRIN binary format by
+        hdcookbook converter tool. The main class of the tool is
+        "com.hdcookbook.grin.io.xml.Main".
+	
+        Edit(s):
+
+        * Changed GRIN_COMMAND_ to GRIN_COMMAND_REF_
+        * Added "commands" section.
+    -->
+    <sticky-images>
+        <item>Graphics/Menu/Load_0000.png</item>
+        <item>Graphics/Menu/Load_0001.png</item>
+        <item>Graphics/Menu/Load_0002.png</item>
+        <item>Graphics/Menu/Load_0003.png</item>
+        <item>Graphics/Menu/Load_0004.png</item>
+        <item>Graphics/Menu/Load_0005.png</item>
+        <item>Graphics/Menu/Load_0006.png</item>
+        <item>Graphics/Menu/Load_0007.png</item>
+    </sticky-images>
+    <commands>
+        <ext-command id="BOOK:PlayVideo">
+            <param value="nothing" name="argument"/>
+            <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+            <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+        </ext-command>
+    </commands>
+    <script runat="runtime" type="text/java">java_generated_class com.hdcookbook.bookmenu.menu.commands.MenuShowCommands [[
+
+
+    package com.hdcookbook.bookmenu.menu.commands;
+
+    import com.hdcookbook.grin.Show;
+    import com.hdcookbook.grin.GrinXHelper;
+
+    XLET_ONLY_[[ 
+        import org.bluray.system.RegisterAccess;
+
+        import com.hdcookbook.bookmenu.menu.MenuXlet; 
+        import com.hdcookbook.bookmenu.menu.MenuDirector; 
+        import com.hdcookbook.bookmenu.menu.MenuDiscNavigator; 
+    ]]
+
+    GRINVIEW_ONLY_[[
+	import com.hdcookbook.grin.test.bigjdk.BDRegisterEmulator;
+    ]]
+
+    public class MenuShowCommands extends GrinXHelper {
+
+        public MenuShowCommands(Show show) {
+            super(show);
+        }
+
+	XLET_ONLY_[[
+
+	    private final static RegisterAccess registers 
+	    	= RegisterAccess.getInstance();
+
+	    private MenuDirector getMenuDirector() {
+		return (MenuDirector) show.getDirector();
+	    }
+
+	]]
+
+	GRINVIEW_ONLY_[[
+	    private final static BDRegisterEmulator registers 
+	    	= BDRegisterEmulator.getInstance();
+	]]
+
+
+	private void setBookmarkUI(int sceneNum, boolean activate) {
+	    XLET_ONLY_[[
+		MenuDirector dir = getMenuDirector();
+		long t = dir.setBookmarkUIForScene(sceneNum);
+		if (activate &amp;&amp; t != Long.MIN_VALUE) {
+		    MenuDiscNavigator nav = dir.xlet.navigator;
+		    nav.gotoMediaTime(nav.movieVideoStartPL, t);
+		}
+	    ]]
+	    GRINVIEW_ONLY_[[
+		System.out.println("Setting bookmark UI to scene " + sceneNum
+				   + ", activate:  " + activate);
+	    ]]
+	}
+
+	private void playActivateSound() {
+	    XLET_ONLY_[[
+		MenuDiscNavigator nav = getMenuDirector().xlet.navigator;
+		nav.playSound(nav.activateSound);
+	    ]]
+	    GRINVIEW_ONLY_[[
+		System.out.println("Play activate sound.");
+	    ]]
+	    //
+	    // We increment GPR 1 whenever we play this sound.  This isn't
+	    // useful in a real xlet, but it lets us test the UI that
+	    // simulates registers.
+	    //
+	    int i = registers.getGPR(1);
+	    registers.setGPR(1, i+1);
+	}
+
+	private void selectAudio(int streamNum) {
+	    XLET_ONLY_[[
+		getMenuDirector().xlet.navigator.selectAudioStream(streamNum);
+	    ]]
+	    GRINVIEW_ONLY_[[
+		System.out.println("Select audio stream " + streamNum);
+	    ]]
+	}
+
+	private void selectSubtitles(int streamNum) {
+	    XLET_ONLY_[[
+		getMenuDirector().xlet.navigator.selectSubtitleStream(streamNum);
+	    ]]
+	    GRINVIEW_ONLY_[[
+		System.out.println("Select subtitle stream " + streamNum);
+	    ]]
+	}
+
+	private void setText(String text) {
+	    XLET_ONLY_[[
+		getMenuDirector().setUserInputText(text);
+	    ]]
+	    GRINVIEW_ONLY_[[
+		System.out.println("Set text command \"" + text + "\".");
+	    ]]
+	}
+
+
+	JAVA_COMMAND_BODY
+
+    }
+
+]]</script>
+    <features>
+        <image-sequence repeat="true" id="F:SpinningYinYangClockwise">
+            <images>
+                <img src="Graphics/Menu/Load_0000.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0001.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0002.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0003.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0004.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0005.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0006.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0007.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0000.png" y="850" x="250" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0001.png" y="850" x="250" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0002.png" y="850" x="250" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0003.png" y="850" x="250" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0004.png" y="850" x="250" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0005.png" y="850" x="250" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0006.png" y="850" x="250" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0007.png" y="850" x="250" y-scale="-1000" x-scale="-1000"/>
+            </images>
+        </image-sequence>
+        <image-sequence repeat="true" id="F:SpinningYinYangCCW">
+            <images>
+                <img src="Graphics/Menu/Load_0007.png" y="850" x="250" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0006.png" y="850" x="250" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0005.png" y="850" x="313" x-align="middle" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0004.png" y="850" x="375" x-align="right" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0003.png" y="913" x="250" y-align="middle" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0002.png" y="913" x="313" y-align="middle" x-align="middle" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0001.png" y="913" x="375" y-align="middle" x-align="right" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0000.png" y="975" x="250" y-align="bottom" y-scale="-1000" x-scale="-1000"/>
+                <img src="Graphics/Menu/Load_0007.png" y="975" x="313" y-align="bottom" x-align="middle"/>
+                <img src="Graphics/Menu/Load_0006.png" y="975" x="375" y-align="bottom" x-align="right"/>
+                <img src="Graphics/Menu/Load_0005.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0004.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0003.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0002.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0001.png" y="850" x="250"/>
+                <img src="Graphics/Menu/Load_0000.png" y="850" x="250"/>
+            </images>
+        </image-sequence>
+        <text y="900" x="430" colors="#00ff00ff" style="plain" size="60" font="Lisa" id="F:LoadingText">
+            <value>Loading...
+</value>
+        </text>
+        <group id="F:Nothing"/>
+        <fixed-image src="Graphics/Menu/Load_0000.png" y="850" x="250" id="F:StillYinYang"/>
+        <fixed-image src="Graphics/Menu/Play_N.png" y="880" x="450" id="F:MainMenu.Play.Normal"/>
+        <fixed-image src="Graphics/Menu/Play_S.png" y="880" x="450" id="F:MainMenu.Play.Selected"/>
+        <fixed-image src="Graphics/Menu/Play_A.png" y="880" x="450" id="F:MainMenu.Play.Activated"/>
+        <fixed-image src="Graphics/Menu/Setup_N.png" y="880" x="750" id="F:MainMenu.Setup.Normal"/>
+        <fixed-image src="Graphics/Menu/Setup_S.png" y="880" x="750" id="F:MainMenu.Setup.Selected"/>
+        <fixed-image src="Graphics/Menu/Setup_A.png" y="880" x="750" id="F:MainMenu.Setup.Activated"/>
+        <fixed-image src="Graphics/Menu/Scenes_N.png" y="880" x="1050" id="F:MainMenu.Scenes.Normal"/>
+        <fixed-image src="Graphics/Menu/Scenes_S.png" y="880" x="1050" id="F:MainMenu.Scenes.Selected"/>
+        <fixed-image src="Graphics/Menu/Scenes_A.png" y="880" x="1050" id="F:MainMenu.Scenes.Activated"/>
+        <fixed-image src="Graphics/Menu/Bonus_N.png" y="880" x="1350" id="F:MainMenu.Bonus.Normal"/>
+        <fixed-image src="Graphics/Menu/Bonus_S.png" y="880" x="1350" id="F:MainMenu.Bonus.Selected"/>
+        <fixed-image src="Graphics/Menu/Bonus_A.png" y="880" x="1350" id="F:MainMenu.Bonus.Activated"/>
+        <fixed-image src="Graphics/Menu/Close_N.png" y="880" x="1650" id="F:VideoMenu.Close.Normal"/>
+        <fixed-image src="Graphics/Menu/Close_S.png" y="880" x="1650" id="F:VideoMenu.Close.Selected"/>
+        <fixed-image src="Graphics/Menu/Close_A.png" y="880" x="1650" id="F:VideoMenu.Close.Activated"/>
+        <group id="F:MainMenu.PlaySelected">
+            <part ref="F:MainMenu.Play.Selected"/>
+            <part ref="F:MainMenu.Setup.Normal"/>
+            <part ref="F:MainMenu.Scenes.Normal"/>
+            <part ref="F:MainMenu.Bonus.Normal"/>
+        </group>
+        <group id="F:MainMenu.PlayActivated">
+            <part ref="F:MainMenu.Play.Activated"/>
+            <part ref="F:MainMenu.Setup.Normal"/>
+            <part ref="F:MainMenu.Scenes.Normal"/>
+            <part ref="F:MainMenu.Bonus.Normal"/>
+        </group>
+        <group id="F:MainMenu.SetupSelected">
+            <part ref="F:MainMenu.Play.Normal"/>
+            <part ref="F:MainMenu.Setup.Selected"/>
+            <part ref="F:MainMenu.Scenes.Normal"/>
+            <part ref="F:MainMenu.Bonus.Normal"/>
+        </group>
+        <group id="F:MainMenu.SetupActivated">
+            <part ref="F:MainMenu.Play.Normal"/>
+            <part ref="F:MainMenu.Setup.Activated"/>
+            <part ref="F:MainMenu.Scenes.Normal"/>
+            <part ref="F:MainMenu.Bonus.Normal"/>
+        </group>
+        <group id="F:MainMenu.ScenesSelected">
+            <part ref="F:MainMenu.Play.Normal"/>
+            <part ref="F:MainMenu.Setup.Normal"/>
+            <part ref="F:MainMenu.Scenes.Selected"/>
+            <part ref="F:MainMenu.Bonus.Normal"/>
+        </group>
+        <group id="F:MainMenu.ScenesActivated">
+            <part ref="F:MainMenu.Play.Normal"/>
+            <part ref="F:MainMenu.Setup.Normal"/>
+            <part ref="F:MainMenu.Scenes.Activated"/>
+            <part ref="F:MainMenu.Bonus.Normal"/>
+        </group>
+        <group id="F:MainMenu.BonusSelected">
+            <part ref="F:MainMenu.Play.Normal"/>
+            <part ref="F:MainMenu.Setup.Normal"/>
+            <part ref="F:MainMenu.Scenes.Normal"/>
+            <part ref="F:MainMenu.Bonus.Selected"/>
+        </group>
+        <group id="F:MainMenu.BonusActivated">
+            <part ref="F:MainMenu.Play.Normal"/>
+            <part ref="F:MainMenu.Setup.Normal"/>
+            <part ref="F:MainMenu.Scenes.Normal"/>
+            <part ref="F:MainMenu.Bonus.Activated"/>
+        </group>
+        <group id="F:VideoMenu.PlaySelected">
+            <part ref="F:MainMenu.PlaySelected"/>
+            <part ref="F:VideoMenu.Close.Normal"/>
+        </group>
+        <group id="F:VideoMenu.PlayActivated">
+            <part ref="F:MainMenu.PlayActivated"/>
+            <part ref="F:VideoMenu.Close.Normal"/>
+        </group>
+        <group id="F:VideoMenu.SetupSelected">
+            <part ref="F:MainMenu.SetupSelected"/>
+            <part ref="F:VideoMenu.Close.Normal"/>
+        </group>
+        <group id="F:VideoMenu.SetupActivated">
+            <part ref="F:MainMenu.SetupActivated"/>
+            <part ref="F:VideoMenu.Close.Normal"/>
+        </group>
+        <group id="F:VideoMenu.ScenesSelected">
+            <part ref="F:MainMenu.ScenesSelected"/>
+            <part ref="F:VideoMenu.Close.Normal"/>
+        </group>
+        <group id="F:VideoMenu.ScenesActivated">
+            <part ref="F:MainMenu.ScenesActivated"/>
+            <part ref="F:VideoMenu.Close.Normal"/>
+        </group>
+        <group id="F:VideoMenu.BonusSelected">
+            <part ref="F:MainMenu.BonusSelected"/>
+            <part ref="F:VideoMenu.Close.Normal"/>
+        </group>
+        <group id="F:VideoMenu.BonusActivated">
+            <part ref="F:MainMenu.BonusActivated"/>
+            <part ref="F:VideoMenu.Close.Normal"/>
+        </group>
+        <group id="F:VideoMenu.CloseSelected">
+            <part ref="F:MainMenu.Play.Normal"/>
+            <part ref="F:MainMenu.Setup.Normal"/>
+            <part ref="F:MainMenu.Scenes.Normal"/>
+            <part ref="F:MainMenu.Bonus.Normal"/>
+            <part ref="F:VideoMenu.Close.Selected"/>
+        </group>
+        <group id="F:VideoMenu.CloseActivated">
+            <part ref="F:MainMenu.Play.Normal"/>
+            <part ref="F:MainMenu.Setup.Normal"/>
+            <part ref="F:MainMenu.Scenes.Normal"/>
+            <part ref="F:MainMenu.Bonus.Normal"/>
+            <part ref="F:VideoMenu.Close.Activated"/>
+        </group>
+        <assembly id="F:MainMenu">
+            <part name="play.selected" ref="F:MainMenu.PlaySelected"/>
+            <part name="play.activated" ref="F:MainMenu.PlayActivated"/>
+            <part name="setup.selected" ref="F:MainMenu.SetupSelected"/>
+            <part name="setup.activated" ref="F:MainMenu.SetupActivated"/>
+            <part name="scenes.selected" ref="F:MainMenu.ScenesSelected"/>
+            <part name="scenes.activated" ref="F:MainMenu.ScenesActivated"/>
+            <part name="bonus.selected" ref="F:MainMenu.BonusSelected"/>
+            <part name="bonus.activated" ref="F:MainMenu.BonusActivated"/>
+        </assembly>
+        <assembly id="F:VideoMenu">
+            <part name="play.selected" ref="F:VideoMenu.PlaySelected"/>
+            <part name="play.activated" ref="F:VideoMenu.PlayActivated"/>
+            <part name="setup.selected" ref="F:VideoMenu.SetupSelected"/>
+            <part name="setup.activated" ref="F:VideoMenu.SetupActivated"/>
+            <part name="scenes.selected" ref="F:VideoMenu.ScenesSelected"/>
+            <part name="scenes.activated" ref="F:VideoMenu.ScenesActivated"/>
+            <part name="bonus.selected" ref="F:VideoMenu.BonusSelected"/>
+            <part name="bonus.activated" ref="F:VideoMenu.BonusActivated"/>
+            <part name="close.selected" ref="F:VideoMenu.CloseSelected"/>
+            <part name="close.activated" ref="F:VideoMenu.CloseActivated"/>
+        </assembly>
+        <translator-model relative="true" id="F:MainMenu.In.Coords">
+            <keyframes>
+                <keyframe frame="0" y="880" x="-750"/>
+                <keyframe frame="24" y="880" x="450"/>
+            </keyframes>
+            <end-commands>
+                <segment-done/>
+            </end-commands>
+        </translator-model>
+        <translator model="F:MainMenu.In.Coords" id="F:MainMenu.In.Mover">
+            <part ref="F:MainMenu.Targeted"/>
+        </translator>
+        <set-target target="T:MovingMenu" id="F:MainMenu.Targeted">
+            <part ref="F:MainMenu.Guaranteed"/>
+        </set-target>
+        <guarantee-fill y="880" x="450" height="55" width="1097" id="F:MainMenu.Guaranteed">
+            <part ref="F:MainMenu"/>
+            <fill-rect y="880" x="450" height="55" width="1097"/>
+            <fill-rect y="880" x="450" height="55" width="1097"/>
+            <fill-rect y="880" x="450" height="55" width="1097"/>
+        </guarantee-fill>
+        <group id="F:MainMenu.In.Unclipped">
+            <part ref="F:MainMenu.In.Coords"/>
+            <part ref="F:MainMenu.In.Mover"/>
+        </group>
+        <clipped y="880" x="400" height="101" width="1580" id="F:MainMenu.In">
+            <part ref="F:MainMenu.In.Unclipped"/>
+        </clipped>
+        <translator-model relative="true" id="F:MainMenu.Out.Coords">
+            <keyframes>
+                <keyframe frame="0" y="880" x="450"/>
+                <keyframe frame="24" y="880" x="-750"/>
+            </keyframes>
+            <end-commands>
+                <segment-done/>
+            </end-commands>
+        </translator-model>
+        <translator model="F:MainMenu.Out.Coords" id="F:MainMenu.Out.Mover">
+            <part ref="F:MainMenu.Targeted"/>
+        </translator>
+        <group id="F:MainMenu.Out.Unclipped">
+            <part ref="F:MainMenu.Out.Coords"/>
+            <part ref="F:MainMenu.Out.Mover"/>
+        </group>
+        <clipped y="880" x="400" height="101" width="1580" id="F:MainMenu.Out">
+            <part ref="F:MainMenu.Out.Unclipped"/>
+        </clipped>
+        <translator-model relative="true" id="F:VideoMenu.In.Coords">
+            <keyframes>
+                <keyframe frame="0" y="880" x="-950"/>
+                <keyframe frame="28" y="880" x="450"/>
+            </keyframes>
+            <end-commands>
+                <segment-done/>
+            </end-commands>
+        </translator-model>
+        <translator model="F:VideoMenu.In.Coords" id="F:VideoMenu.In.Mover">
+            <part ref="F:VideoMenu"/>
+        </translator>
+        <group id="F:VideoMenu.In.Unclipped">
+            <part ref="F:VideoMenu.In.Coords"/>
+            <part ref="F:VideoMenu.In.Mover"/>
+        </group>
+        <clipped y="880" x="400" height="101" width="1580" id="F:VideoMenu.In">
+            <part ref="F:VideoMenu.In.Unclipped"/>
+        </clipped>
+        <translator-model relative="true" id="F:VideoMenu.Out.Coords">
+            <keyframes>
+                <keyframe frame="0" y="880" x="450"/>
+                <keyframe frame="28" y="880" x="-950"/>
+            </keyframes>
+            <end-commands>
+                <segment-done/>
+            </end-commands>
+        </translator-model>
+        <translator model="F:VideoMenu.Out.Coords" id="F:VideoMenu.Out.Mover">
+            <part ref="F:VideoMenu"/>
+        </translator>
+        <clipped y="880" x="400" height="101" width="1580" id="F:VideoMenu.Out">
+            <part>
+                <group>
+                    <part ref="F:VideoMenu.Out.Coords"/>
+                    <part ref="F:VideoMenu.Out.Mover"/>
+                </group>
+            </part>
+        </clipped>
+        <assembly id="F:MenuInactive.CloseOrNothing">
+            <part name="close" ref="F:VideoMenu.Close.Normal"/>
+            <part name="nothing" ref="F:Nothing"/>
+        </assembly>
+        <group id="F:MenuInactive.SetupActivated">
+            <part ref="F:MainMenu.Play.Normal"/>
+            <part ref="F:MainMenu.Setup.Activated"/>
+            <part ref="F:MainMenu.Scenes.Normal"/>
+            <part ref="F:MainMenu.Bonus.Normal"/>
+            <part ref="F:MenuInactive.CloseOrNothing"/>
+        </group>
+        <group id="F:MenuInactive.ScenesActivated">
+            <part ref="F:MainMenu.Play.Normal"/>
+            <part ref="F:MainMenu.Setup.Normal"/>
+            <part ref="F:MainMenu.Scenes.Activated"/>
+            <part ref="F:MainMenu.Bonus.Normal"/>
+            <part ref="F:MenuInactive.CloseOrNothing"/>
+        </group>
+        <group id="F:MenuInactive.BonusActivated">
+            <part ref="F:MainMenu.Play.Normal"/>
+            <part ref="F:MainMenu.Setup.Normal"/>
+            <part ref="F:MainMenu.Scenes.Normal"/>
+            <part ref="F:MainMenu.Bonus.Activated"/>
+            <part ref="F:MenuInactive.CloseOrNothing"/>
+        </group>
+        <box y="200" x="800" height="601" width="401" outline="11" fill-color="#0000005c" outline-color="#df0000ff" id="F:SetupMenu.BG.Box"/>
+        <fixed-image src="Graphics/Menu/Setup_Audio_BG.png" y="212" x="818" id="F:SetupMenu.BG.Audio"/>
+        <fixed-image src="Graphics/Menu/Setup_Subtitles_BG.png" y="446" x="819" id="F:SetupMenu.BG.Subtitles"/>
+        <group id="F:SetupMenu.BG.Images">
+            <part ref="F:SetupMenu.BG.Audio"/>
+            <part ref="F:SetupMenu.BG.Subtitles"/>
+        </group>
+        <src-over id="F:SetupMenu.BG.Images.SrcOver">
+            <part ref="F:SetupMenu.BG.Images"/>
+        </src-over>
+        <group id="F:SetupMenu.BG">
+            <part ref="F:SetupMenu.BG.Box"/>
+            <part ref="F:SetupMenu.BG.Images"/>
+        </group>
+        <fixed-image src="Graphics/Menu/Audio1_N.png" y="262" x="825" id="F:Setup.Audio1.Normal"/>
+        <fixed-image src="Graphics/Menu/Audio1_S.png" y="262" x="825" id="F:Setup.Audio1.Selected"/>
+        <fixed-image src="Graphics/Menu/Audio2_N.png" y="322" x="825" id="F:Setup.Audio2.Normal"/>
+        <fixed-image src="Graphics/Menu/Audio2_S.png" y="322" x="825" id="F:Setup.Audio2.Selected"/>
+        <fixed-image src="Graphics/Menu/Subtitle1_N.png" y="496" x="825" id="F:Setup.EnglishST.Normal"/>
+        <fixed-image src="Graphics/Menu/Subtitle1_S.png" y="496" x="825" id="F:Setup.EnglishST.Selected"/>
+        <fixed-image src="Graphics/Menu/Subtitle2_N.png" y="556" x="825" id="F:Setup.SpanishST.Normal"/>
+        <fixed-image src="Graphics/Menu/Subtitle2_S.png" y="556" x="825" id="F:Setup.SpanishST.Selected"/>
+        <fixed-image src="Graphics/Menu/Subtitle3_N.png" y="616" x="825" id="F:Setup.NoST.Normal"/>
+        <fixed-image src="Graphics/Menu/Subtitle3_S.png" y="616" x="825" id="F:Setup.NoST.Selected"/>
+        <group id="F:SetupMenu.Audio1.Selected">
+            <part ref="F:Setup.Audio1.Selected"/>
+            <part ref="F:Setup.Audio2.Normal"/>
+            <part ref="F:Setup.EnglishST.Normal"/>
+            <part ref="F:Setup.SpanishST.Normal"/>
+            <part ref="F:Setup.NoST.Normal"/>
+        </group>
+        <group id="F:SetupMenu.Audio2.Selected">
+            <part ref="F:Setup.Audio1.Normal"/>
+            <part ref="F:Setup.Audio2.Selected"/>
+            <part ref="F:Setup.EnglishST.Normal"/>
+            <part ref="F:Setup.SpanishST.Normal"/>
+            <part ref="F:Setup.NoST.Normal"/>
+        </group>
+        <group id="F:SetupMenu.EnglishST.Selected">
+            <part ref="F:Setup.Audio1.Normal"/>
+            <part ref="F:Setup.Audio2.Normal"/>
+            <part ref="F:Setup.EnglishST.Selected"/>
+            <part ref="F:Setup.SpanishST.Normal"/>
+            <part ref="F:Setup.NoST.Normal"/>
+        </group>
+        <group id="F:SetupMenu.SpanishST.Selected">
+            <part ref="F:Setup.Audio1.Normal"/>
+            <part ref="F:Setup.Audio2.Normal"/>
+            <part ref="F:Setup.EnglishST.Normal"/>
+            <part ref="F:Setup.SpanishST.Selected"/>
+            <part ref="F:Setup.NoST.Normal"/>
+        </group>
+        <group id="F:SetupMenu.NoST.Selected">
+            <part ref="F:Setup.Audio1.Normal"/>
+            <part ref="F:Setup.Audio2.Normal"/>
+            <part ref="F:Setup.EnglishST.Normal"/>
+            <part ref="F:Setup.SpanishST.Normal"/>
+            <part ref="F:Setup.NoST.Selected"/>
+        </group>
+        <group id="F:SetupMenu.None.Selected">
+            <part ref="F:Setup.Audio1.Normal"/>
+            <part ref="F:Setup.Audio2.Normal"/>
+            <part ref="F:Setup.EnglishST.Normal"/>
+            <part ref="F:Setup.SpanishST.Normal"/>
+            <part ref="F:Setup.NoST.Normal"/>
+        </group>
+        <src-over id="F:SetupMenu">
+            <part ref="F:SetupMenu.Assembly"/>
+        </src-over>
+        <assembly id="F:SetupMenu.Assembly">
+            <part name="dts_51" ref="F:SetupMenu.Audio1.Selected"/>
+            <part name="dts_71" ref="F:SetupMenu.Audio2.Selected"/>
+            <part name="english_st" ref="F:SetupMenu.EnglishST.Selected"/>
+            <part name="spanish_st" ref="F:SetupMenu.SpanishST.Selected"/>
+            <part name="st_off" ref="F:SetupMenu.NoST.Selected"/>
+            <part name="none" ref="F:SetupMenu.None.Selected"/>
+        </assembly>
+        <box y="580" x="330" height="243" width="1312" outline="11" fill-color="#0000005c" outline-color="#df0000ff" id="F:ScenesMenu.BG.Box"/>
+        <fixed-image src="Graphics/Menu/Scene_1.png" y="620" x="400" id="F:ScenesMenu.BG.Scene.1"/>
+        <fixed-image src="Graphics/Menu/Scene_2.png" y="620" x="650" id="F:ScenesMenu.BG.Scene.2"/>
+        <fixed-image src="Graphics/Menu/Scene_3.png" y="620" x="900" id="F:ScenesMenu.BG.Scene.3"/>
+        <fixed-image src="Graphics/Menu/Scene_4.png" y="620" x="1150" id="F:ScenesMenu.BG.Scene.4"/>
+        <fixed-image src="Graphics/Menu/Scene_5.png" y="620" x="1400" id="F:ScenesMenu.BG.Scene.5"/>
+        <group id="F:ScenesMenu.BG.Images">
+            <part ref="F:ScenesMenu.BG.Scene.1"/>
+            <part ref="F:ScenesMenu.BG.Scene.2"/>
+            <part ref="F:ScenesMenu.BG.Scene.3"/>
+            <part ref="F:ScenesMenu.BG.Scene.4"/>
+            <part ref="F:ScenesMenu.BG.Scene.5"/>
+        </group>
+        <group id="F:ScenesMenu.BG">
+            <part ref="F:ScenesMenu.BG.Box"/>
+            <part ref="F:ScenesMenu.BG.Images"/>
+        </group>
+        <fixed-image src="Graphics/Menu/Scene_N.png" y="750" x="370" id="F:ScenesMenu.Text.1.Normal"/>
+        <fixed-image src="Graphics/Menu/Scene_N.png" y="750" x="620" id="F:ScenesMenu.Text.2.Normal"/>
+        <fixed-image src="Graphics/Menu/Scene_N.png" y="750" x="870" id="F:ScenesMenu.Text.3.Normal"/>
+        <fixed-image src="Graphics/Menu/Scene_N.png" y="750" x="1120" id="F:ScenesMenu.Text.4.Normal"/>
+        <fixed-image src="Graphics/Menu/Scene_N.png" y="750" x="1370" id="F:ScenesMenu.Text.5.Normal"/>
+        <fixed-image src="Graphics/Menu/Bookmarks_N.png" y="520" x="1216" id="F:ScenesMenu.Bookmarks.Normal"/>
+        <fixed-image src="Graphics/Menu/Scene_S.png" y="750" x="370" id="F:ScenesMenu.Text.1.Selected"/>
+        <fixed-image src="Graphics/Menu/Scene_S.png" y="750" x="620" id="F:ScenesMenu.Text.2.Selected"/>
+        <fixed-image src="Graphics/Menu/Scene_S.png" y="750" x="870" id="F:ScenesMenu.Text.3.Selected"/>
+        <fixed-image src="Graphics/Menu/Scene_S.png" y="750" x="1120" id="F:ScenesMenu.Text.4.Selected"/>
+        <fixed-image src="Graphics/Menu/Scene_S.png" y="750" x="1370" id="F:ScenesMenu.Text.5.Selected"/>
+        <fixed-image src="Graphics/Menu/Bookmarks_S.png" y="520" x="1216" id="F:ScenesMenu.Bookmarks.Selected"/>
+        <group id="F:ScenesMenu.1.Selected">
+            <part ref="F:ScenesMenu.Text.1.Selected"/>
+            <part ref="F:ScenesMenu.Text.2.Normal"/>
+            <part ref="F:ScenesMenu.Text.3.Normal"/>
+            <part ref="F:ScenesMenu.Text.4.Normal"/>
+            <part ref="F:ScenesMenu.Text.5.Normal"/>
+            <part ref="F:ScenesMenu.Bookmarks.Normal"/>
+        </group>
+        <group id="F:ScenesMenu.2.Selected">
+            <part ref="F:ScenesMenu.Text.1.Normal"/>
+            <part ref="F:ScenesMenu.Text.2.Selected"/>
+            <part ref="F:ScenesMenu.Text.3.Normal"/>
+            <part ref="F:ScenesMenu.Text.4.Normal"/>
+            <part ref="F:ScenesMenu.Text.5.Normal"/>
+            <part ref="F:ScenesMenu.Bookmarks.Normal"/>
+        </group>
+        <group id="F:ScenesMenu.3.Selected">
+            <part ref="F:ScenesMenu.Text.1.Normal"/>
+            <part ref="F:ScenesMenu.Text.2.Normal"/>
+            <part ref="F:ScenesMenu.Text.3.Selected"/>
+            <part ref="F:ScenesMenu.Text.4.Normal"/>
+            <part ref="F:ScenesMenu.Text.5.Normal"/>
+            <part ref="F:ScenesMenu.Bookmarks.Normal"/>
+        </group>
+        <group id="F:ScenesMenu.4.Selected">
+            <part ref="F:ScenesMenu.Text.1.Normal"/>
+            <part ref="F:ScenesMenu.Text.2.Normal"/>
+            <part ref="F:ScenesMenu.Text.3.Normal"/>
+            <part ref="F:ScenesMenu.Text.4.Selected"/>
+            <part ref="F:ScenesMenu.Text.5.Normal"/>
+            <part ref="F:ScenesMenu.Bookmarks.Normal"/>
+        </group>
+        <group id="F:ScenesMenu.5.Selected">
+            <part ref="F:ScenesMenu.Text.1.Normal"/>
+            <part ref="F:ScenesMenu.Text.2.Normal"/>
+            <part ref="F:ScenesMenu.Text.3.Normal"/>
+            <part ref="F:ScenesMenu.Text.4.Normal"/>
+            <part ref="F:ScenesMenu.Text.5.Selected"/>
+            <part ref="F:ScenesMenu.Bookmarks.Normal"/>
+        </group>
+        <group id="F:ScenesMenu.Bookmarks.Item.Selected">
+            <part ref="F:ScenesMenu.Text.1.Normal"/>
+            <part ref="F:ScenesMenu.Text.2.Normal"/>
+            <part ref="F:ScenesMenu.Text.3.Normal"/>
+            <part ref="F:ScenesMenu.Text.4.Normal"/>
+            <part ref="F:ScenesMenu.Text.5.Normal"/>
+            <part ref="F:ScenesMenu.Bookmarks.Selected"/>
+        </group>
+        <group id="F:ScenesMenu.None.Selected">
+            <part ref="F:ScenesMenu.Text.1.Normal"/>
+            <part ref="F:ScenesMenu.Text.2.Normal"/>
+            <part ref="F:ScenesMenu.Text.3.Normal"/>
+            <part ref="F:ScenesMenu.Text.4.Normal"/>
+            <part ref="F:ScenesMenu.Text.5.Normal"/>
+            <part ref="F:ScenesMenu.Bookmarks.Normal"/>
+        </group>
+        <assembly id="F:ScenesMenu.Assembly">
+            <part name="1" ref="F:ScenesMenu.1.Selected"/>
+            <part name="2" ref="F:ScenesMenu.2.Selected"/>
+            <part name="3" ref="F:ScenesMenu.3.Selected"/>
+            <part name="4" ref="F:ScenesMenu.4.Selected"/>
+            <part name="5" ref="F:ScenesMenu.5.Selected"/>
+            <part name="bookmarks" ref="F:ScenesMenu.Bookmarks.Item.Selected"/>
+            <part name="none" ref="F:ScenesMenu.None.Selected"/>
+        </assembly>
+        <src-over id="F:ScenesMenu">
+            <part ref="F:ScenesMenu.Assembly"/>
+        </src-over>
+        <text loop-count="infinite" y="620" x="370" colors="#10f010ff #10f010ff #10e624ff #10e624ff #10dc38ff #10dc38ff #10d24cff #10d24cff #10c860ff #10c860ff #10c874ff #10c874ff #10c860ff #10c860ff #10d24cff #10d24cff #10dc38ff #10dc38ff #10f024ff #10f024ff" style="plain" size="60" font="Lisa" background="#00000080" id="F:BookmarksMenu.HelpMessage">
+            <value>Press a color key while the video is playing
+to set a bookmark.
+</value>
+        </text>
+        <text y="510" x="400" colors="#10f010ff" style="plain" size="40" font="Lisa" background="#00000080" id="F:BookmarksMenu.DeleteHelpMessage">
+            <value>Press a color key to delete selected bookmark
+</value>
+        </text>
+        <assembly export="true" id="F:BookmarksMenu.DeleteHelpMessage.State">
+            <part name="on" ref="F:BookmarksMenu.DeleteHelpMessage"/>
+            <part name="off" ref="F:Nothing"/>
+        </assembly>
+        <fixed-image src="Graphics/Menu/Scene_N.png" y="520" x="1350" id="F:BookmarksMenu.Scenes.Normal"/>
+        <fixed-image src="Graphics/Menu/Scene_S.png" y="520" x="1350" id="F:BookmarksMenu.Scenes.Selected"/>
+        <assembly export="true" id="F:BookmarksMenu.Scenes.State">
+            <part name="normal" ref="F:BookmarksMenu.Scenes.Normal"/>
+            <part name="selected" ref="F:BookmarksMenu.Scenes.Selected"/>
+        </assembly>
+        <fixed-image src="Graphics/Menu/Bookmark_Film_N.png" y="620" x="400" id="F:BookmarksMenu.1.Normal"/>
+        <fixed-image src="Graphics/Menu/Bookmark_Film_S.png" y="620" x="400" id="F:BookmarksMenu.1.Selected"/>
+        <assembly export="true" id="F:BookmarksMenu.1.State">
+            <part name="normal" ref="F:BookmarksMenu.1.Normal"/>
+            <part name="selected" ref="F:BookmarksMenu.1.Selected"/>
+        </assembly>
+        <text y="760" x="394" colors="#f0f0f0ff" style="plain" size="24" font="Lisa" background="#00000080" export="true" id="F:BookmarksMenu.1.Text">
+            <value>00:00:00:00
+</value>
+        </text>
+        <fixed-image src="Graphics/Menu/Bookmark_Film_N.png" y="620" x="650" id="F:BookmarksMenu.2.Normal"/>
+        <fixed-image src="Graphics/Menu/Bookmark_Film_S.png" y="620" x="650" id="F:BookmarksMenu.2.Selected"/>
+        <assembly export="true" id="F:BookmarksMenu.2.State">
+            <part name="normal" ref="F:BookmarksMenu.2.Normal"/>
+            <part name="selected" ref="F:BookmarksMenu.2.Selected"/>
+        </assembly>
+        <text y="760" x="644" colors="#f0f0f0ff" style="plain" size="24" font="Lisa" background="#00000080" export="true" id="F:BookmarksMenu.2.Text">
+            <value>00:00:00:00
+</value>
+        </text>
+        <fixed-image src="Graphics/Menu/Bookmark_Film_N.png" y="620" x="900" id="F:BookmarksMenu.3.Normal"/>
+        <fixed-image src="Graphics/Menu/Bookmark_Film_S.png" y="620" x="900" id="F:BookmarksMenu.3.Selected"/>
+        <assembly export="true" id="F:BookmarksMenu.3.State">
+            <part name="normal" ref="F:BookmarksMenu.3.Normal"/>
+            <part name="selected" ref="F:BookmarksMenu.3.Selected"/>
+        </assembly>
+        <text y="760" x="894" colors="#f0f0f0ff" style="plain" size="24" font="Lisa" background="#00000080" export="true" id="F:BookmarksMenu.3.Text">
+            <value>00:00:00:00
+</value>
+        </text>
+        <fixed-image src="Graphics/Menu/Bookmark_Film_N.png" y="620" x="1150" id="F:BookmarksMenu.4.Normal"/>
+        <fixed-image src="Graphics/Menu/Bookmark_Film_S.png" y="620" x="1150" id="F:BookmarksMenu.4.Selected"/>
+        <assembly export="true" id="F:BookmarksMenu.4.State">
+            <part name="normal" ref="F:BookmarksMenu.4.Normal"/>
+            <part name="selected" ref="F:BookmarksMenu.4.Selected"/>
+        </assembly>
+        <text y="760" x="1144" colors="#f0f0f0ff" style="plain" size="24" font="Lisa" background="#00000080" export="true" id="F:BookmarksMenu.4.Text">
+            <value>00:00:00:00
+</value>
+        </text>
+        <fixed-image src="Graphics/Menu/Bookmark_Film_N.png" y="620" x="1400" id="F:BookmarksMenu.5.Normal"/>
+        <fixed-image src="Graphics/Menu/Bookmark_Film_S.png" y="620" x="1400" id="F:BookmarksMenu.5.Selected"/>
+        <assembly export="true" id="F:BookmarksMenu.5.State">
+            <part name="normal" ref="F:BookmarksMenu.5.Normal"/>
+            <part name="selected" ref="F:BookmarksMenu.5.Selected"/>
+        </assembly>
+        <text y="760" x="1394" colors="#f0f0f0ff" style="plain" size="24" font="Lisa" background="#00000080" export="true" id="F:BookmarksMenu.5.Text">
+            <value>00:00:00:00
+</value>
+        </text>
+        <group id="F:BookmarksMenu.HelpMessageAndScenes">
+            <part ref="F:BookmarksMenu.HelpMessage"/>
+            <part ref="F:BookmarksMenu.Scenes.State"/>
+        </group>
+        <group id="F:BookmarksMenu.1">
+            <part ref="F:BookmarksMenu.DeleteHelpMessage.State"/>
+            <part ref="F:BookmarksMenu.Scenes.State"/>
+            <part ref="F:BookmarksMenu.1.Text"/>
+            <part ref="F:BookmarksMenu.1.State"/>
+        </group>
+        <group id="F:BookmarksMenu.2">
+            <part ref="F:BookmarksMenu.1"/>
+            <part ref="F:BookmarksMenu.2.Text"/>
+            <part ref="F:BookmarksMenu.2.State"/>
+        </group>
+        <group id="F:BookmarksMenu.3">
+            <part ref="F:BookmarksMenu.2"/>
+            <part ref="F:BookmarksMenu.3.Text"/>
+            <part ref="F:BookmarksMenu.3.State"/>
+        </group>
+        <group id="F:BookmarksMenu.4">
+            <part ref="F:BookmarksMenu.3"/>
+            <part ref="F:BookmarksMenu.4.Text"/>
+            <part ref="F:BookmarksMenu.4.State"/>
+        </group>
+        <group id="F:BookmarksMenu.5">
+            <part ref="F:BookmarksMenu.4"/>
+            <part ref="F:BookmarksMenu.5.Text"/>
+            <part ref="F:BookmarksMenu.5.State"/>
+        </group>
+        <assembly export="true" id="F:BookmarksMenu.NumBookmarks.Assembly">
+            <part name="help" ref="F:BookmarksMenu.HelpMessageAndScenes"/>
+            <part name="1" ref="F:BookmarksMenu.1"/>
+            <part name="2" ref="F:BookmarksMenu.2"/>
+            <part name="3" ref="F:BookmarksMenu.3"/>
+            <part name="4" ref="F:BookmarksMenu.4"/>
+            <part name="5" ref="F:BookmarksMenu.5"/>
+        </assembly>
+        <src-over id="F:BookmarksMenu">
+            <part ref="F:BookmarksMenu.NumBookmarks.Assembly"/>
+        </src-over>
+        <box y="422" x="1320" height="400" width="330" outline="11" fill-color="#0000005c" outline-color="#df0000ff" id="F:BonusMenu.BG"/>
+        <fixed-image src="Graphics/Menu/Game_N.png" y="450" x="1335" id="F:BonusMenu.Game.Normal"/>
+        <fixed-image src="Graphics/Menu/Game_S.png" y="450" x="1335" id="F:BonusMenu.Game.Selected"/>
+        <fixed-image src="Graphics/Menu/Bio_N.png" y="530" x="1335" id="F:BonusMenu.Bio.Normal"/>
+        <fixed-image src="Graphics/Menu/Bio_S.png" y="530" x="1335" id="F:BonusMenu.Bio.Selected"/>
+        <fixed-image src="Graphics/Menu/Bonus1_N.png" y="610" x="1335" id="F:BonusMenu.Bonus1.Normal"/>
+        <fixed-image src="Graphics/Menu/Bonus1_S.png" y="610" x="1335" id="F:BonusMenu.Bonus1.Selected"/>
+        <group id="F:BonusMenu.GameSelected">
+            <part ref="F:BonusMenu.Game.Selected"/>
+            <part ref="F:BonusMenu.Bio.Normal"/>
+            <part ref="F:BonusMenu.Bonus1.Normal"/>
+        </group>
+        <group id="F:BonusMenu.BioSelected">
+            <part ref="F:BonusMenu.Game.Normal"/>
+            <part ref="F:BonusMenu.Bio.Selected"/>
+            <part ref="F:BonusMenu.Bonus1.Normal"/>
+        </group>
+        <group id="F:BonusMenu.Bonus1Selected">
+            <part ref="F:BonusMenu.Game.Normal"/>
+            <part ref="F:BonusMenu.Bio.Normal"/>
+            <part ref="F:BonusMenu.Bonus1.Selected"/>
+        </group>
+        <group id="F:BonusMenu.NothingSelected">
+            <part ref="F:BonusMenu.Game.Normal"/>
+            <part ref="F:BonusMenu.Bio.Normal"/>
+            <part ref="F:BonusMenu.Bonus1.Normal"/>
+        </group>
+        <assembly id="F:BonusMenu.Assembly">
+            <part name="game" ref="F:BonusMenu.GameSelected"/>
+            <part name="bio" ref="F:BonusMenu.BioSelected"/>
+            <part name="bonus1" ref="F:BonusMenu.Bonus1Selected"/>
+            <part name="nothing" ref="F:BonusMenu.NothingSelected"/>
+        </assembly>
+        <src-over id="F:BonusMenu">
+            <part ref="F:BonusMenu.Assembly"/>
+        </src-over>
+        <fixed-image src="Graphics/Menu/Bookmark_Snap.png" y="70" x="1600" id="F:BookmarkSnap.Im"/>
+        <fade id="F:BookmarkSnap">
+            <part ref="F:BookmarkSnap.Im"/>
+            <keyframes>
+                <keyframe alpha="#ff" frame="0"/>
+                <keyframe alpha="#ff" frame="48"/>
+                <keyframe alpha="#0" frame="72"/>
+            </keyframes>
+            <end-commands>
+                <segment-done/>
+            </end-commands>
+        </fade>
+        <text y="100" x="600" colors="#10f010ff" style="plain" size="60" font="Lisa" background="#00000080" export="true" id="F:UserInput.Message">
+            <value>Enter The Secret Code!
+</value>
+        </text>
+        <fixed-image src="Graphics/UserInput/Letter_A_N.png" y="300" x="630" id="F:UserInput.A.Normal"/>
+        <fixed-image src="Graphics/UserInput/Letter_A_S.png" y="300" x="630" id="F:UserInput.A.Selected"/>
+        <fixed-image src="Graphics/UserInput/Letter_A_A.png" y="300" x="630" id="F:UserInput.A.Activated"/>
+        <fixed-image src="Graphics/UserInput/Letter_B_N.png" y="300" x="860" id="F:UserInput.B.Normal"/>
+        <fixed-image src="Graphics/UserInput/Letter_B_S.png" y="300" x="860" id="F:UserInput.B.Selected"/>
+        <fixed-image src="Graphics/UserInput/Letter_B_A.png" y="300" x="860" id="F:UserInput.B.Activated"/>
+        <fixed-image src="Graphics/UserInput/Letter_D_N.png" y="300" x="1090" id="F:UserInput.D.Normal"/>
+        <fixed-image src="Graphics/UserInput/Letter_D_S.png" y="300" x="1090" id="F:UserInput.D.Selected"/>
+        <fixed-image src="Graphics/UserInput/Letter_D_A.png" y="300" x="1090" id="F:UserInput.D.Activated"/>
+        <fixed-image src="Graphics/UserInput/Letter_H_N.png" y="500" x="630" id="F:UserInput.H.Normal"/>
+        <fixed-image src="Graphics/UserInput/Letter_H_S.png" y="500" x="630" id="F:UserInput.H.Selected"/>
+        <fixed-image src="Graphics/UserInput/Letter_H_A.png" y="500" x="630" id="F:UserInput.H.Activated"/>
+        <fixed-image src="Graphics/UserInput/Letter_L_N.png" y="500" x="860" id="F:UserInput.L.Normal"/>
+        <fixed-image src="Graphics/UserInput/Letter_L_S.png" y="500" x="860" id="F:UserInput.L.Selected"/>
+        <fixed-image src="Graphics/UserInput/Letter_L_A.png" y="500" x="860" id="F:UserInput.L.Activated"/>
+        <fixed-image src="Graphics/UserInput/Letter_R_N.png" y="500" x="1090" id="F:UserInput.R.Normal"/>
+        <fixed-image src="Graphics/UserInput/Letter_R_S.png" y="500" x="1090" id="F:UserInput.R.Selected"/>
+        <fixed-image src="Graphics/UserInput/Letter_R_A.png" y="500" x="1090" id="F:UserInput.R.Activated"/>
+        <fixed-image src="Graphics/UserInput/Letter_U_N.png" y="700" x="630" id="F:UserInput.U.Normal"/>
+        <fixed-image src="Graphics/UserInput/Letter_U_S.png" y="700" x="630" id="F:UserInput.U.Selected"/>
+        <fixed-image src="Graphics/UserInput/Letter_U_A.png" y="700" x="630" id="F:UserInput.U.Activated"/>
+        <fixed-image src="Graphics/UserInput/Letter_V_N.png" y="700" x="860" id="F:UserInput.V.Normal"/>
+        <fixed-image src="Graphics/UserInput/Letter_V_S.png" y="700" x="860" id="F:UserInput.V.Selected"/>
+        <fixed-image src="Graphics/UserInput/Letter_V_A.png" y="700" x="860" id="F:UserInput.V.Activated"/>
+        <fixed-image src="Graphics/UserInput/Letter_Y_N.png" y="700" x="1090" id="F:UserInput.Y.Normal"/>
+        <fixed-image src="Graphics/UserInput/Letter_Y_S.png" y="700" x="1090" id="F:UserInput.Y.Selected"/>
+        <fixed-image src="Graphics/UserInput/Letter_Y_A.png" y="700" x="1090" id="F:UserInput.Y.Activated"/>
+        <fixed-image src="Graphics/UserInput/Letter_Enter_N.png" y="900" x="630" id="F:UserInput.Enter.Normal"/>
+        <fixed-image src="Graphics/UserInput/Letter_Enter_S.png" y="900" x="630" id="F:UserInput.Enter.Selected"/>
+        <fixed-image src="Graphics/UserInput/Letter_Enter_A.png" y="900" x="630" id="F:UserInput.Enter.Activated"/>
+        <fixed-image src="Graphics/Menu/Close_N.png" y="930" x="1330" id="F:UserInput.Close.Normal"/>
+        <fixed-image src="Graphics/Menu/Close_S.png" y="930" x="1330" id="F:UserInput.Close.Selected"/>
+        <fixed-image src="Graphics/Menu/Close_A.png" y="930" x="1330" id="F:UserInput.Close.Activated"/>
+        <timer num-frames="12" id="F:UserInput.A.Timer">
+            <end-commands>
+                <activate-part part-name="a.selected" assembly="F:UserInput"/>
+            </end-commands>
+        </timer>
+        <timer num-frames="12" id="F:UserInput.B.Timer">
+            <end-commands>
+                <activate-part part-name="b.selected" assembly="F:UserInput"/>
+            </end-commands>
+        </timer>
+        <timer num-frames="12" id="F:UserInput.D.Timer">
+            <end-commands>
+                <activate-part part-name="d.selected" assembly="F:UserInput"/>
+            </end-commands>
+        </timer>
+        <timer num-frames="12" id="F:UserInput.H.Timer">
+            <end-commands>
+                <activate-part part-name="h.selected" assembly="F:UserInput"/>
+            </end-commands>
+        </timer>
+        <timer num-frames="12" id="F:UserInput.L.Timer">
+            <end-commands>
+                <activate-part part-name="l.selected" assembly="F:UserInput"/>
+            </end-commands>
+        </timer>
+        <timer num-frames="12" id="F:UserInput.R.Timer">
+            <end-commands>
+                <activate-part part-name="r.selected" assembly="F:UserInput"/>
+            </end-commands>
+        </timer>
+        <timer num-frames="12" id="F:UserInput.U.Timer">
+            <end-commands>
+                <activate-part part-name="u.selected" assembly="F:UserInput"/>
+            </end-commands>
+        </timer>
+        <timer num-frames="12" id="F:UserInput.V.Timer">
+            <end-commands>
+                <activate-part part-name="v.selected" assembly="F:UserInput"/>
+            </end-commands>
+        </timer>
+        <timer num-frames="12" id="F:UserInput.Y.Timer">
+            <end-commands>
+                <activate-part part-name="y.selected" assembly="F:UserInput"/>
+            </end-commands>
+        </timer>
+        <timer num-frames="12" id="F:UserInput.Enter.Timer">
+            <end-commands>
+                <activate-part part-name="enter.selected" assembly="F:UserInput"/>
+            </end-commands>
+        </timer>
+        <timer num-frames="12" id="F:UserInput.Close.Timer">
+            <end-commands>
+                <activate-part part-name="close.selected" assembly="F:UserInput"/>
+            </end-commands>
+        </timer>
+        <menu-assembly id="F:UserInput">
+            <template>
+                <item id="all">
+                    <part ref="F:UserInput.Message"/>
+                </item>
+                <item id="a">
+                    <part ref="F:UserInput.A.Normal"/>
+                </item>
+                <item id="b">
+                    <part ref="F:UserInput.B.Normal"/>
+                </item>
+                <item id="d">
+                    <part ref="F:UserInput.D.Normal"/>
+                </item>
+                <item id="h">
+                    <part ref="F:UserInput.H.Normal"/>
+                </item>
+                <item id="l">
+                    <part ref="F:UserInput.L.Normal"/>
+                </item>
+                <item id="r">
+                    <part ref="F:UserInput.R.Normal"/>
+                </item>
+                <item id="u">
+                    <part ref="F:UserInput.U.Normal"/>
+                </item>
+                <item id="v">
+                    <part ref="F:UserInput.V.Normal"/>
+                </item>
+                <item id="y">
+                    <part ref="F:UserInput.Y.Normal"/>
+                </item>
+                <item id="enter">
+                    <part ref="F:UserInput.Enter.Normal"/>
+                </item>
+                <item id="close">
+                    <part ref="F:UserInput.Close.Normal"/>
+                </item>
+            </template>
+            <parts>
+                <part name="a.selected">
+                    <replacement id="a">
+                        <part ref="F:UserInput.A.Selected"/>
+                    </replacement>
+                </part>
+                <part name="b.selected">
+                    <replacement id="b">
+                        <part ref="F:UserInput.B.Selected"/>
+                    </replacement>
+                </part>
+                <part name="d.selected">
+                    <replacement id="d">
+                        <part ref="F:UserInput.D.Selected"/>
+                    </replacement>
+                </part>
+                <part name="h.selected">
+                    <replacement id="h">
+                        <part ref="F:UserInput.H.Selected"/>
+                    </replacement>
+                </part>
+                <part name="l.selected">
+                    <replacement id="l">
+                        <part ref="F:UserInput.L.Selected"/>
+                    </replacement>
+                </part>
+                <part name="r.selected">
+                    <replacement id="r">
+                        <part ref="F:UserInput.R.Selected"/>
+                    </replacement>
+                </part>
+                <part name="u.selected">
+                    <replacement id="u">
+                        <part ref="F:UserInput.U.Selected"/>
+                    </replacement>
+                </part>
+                <part name="v.selected">
+                    <replacement id="v">
+                        <part ref="F:UserInput.V.Selected"/>
+                    </replacement>
+                </part>
+                <part name="y.selected">
+                    <replacement id="y">
+                        <part ref="F:UserInput.Y.Selected"/>
+                    </replacement>
+                </part>
+                <part name="enter.selected">
+                    <replacement id="enter">
+                        <part ref="F:UserInput.Enter.Selected"/>
+                    </replacement>
+                </part>
+                <part name="close.selected">
+                    <replacement id="close">
+                        <part ref="F:UserInput.Close.Selected"/>
+                    </replacement>
+                </part>
+                <part name="a.activated">
+                    <replacement id="a">
+                        <part ref="F:UserInput.A.Activated"/>
+                        <part ref="F:UserInput.A.Timer"/>
+                    </replacement>
+                </part>
+                <part name="b.activated">
+                    <replacement id="b">
+                        <part ref="F:UserInput.B.Activated"/>
+                        <part ref="F:UserInput.B.Timer"/>
+                    </replacement>
+                </part>
+                <part name="d.activated">
+                    <replacement id="d">
+                        <part ref="F:UserInput.D.Activated"/>
+                        <part ref="F:UserInput.D.Timer"/>
+                    </replacement>
+                </part>
+                <part name="h.activated">
+                    <replacement id="h">
+                        <part ref="F:UserInput.H.Activated"/>
+                        <part ref="F:UserInput.H.Timer"/>
+                    </replacement>
+                </part>
+                <part name="l.activated">
+                    <replacement id="l">
+                        <part ref="F:UserInput.L.Activated"/>
+                        <part ref="F:UserInput.L.Timer"/>
+                    </replacement>
+                </part>
+                <part name="r.activated">
+                    <replacement id="r">
+                        <part ref="F:UserInput.R.Activated"/>
+                        <part ref="F:UserInput.R.Timer"/>
+                    </replacement>
+                </part>
+                <part name="u.activated">
+                    <replacement id="u">
+                        <part ref="F:UserInput.U.Activated"/>
+                        <part ref="F:UserInput.U.Timer"/>
+                    </replacement>
+                </part>
+                <part name="v.activated">
+                    <replacement id="v">
+                        <part ref="F:UserInput.V.Activated"/>
+                        <part ref="F:UserInput.V.Timer"/>
+                    </replacement>
+                </part>
+                <part name="y.activated">
+                    <replacement id="y">
+                        <part ref="F:UserInput.Y.Activated"/>
+                        <part ref="F:UserInput.Y.Timer"/>
+                    </replacement>
+                </part>
+                <part name="enter.activated">
+                    <replacement id="enter">
+                        <part ref="F:UserInput.Enter.Activated"/>
+                        <part ref="F:UserInput.Enter.Timer"/>
+                    </replacement>
+                </part>
+                <part name="close.activated">
+                    <replacement id="close">
+                        <part ref="F:UserInput.Close.Selected"/>
+                        <part ref="F:UserInput.Close.Timer"/>
+                    </replacement>
+                </part>
+            </parts>
+        </menu-assembly>
+        <scaling-model id="F:UserInput.Success.Scale">
+            <keyframes>
+                <keyframe y-scale="1000" x-scale="1000" frame="0" y="800" x="1000"/>
+                <keyframe y-scale="1000" x-scale="-1000" frame="12" y="800" x="1000"/>
+                <keyframe y-scale="1000" x-scale="1000" frame="24" y="800" x="1000"/>
+                <keyframe y-scale="1050" x-scale="1050" frame="28" y="800" x="1000"/>
+                <keyframe y-scale="1150" x-scale="1150" frame="32" y="800" x="1000"/>
+                <keyframe y-scale="1250" x-scale="1250" frame="36" y="800" x="1000"/>
+                <keyframe y-scale="2000" x-scale="2000" frame="72" y="800" x="1000"/>
+            </keyframes>
+            <end-commands>
+                <segment-done/>
+            </end-commands>
+        </scaling-model>
+        <box scale-model="F:UserInput.Success.Scale" y="100" x="600" height="60" width="700" fill-color="#10f01060" id="F:UserInput.Message.Scaled"/>
+        <image-sequence scale-model="F:UserInput.Success.Scale" y="300" x="630" id="F:UserInput.A.Scaled">
+            <images>
+                <img src="Graphics/UserInput/Letter_A_N.png"/>
+            </images>
+        </image-sequence>
+        <fixed-image src="Graphics/UserInput/Letter_B_N.png" scale-model="F:UserInput.Success.Scale" y="300" x="860" id="F:UserInput.B.Scaled"/>
+        <fixed-image src="Graphics/UserInput/Letter_D_N.png" scale-model="F:UserInput.Success.Scale" y="300" x="1090" id="F:UserInput.D.Scaled"/>
+        <fixed-image src="Graphics/UserInput/Letter_H_N.png" scale-model="F:UserInput.Success.Scale" y="500" x="630" id="F:UserInput.H.Scaled"/>
+        <fixed-image src="Graphics/UserInput/Letter_L_N.png" scale-model="F:UserInput.Success.Scale" y="500" x="860" id="F:UserInput.L.Scaled"/>
+        <fixed-image src="Graphics/UserInput/Letter_R_N.png" scale-model="F:UserInput.Success.Scale" y="500" x="1090" id="F:UserInput.R.Scaled"/>
+        <fixed-image src="Graphics/UserInput/Letter_U_N.png" scale-model="F:UserInput.Success.Scale" y="700" x="630" id="F:UserInput.U.Scaled"/>
+        <fixed-image src="Graphics/UserInput/Letter_V_N.png" scale-model="F:UserInput.Success.Scale" y="700" x="860" id="F:UserInput.V.Scaled"/>
+        <fixed-image src="Graphics/UserInput/Letter_Y_N.png" scale-model="F:UserInput.Success.Scale" y="700" x="1090" id="F:UserInput.Y.Scaled"/>
+        <fixed-image src="Graphics/UserInput/Letter_Enter_N.png" scale-model="F:UserInput.Success.Scale" y="900" x="630" id="F:UserInput.Enter.Scaled"/>
+        <fixed-image src="Graphics/Menu/Close_N.png" scale-model="F:UserInput.Success.Scale" y="930" x="1330" id="F:UserInput.Close.Scaled"/>
+        <group id="F:UserInput.Success.Group">
+            <part ref="F:UserInput.Message.Scaled"/>
+            <part ref="F:UserInput.Success.Scale"/>
+            <part ref="F:UserInput.A.Scaled"/>
+            <part ref="F:UserInput.B.Scaled"/>
+            <part ref="F:UserInput.D.Scaled"/>
+            <part ref="F:UserInput.H.Scaled"/>
+            <part ref="F:UserInput.L.Scaled"/>
+            <part ref="F:UserInput.R.Scaled"/>
+            <part ref="F:UserInput.U.Scaled"/>
+            <part ref="F:UserInput.V.Scaled"/>
+            <part ref="F:UserInput.Y.Scaled"/>
+            <part ref="F:UserInput.Enter.Scaled"/>
+            <part ref="F:UserInput.Close.Scaled"/>
+        </group>
+        <fade id="F:UserInput.Success">
+            <part ref="F:UserInput.Success.Group"/>
+            <keyframes>
+                <keyframe alpha="#ff" frame="0"/>
+                <keyframe alpha="#ff" frame="24"/>
+                <keyframe alpha="#0" frame="72"/>
+            </keyframes>
+        </fade>
+        <fixed-image src="Graphics/Network/bio00000_img.png" y="200" x="575" id="F:Bio.Bunny.Original"/>
+        <ext-modifier class="com.hdcookbook.bookmenu.menu.MenuExtensionParser$1" export="true" id="F:Bio.Bunny">
+            <part ref="F:Bio.Bunny.Original"/>
+            <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$1" name="class"/>
+            <param value="F:Bio.Bunny" name="name"/>
+            <param value="SEFixedImage(F:Bio.Bunny.Original)" name="part"/>
+            <param value="com.hdcookbook.bookmenu.menu.BioImageFeature" name="runtimeClassName"/>
+            <param value="575" name="x"/>
+            <param value="200" name="y"/>
+        </ext-modifier>
+        <fixed-image src="Graphics/Network/Download_N.png" y="800" x="580" id="F:Bio.Download.Normal"/>
+        <fixed-image src="Graphics/Network/Download_S.png" y="800" x="580" id="F:Bio.Download.Selected"/>
+        <fixed-image src="Graphics/Network/Close_N.png" y="800" x="500" id="F:Bio.Close.Normal"/>
+        <fixed-image src="Graphics/Network/Close_S.png" y="800" x="500" id="F:Bio.Close.Selected"/>
+        <group id="F:Bio.Available.Download.Selected">
+            <part ref="F:Bio.Download.Selected"/>
+            <part ref="F:Bio.Close.Normal"/>
+        </group>
+        <group id="F:Bio.Available.Close.Selected">
+            <part ref="F:Bio.Download.Normal"/>
+            <part ref="F:Bio.Close.Selected"/>
+        </group>
+        <assembly id="F:Bio.Available.Assembly">
+            <part name="close" ref="F:Bio.Available.Close.Selected"/>
+            <part name="download" ref="F:Bio.Available.Download.Selected"/>
+        </assembly>
+        <group id="F:Bio.Available">
+            <part ref="F:Bio.Bunny"/>
+            <part ref="F:Bio.Available.Assembly"/>
+        </group>
+        <group id="F:Bio.NotAvailable">
+            <part ref="F:Bio.Bunny"/>
+            <part ref="F:Bio.Close.Selected"/>
+        </group>
+        <group id="F:Everything">
+            <part ref="F:SpinningYinYangClockwise"/>
+            <part ref="F:SpinningYinYangCCW"/>
+            <part ref="F:LoadingText"/>
+            <part ref="F:MainMenu"/>
+            <part ref="F:MainMenu.Targeted"/>
+            <part ref="F:StillYinYang"/>
+            <part ref="F:MainMenu.In"/>
+            <part ref="F:MainMenu.Out"/>
+            <part ref="F:VideoMenu"/>
+            <part ref="F:VideoMenu.In"/>
+            <part ref="F:VideoMenu.Out"/>
+            <part ref="F:MenuInactive.SetupActivated"/>
+            <part ref="F:MenuInactive.ScenesActivated"/>
+            <part ref="F:MenuInactive.BonusActivated"/>
+            <part ref="F:SetupMenu.BG"/>
+            <part ref="F:SetupMenu"/>
+            <part ref="F:ScenesMenu.BG"/>
+            <part ref="F:ScenesMenu"/>
+            <part ref="F:BonusMenu.BG"/>
+            <part ref="F:BonusMenu"/>
+            <part ref="F:BookmarksMenu"/>
+            <part ref="F:BookmarkSnap"/>
+            <part ref="F:UserInput"/>
+            <part ref="F:Bio.Available"/>
+            <part ref="F:Bio.NotAvailable"/>
+            <part ref="F:UserInput.Success"/>
+        </group>
+    </features>
+    <rc-handlers>
+        <visual assembly="F:MainMenu" id="H:MainMenu">
+            <grid>
+                <row>
+                    <at y="1" x="0"/>
+                    <activate/>
+                    <activate/>
+                    <activate/>
+                </row>
+                <row>
+                    <state activate="play.activated" select="play.selected" id="play">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ playActivateSound(); ]]</script>
+                            </script-command>
+                            <activate-segment segment="S:MainMenuRollIn"/>
+                            <ext-command>
+                                <param value="movie" name="argument"/>
+                                <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                                <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                            </ext-command>
+                        </activate-commands>
+                        <mouse-rect y="860" x="400" height="96" width="300"/>
+                    </state>
+                    <state activate="setup.activated" select="setup.selected" id="setup">
+                        <activate-commands>
+                            <set-visual-rc activate="false" state="dts_51" rc-handler="H:SetupMenu"/>
+                            <activate-segment push="true" segment="S:SetupShowing"/>
+                        </activate-commands>
+                        <mouse-rect y="860" x="700" height="96" width="300"/>
+                    </state>
+                    <state activate="scenes.activated" select="scenes.selected" id="scenes">
+                        <activate-commands>
+                            <activate-segment push="true" segment="S:ScenesShowing"/>
+                            <set-visual-rc activate="false" state="1" rc-handler="H:ScenesMenu"/>
+                        </activate-commands>
+                        <mouse-rect y="860" x="1000" height="96" width="300"/>
+                    </state>
+                    <state activate="bonus.activated" select="bonus.selected" id="bonus">
+                        <activate-commands>
+                            <activate-part part-name="game" assembly="F:BonusMenu.Assembly"/>
+                            <activate-segment push="true" segment="S:BonusShowing"/>
+                        </activate-commands>
+                        <mouse-rect y="860" x="1300" height="96" width="300"/>
+                    </state>
+                </row>
+            </grid>
+        </visual>
+        <visual assembly="F:VideoMenu" id="H:VideoMenu">
+            <grid>
+                <row>
+                    <ref state="play"/>
+                    <activate/>
+                    <activate/>
+                    <activate/>
+                    <ref state="close"/>
+                </row>
+                <row>
+                    <state activate="play.activated" select="play.selected" id="play">
+                        <activate-commands>
+                            <activate-segment segment="S:VideoMenuRollBack"/>
+                            <ext-command>
+                                <param value="movie" name="argument"/>
+                                <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                                <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                            </ext-command>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ playActivateSound(); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="860" x="400" height="96" width="300"/>
+                    </state>
+                    <state activate="setup.activated" select="setup.selected" id="setup">
+                        <activate-commands>
+                            <set-visual-rc activate="false" state="dts_51" rc-handler="H:SetupMenu"/>
+                            <activate-segment push="true" segment="S:SetupShowing"/>
+                        </activate-commands>
+                        <mouse-rect y="860" x="700" height="96" width="300"/>
+                    </state>
+                    <state activate="scenes.activated" select="scenes.selected" id="scenes">
+                        <activate-commands>
+                            <activate-segment push="true" segment="S:ScenesShowing"/>
+                            <set-visual-rc activate="false" state="1" rc-handler="H:ScenesMenu"/>
+                        </activate-commands>
+                        <mouse-rect y="860" x="1000" height="96" width="300"/>
+                    </state>
+                    <state activate="bonus.activated" select="bonus.selected" id="bonus">
+                        <activate-commands>
+                            <activate-part part-name="game" assembly="F:BonusMenu.Assembly"/>
+                            <activate-segment push="true" segment="S:BonusShowing"/>
+                        </activate-commands>
+                        <mouse-rect y="860" x="1300" height="96" width="300"/>
+                    </state>
+                    <state activate="close.activated" select="close.selected" id="close">
+                        <activate-commands>
+                            <activate-segment segment="S:VideoMenuRollBack"/>
+                        </activate-commands>
+                        <mouse-rect y="860" x="1600" height="96" width="200"/>
+                    </state>
+                </row>
+            </grid>
+        </visual>
+        <visual assembly="F:SetupMenu.Assembly" id="H:SetupMenu">
+            <grid>
+                <row>
+                    <state select="dts_51" id="dts_51">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ selectAudio(1); ]]</script>
+                            </script-command>
+                            <set-visual-rc activate="false" state="english_st" rc-handler="H:SetupMenu"/>
+                        </activate-commands>
+                        <mouse-rect y="260" x="815" height="60" width="281"/>
+                    </state>
+                </row>
+                <row>
+                    <state select="dts_71" id="dts_71">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ selectAudio(2);  ]]</script>
+                            </script-command>
+                            <set-visual-rc activate="false" state="english_st" rc-handler="H:SetupMenu"/>
+                        </activate-commands>
+                        <mouse-rect y="320" x="815" height="60" width="281"/>
+                    </state>
+                </row>
+                <row>
+                    <state select="english_st" id="english_st">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ selectSubtitles(1); ]]</script>
+                            </script-command>
+                            <set-visual-rc activate="false" state="setup" rc-handler="H:MainMenu"/>
+                            <set-visual-rc activate="false" state="setup" rc-handler="H:VideoMenu"/>
+                            <activate-segment pop="true"/>
+                        </activate-commands>
+                        <mouse-rect y="494" x="815" height="60" width="281"/>
+                    </state>
+                </row>
+                <row>
+                    <state select="spanish_st" id="spanish_st">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ selectSubtitles(2); ]]</script>
+                            </script-command>
+                            <set-visual-rc activate="false" state="setup" rc-handler="H:MainMenu"/>
+                            <set-visual-rc activate="false" state="setup" rc-handler="H:VideoMenu"/>
+                            <activate-segment pop="true"/>
+                        </activate-commands>
+                        <mouse-rect y="553" x="815" height="61" width="281"/>
+                    </state>
+                </row>
+                <row>
+                    <state select="st_off" id="st_off">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ selectSubtitles(0); ]]</script>
+                            </script-command>
+                            <set-visual-rc activate="false" state="setup" rc-handler="H:MainMenu"/>
+                            <set-visual-rc activate="false" state="setup" rc-handler="H:VideoMenu"/>
+                            <activate-segment pop="true"/>
+                        </activate-commands>
+                        <mouse-rect y="614" x="815" height="56" width="281"/>
+                    </state>
+                </row>
+                <row>
+                    <state id="to_main">
+                        <select-commands>
+                            <set-visual-rc activate="false" state="setup" rc-handler="H:MainMenu"/>
+                            <set-visual-rc activate="false" state="setup" rc-handler="H:VideoMenu"/>
+                            <activate-segment pop="true"/>
+                        </select-commands>
+                    </state>
+                </row>
+                <row>
+                    <ref state="to_main"/>
+                </row>
+                <row>
+                    <state select="none" id="to_main_mouse">
+                        <activate-commands>
+                            <set-visual-rc activate="false" state="setup" rc-handler="H:MainMenu"/>
+                            <set-visual-rc activate="false" state="setup" rc-handler="H:VideoMenu"/>
+                            <activate-segment pop="true"/>
+                        </activate-commands>
+                        <mouse-rect y="670" x="0" height="610" width="1920"/>
+                    </state>
+                </row>
+            </grid>
+        </visual>
+        <visual assembly="F:ScenesMenu.Assembly" id="H:ScenesMenu">
+            <grid>
+                <row>
+                    <state select="bookmarks" id="bookmarks">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(1, false); ]]</script>
+                            </script-command>
+                            <activate-segment segment="S:BookmarksShowing"/>
+                        </activate-commands>
+                        <mouse-rect y="500" x="330" height="80" width="1312"/>
+                    </state>
+                    <ref state="bookmarks"/>
+                    <ref state="bookmarks"/>
+                    <ref state="bookmarks"/>
+                    <ref state="bookmarks"/>
+                </row>
+                <row>
+                    <state select="1" id="1">
+                        <activate-commands>
+                            <ext-command>
+                                <param value="scene_1" name="argument"/>
+                                <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                                <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                            </ext-command>
+                            <activate-segment segment="S:MainMenuRollIn"/>
+                        </activate-commands>
+                        <mouse-rect y="580" x="330" height="243" width="270"/>
+                    </state>
+                    <state select="2" id="2">
+                        <activate-commands>
+                            <ext-command>
+                                <param value="scene_2" name="argument"/>
+                                <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                                <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                            </ext-command>
+                            <activate-segment segment="S:MainMenuRollIn"/>
+                        </activate-commands>
+                        <mouse-rect y="580" x="600" height="243" width="250"/>
+                    </state>
+                    <state select="3" id="3">
+                        <activate-commands>
+                            <ext-command>
+                                <param value="scene_3" name="argument"/>
+                                <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                                <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                            </ext-command>
+                            <activate-segment segment="S:MainMenuRollIn"/>
+                        </activate-commands>
+                        <mouse-rect y="580" x="850" height="243" width="250"/>
+                    </state>
+                    <state select="4" id="4">
+                        <activate-commands>
+                            <ext-command>
+                                <param value="scene_4" name="argument"/>
+                                <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                                <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                            </ext-command>
+                            <activate-segment segment="S:MainMenuRollIn"/>
+                        </activate-commands>
+                        <mouse-rect y="580" x="1100" height="243" width="250"/>
+                    </state>
+                    <state select="5" id="5">
+                        <activate-commands>
+                            <ext-command>
+                                <param value="scene_5" name="argument"/>
+                                <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                                <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                            </ext-command>
+                            <activate-segment segment="S:MainMenuRollIn"/>
+                        </activate-commands>
+                        <mouse-rect y="580" x="1350" height="243" width="292"/>
+                    </state>
+                </row>
+                <row>
+                    <state id="to_main">
+                        <select-commands>
+                            <set-visual-rc activate="false" state="scenes" rc-handler="H:VideoMenu"/>
+                            <set-visual-rc activate="false" state="scenes" rc-handler="H:MainMenu"/>
+                            <activate-segment pop="true"/>
+                        </select-commands>
+                    </state>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                </row>
+                <row>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                </row>
+                <row>
+                    <state select="none" id="to_main_mouse">
+                        <activate-commands>
+                            <set-visual-rc activate="false" state="scenes" rc-handler="H:VideoMenu"/>
+                            <set-visual-rc activate="false" state="scenes" rc-handler="H:MainMenu"/>
+                            <activate-segment pop="true"/>
+                        </activate-commands>
+                        <mouse-rect y="840" x="0" height="440" width="1920"/>
+                    </state>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                </row>
+            </grid>
+        </visual>
+        <visual export="true" id="H:BookmarksMenu">
+            <grid>
+                <row>
+                    <state id="scenes">
+                        <select-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(0, false); ]]</script>
+                            </script-command>
+                        </select-commands>
+                        <activate-commands>
+                            <set-visual-rc activate="false" state="1" rc-handler="H:ScenesMenu"/>
+                            <activate-segment segment="S:ScenesShowing"/>
+                        </activate-commands>
+                        <mouse-rect y="500" x="330" height="80" width="1312"/>
+                    </state>
+                    <ref state="scenes"/>
+                    <ref state="scenes"/>
+                    <ref state="scenes"/>
+                    <ref state="scenes"/>
+                </row>
+                <row>
+                    <state id="1">
+                        <select-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(1, false); ]]</script>
+                            </script-command>
+                        </select-commands>
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(1, true); ]]</script>
+                            </script-command>
+                            <activate-segment segment="S:MainMenuRollIn"/>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ playActivateSound(); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="580" x="330" height="243" width="270"/>
+                    </state>
+                    <state id="2">
+                        <select-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(2, false); ]]</script>
+                            </script-command>
+                        </select-commands>
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(2, true); ]]</script>
+                            </script-command>
+                            <activate-segment segment="S:MainMenuRollIn"/>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ playActivateSound(); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="580" x="600" height="243" width="250"/>
+                    </state>
+                    <state id="3">
+                        <select-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(3, false); ]]</script>
+                            </script-command>
+                        </select-commands>
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(3, true); ]]</script>
+                            </script-command>
+                            <activate-segment segment="S:MainMenuRollIn"/>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ playActivateSound(); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="580" x="850" height="243" width="250"/>
+                    </state>
+                    <state id="4">
+                        <select-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(4, false); ]]</script>
+                            </script-command>
+                        </select-commands>
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(4, true); ]]</script>
+                            </script-command>
+                            <activate-segment segment="S:MainMenuRollIn"/>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ playActivateSound(); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="580" x="1100" height="243" width="250"/>
+                    </state>
+                    <state id="5">
+                        <select-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(5, false); ]]</script>
+                            </script-command>
+                        </select-commands>
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(5, true); ]]</script>
+                            </script-command>
+                            <activate-segment segment="S:MainMenuRollIn"/>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ playActivateSound(); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="580" x="1350" height="243" width="292"/>
+                    </state>
+                </row>
+                <row>
+                    <state id="to_main">
+                        <select-commands>
+                            <set-visual-rc activate="false" state="scenes" rc-handler="H:VideoMenu"/>
+                            <set-visual-rc activate="false" state="scenes" rc-handler="H:MainMenu"/>
+                            <activate-segment pop="true"/>
+                        </select-commands>
+                    </state>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                </row>
+                <row>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                </row>
+                <row>
+                    <state id="to_main_mouse">
+                        <select-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setBookmarkUI(-1, false); ]]</script>
+                            </script-command>
+                        </select-commands>
+                        <activate-commands>
+                            <set-visual-rc activate="false" state="scenes" rc-handler="H:VideoMenu"/>
+                            <set-visual-rc activate="false" state="scenes" rc-handler="H:MainMenu"/>
+                            <activate-segment pop="true"/>
+                        </activate-commands>
+                        <mouse-rect y="840" x="0" height="440" width="1920"/>
+                    </state>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                    <ref state="to_main"/>
+                </row>
+            </grid>
+        </visual>
+        <key-pressed keys="blue yellow red green" id="H:BookmarksMenu.Color">
+            <execute>
+                <script-command>
+                    <script runat="runtime" type="text/java">java_command [[ XLET_ONLY_[[ 
+	    	getMenuDirector().deleteCurrentBookmark(); 
+	    ]] ]]</script>
+                </script-command>
+            </execute>
+        </key-pressed>
+        <key-pressed keys="popup-menu" id="H:PopupListener">
+            <execute>
+                <set-visual-rc activate="false" state="play" rc-handler="H:VideoMenu"/>
+                <activate-part part-name="close" assembly="F:MenuInactive.CloseOrNothing"/>
+                <activate-segment segment="S:VideoMenuRollout"/>
+            </execute>
+        </key-pressed>
+        <key-pressed keys="blue yellow red green" id="H:MakeBookmarkListener">
+            <execute>
+                <script-command>
+                    <script runat="runtime" type="text/java">java_command [[ XLET_ONLY_[[
+	        getMenuDirector().makeBookmark(); 
+	    ]] ]]</script>
+                </script-command>
+                <activate-segment segment="S:BookmarkSnap"/>
+            </execute>
+        </key-pressed>
+        <visual assembly="F:BonusMenu.Assembly" id="H:BonusMenu">
+            <grid>
+                <row>
+                    <state select="game" id="game">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ 
+				    XLET_ONLY_[[
+					getMenuDirector().xlet.startGame();
+				    ]]
+				    playActivateSound();
+				]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="440" x="1320" height="80" width="330"/>
+                    </state>
+                </row>
+                <row>
+                    <state select="bio" id="bio">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ 
+				    playActivateSound();
+				    GRIN_COMMAND_REF_[[ BOOK:PlayVideo  ]]
+				    XLET_ONLY_[[
+					getMenuDirector().activateBio();
+					    // Activates S:Bio.Available 
+					    // or S:Bio.NotAvailable
+				    ]]
+				]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="520" x="1320" height="80" width="330"/>
+                    </state>
+                </row>
+                <row>
+                    <state select="bonus1" id="bonus1">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ 
+				    playActivateSound(); 
+				    setText("-init-");
+				]]</script>
+                            </script-command>
+                            <ext-command>
+                                <param value="nothing" name="argument"/>
+                                <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                                <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                            </ext-command>
+                            <activate-segment segment="S:UserInput"/>
+                        </activate-commands>
+                        <mouse-rect y="600" x="1320" height="80" width="330"/>
+                    </state>
+                </row>
+                <row>
+                    <state id="back">
+                        <select-commands>
+                            <set-visual-rc activate="false" state="bonus" rc-handler="H:VideoMenu"/>
+                            <set-visual-rc activate="false" state="bonus" rc-handler="H:MainMenu"/>
+                            <activate-segment pop="true"/>
+                        </select-commands>
+                    </state>
+                </row>
+                <row>
+                    <ref state="back"/>
+                </row>
+                <row>
+                    <state select="nothing" id="back_mouse">
+                        <activate-commands>
+                            <set-visual-rc activate="false" state="bonus" rc-handler="H:VideoMenu"/>
+                            <set-visual-rc activate="false" state="bonus" rc-handler="H:MainMenu"/>
+                            <activate-segment pop="true"/>
+                        </activate-commands>
+                        <mouse-rect y="700" x="0" height="580" width="1920"/>
+                    </state>
+                </row>
+            </grid>
+        </visual>
+        <visual start-selected="true" assembly="F:UserInput" id="H:UserInput">
+            <grid>
+                <row>
+                    <ref state="close"/>
+                    <state activate="a.activated" select="a.selected" id="a" up="close">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setText("A"); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="290" x="600" height="200" width="230"/>
+                    </state>
+                    <state activate="b.activated" select="b.selected" id="b" up="close">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setText("B"); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="290" x="830" height="200" width="230"/>
+                    </state>
+                    <state activate="d.activated" select="d.selected" id="d" up="close">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setText("D"); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="290" x="1060" height="200" width="230"/>
+                    </state>
+                    <ref state="h"/>
+                </row>
+                <row>
+                    <ref state="d"/>
+                    <state activate="h.activated" select="h.selected" id="h">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setText("H"); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="490" x="600" height="200" width="230"/>
+                    </state>
+                    <state activate="l.activated" select="l.selected" id="l">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setText("L"); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="490" x="830" height="200" width="230"/>
+                    </state>
+                    <state activate="r.activated" select="r.selected" id="r">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setText("R"); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="490" x="1060" height="200" width="230"/>
+                    </state>
+                    <ref state="u"/>
+                </row>
+                <row>
+                    <ref state="r"/>
+                    <state activate="u.activated" select="u.selected" id="u">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setText("U"); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="690" x="600" height="200" width="230"/>
+                    </state>
+                    <state activate="v.activated" select="v.selected" id="v">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setText("V"); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="690" x="830" height="200" width="230"/>
+                    </state>
+                    <state activate="y.activated" select="y.selected" id="y">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setText("Y"); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="690" x="1060" height="200" width="230"/>
+                    </state>
+                    <ref state="enter"/>
+                </row>
+                <row>
+                    <null/>
+                    <ref state="enter"/>
+                    <ref state="enter"/>
+                    <ref state="enter"/>
+                    <null/>
+                </row>
+                <row>
+                    <null/>
+                    <null/>
+                    <ref state="v"/>
+                    <ref state="enter"/>
+                    <null/>
+                </row>
+                <row>
+                    <null/>
+                    <ref state="y"/>
+                    <state activate="enter.activated" select="enter.selected" id="enter">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ setText("-enter-"); 
+							  playActivateSound(); ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="890" x="600" height="120" width="690"/>
+                    </state>
+                    <state activate="close.activated" select="close.selected" id="close">
+                        <activate-commands>
+                            <set-visual-rc activate="false" state="bonus" rc-handler="H:MainMenu"/>
+                            <set-visual-rc activate="false" state="bonus" rc-handler="H:VideoMenu"/>
+                            <ext-command>
+                                <param value="menu" name="argument"/>
+                                <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                                <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                            </ext-command>
+                            <activate-segment segment="S:MenuShowing"/>
+                        </activate-commands>
+                        <mouse-rect y="890" x="1300" height="120" width="261"/>
+                    </state>
+                    <ref state="a"/>
+                </row>
+            </grid>
+        </visual>
+        <visual assembly="F:Bio.Available.Assembly" id="H:Bio.Available">
+            <grid>
+                <row>
+                    <state select="close" id="close">
+                        <activate-commands>
+                            <set-visual-rc activate="false" state="bonus" rc-handler="H:VideoMenu"/>
+                            <set-visual-rc activate="false" state="bonus" rc-handler="H:MainMenu"/>
+                            <ext-command>
+                                <param value="menu" name="argument"/>
+                                <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                                <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                            </ext-command>
+                            <activate-segment segment="S:MenuShowing"/>
+                        </activate-commands>
+                        <mouse-rect y="0" x="0" height="1280" width="1920"/>
+                    </state>
+                    <state select="download" id="download">
+                        <activate-commands>
+                            <script-command>
+                                <script runat="runtime" type="text/java">java_command [[ 
+				playActivateSound(); 
+				XLET_ONLY_[[
+				    getMenuDirector().downloadBio(); 
+				]]
+			    ]]</script>
+                            </script-command>
+                        </activate-commands>
+                        <mouse-rect y="780" x="560" height="95" width="741"/>
+                    </state>
+                </row>
+            </grid>
+        </visual>
+        <visual id="H:Bio.NotAvailable">
+            <grid>
+                <row>
+                    <state id="close">
+                        <activate-commands>
+                            <set-visual-rc activate="false" state="bonus" rc-handler="H:VideoMenu"/>
+                            <set-visual-rc activate="false" state="bonus" rc-handler="H:MainMenu"/>
+                            <ext-command>
+                                <param value="menu" name="argument"/>
+                                <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                                <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                            </ext-command>
+                            <activate-segment segment="S:MenuShowing"/>
+                        </activate-commands>
+                        <mouse-rect y="0" x="0" height="1280" width="1920"/>
+                    </state>
+                </row>
+            </grid>
+        </visual>
+    </rc-handlers>
+    <segments>
+        <segment export="true" id="S:Initialize">
+            <setup>
+                <feature ref="F:SpinningYinYangClockwise"/>
+                <feature ref="F:LoadingText"/>
+            </setup>
+            <setup-done>
+                <activate-segment segment="S:Loading"/>
+            </setup-done>
+        </segment>
+        <segment id="S:NullSegment"/>
+        <segment export="true" id="S:Loading">
+            <active>
+                <feature ref="F:SpinningYinYangClockwise"/>
+                <feature ref="F:LoadingText"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <setup-done>
+                <set-visual-rc activate="false" state="play" rc-handler="H:MainMenu"/>
+                <activate-part part-name="nothing" assembly="F:MenuInactive.CloseOrNothing"/>
+                <script-command>
+                    <script runat="runtime" type="text/java">java_command [[ XLET_ONLY_[[
+	    getMenuDirector().xlet.navigator.notifyShowLoaded();
+	]] ]]</script>
+                </script-command>
+                <ext-command>
+                    <param value="menu" name="argument"/>
+                    <param value="class com.hdcookbook.bookmenu.menu.MenuExtensionParser$2" name="class"/>
+                    <param value="com.hdcookbook.bookmenu.menu.PlayVideoCommand" name="runtimeClassName"/>
+                </ext-command>
+                <activate-segment segment="S:MenuRollout"/>
+            </setup-done>
+        </segment>
+        <segment id="S:MenuRollout">
+            <active>
+                <feature ref="F:SpinningYinYangClockwise"/>
+                <feature ref="F:MainMenu.In"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:MainMenu"/>
+            </rc-handlers>
+            <next>
+                <activate-segment segment="S:MenuShowing"/>
+            </next>
+        </segment>
+        <segment id="S:MenuShowing">
+            <active>
+                <feature ref="F:StillYinYang"/>
+                <feature ref="F:MainMenu"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:MainMenu"/>
+            </rc-handlers>
+        </segment>
+        <segment id="S:MainMenuRollIn">
+            <active>
+                <feature ref="F:SpinningYinYangCCW"/>
+                <feature ref="F:MainMenu.Out"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:PopupListener"/>
+            </rc-handlers>
+            <next>
+                <activate-segment segment="S:VideoPlaying"/>
+            </next>
+        </segment>
+        <segment id="S:VideoPlaying">
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:PopupListener"/>
+                <rc-handler ref="H:MakeBookmarkListener"/>
+            </rc-handlers>
+        </segment>
+        <segment id="S:VideoMenuRollout">
+            <active>
+                <feature ref="F:SpinningYinYangClockwise"/>
+                <feature ref="F:VideoMenu.In"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:VideoMenu"/>
+                <rc-handler ref="H:MakeBookmarkListener"/>
+            </rc-handlers>
+            <next>
+                <activate-segment segment="S:VideoMenuShowing"/>
+            </next>
+        </segment>
+        <segment id="S:VideoMenuShowing">
+            <active>
+                <feature ref="F:StillYinYang"/>
+                <feature ref="F:VideoMenu"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:VideoMenu"/>
+                <rc-handler ref="H:MakeBookmarkListener"/>
+            </rc-handlers>
+        </segment>
+        <segment id="S:VideoMenuRollBack">
+            <active>
+                <feature ref="F:SpinningYinYangCCW"/>
+                <feature ref="F:VideoMenu.Out"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:PopupListener"/>
+                <rc-handler ref="H:MakeBookmarkListener"/>
+            </rc-handlers>
+            <next>
+                <activate-segment segment="S:VideoPlaying"/>
+            </next>
+        </segment>
+        <segment id="S:VideoBonusPlaying">
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:PopupListener"/>
+            </rc-handlers>
+        </segment>
+        <segment id="S:SetupShowing">
+            <active>
+                <feature ref="F:StillYinYang"/>
+                <feature ref="F:MenuInactive.SetupActivated"/>
+                <feature ref="F:SetupMenu.BG"/>
+                <feature ref="F:SetupMenu"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:SetupMenu"/>
+            </rc-handlers>
+        </segment>
+        <segment id="S:ScenesShowing">
+            <active>
+                <feature ref="F:StillYinYang"/>
+                <feature ref="F:MenuInactive.ScenesActivated"/>
+                <feature ref="F:ScenesMenu.BG"/>
+                <feature ref="F:ScenesMenu"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:ScenesMenu"/>
+            </rc-handlers>
+        </segment>
+        <segment id="S:BookmarksShowing">
+            <active>
+                <feature ref="F:StillYinYang"/>
+                <feature ref="F:MenuInactive.ScenesActivated"/>
+                <feature ref="F:ScenesMenu.BG.Box"/>
+                <feature ref="F:BookmarksMenu"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:BookmarksMenu"/>
+                <rc-handler ref="H:BookmarksMenu.Color"/>
+            </rc-handlers>
+        </segment>
+        <segment id="S:BonusShowing">
+            <active>
+                <feature ref="F:StillYinYang"/>
+                <feature ref="F:MenuInactive.BonusActivated"/>
+                <feature ref="F:BonusMenu.BG"/>
+                <feature ref="F:BonusMenu"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:BonusMenu"/>
+            </rc-handlers>
+        </segment>
+        <segment export="true" id="S:BookmarkSnap">
+            <active>
+                <feature ref="F:BookmarkSnap"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:PopupListener"/>
+                <rc-handler ref="H:MakeBookmarkListener"/>
+            </rc-handlers>
+            <next>
+                <activate-segment segment="S:VideoPlaying"/>
+            </next>
+        </segment>
+        <segment id="S:UserInput">
+            <active>
+                <feature ref="F:UserInput"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:UserInput"/>
+            </rc-handlers>
+            <on-entry>
+                <activate-part part-name="a.selected" assembly="F:UserInput"/>
+                <reset-feature feature="F:UserInput"/>
+            </on-entry>
+        </segment>
+        <segment export="true" id="S:StartBonusVideo">
+            <active>
+                <feature ref="F:UserInput.Success"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <next>
+                <activate-segment segment="S:VideoBonusPlaying"/>
+                <script-command>
+                    <script runat="runtime" type="text/java">java_command [[ XLET_ONLY_[[ 
+	    MenuDiscNavigator nav = getMenuDirector().xlet.navigator;
+	    nav.startVideoAt(nav.bonusVideoStartPL);
+	]] ]]</script>
+                </script-command>
+            </next>
+        </segment>
+        <segment export="true" id="S:Bio.Available">
+            <active>
+                <feature ref="F:Bio.Available"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:Bio.Available"/>
+            </rc-handlers>
+        </segment>
+        <segment export="true" id="S:Bio.NotAvailable">
+            <active>
+                <feature ref="F:Bio.NotAvailable"/>
+            </active>
+            <setup>
+                <feature ref="F:Everything"/>
+            </setup>
+            <rc-handlers>
+                <rc-handler ref="H:Bio.NotAvailable"/>
+            </rc-handlers>
+        </segment>
+    </segments>
+</show>

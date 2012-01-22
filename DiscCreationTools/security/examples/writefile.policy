@@ -1,0 +1,4 @@
+keystore "keystore.store";
+grant signedBy "appcert" {
+    permission java.io.FilePermission "./writetest", "read,write";
+  };

@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="mplsObject" type="mplsObject"/>
+
+  <xs:complexType name="mplsObject">
+    <xs:sequence>
+      <xs:element name="version" type="xs:string" minOccurs="0"/>
+      <xs:element name="appInfoPlayList" type="appInfoPlayList" minOccurs="0"/>
+      <xs:element name="playList" type="playList" minOccurs="0"/>
+      <xs:element name="playListMark" type="playListMark" minOccurs="0"/>
+      <xs:element name="extensionData" type="extensionData" minOccurs="0"/>
+      <xs:element name="paddingN1" type="xs:int"/>
+      <xs:element name="paddingN2" type="xs:int"/>
+      <xs:element name="paddingN3" type="xs:int"/>
+      <xs:element name="paddingN4" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="appInfoPlayList">
+    <xs:sequence>
+      <xs:element name="audioMixAppFlag" type="xs:boolean"/>
+      <xs:element name="losslessFlag" type="xs:boolean"/>
+      <xs:element name="playListRandomAccessFlag" type="xs:boolean"/>
+      <xs:element name="playbackCount" type="xs:int"/>
+      <xs:element name="playbackType" type="playbackType" minOccurs="0"/>
+      <xs:element name="UOMaskTable" type="uoMaskTable" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="uoMaskTable">
+    <xs:sequence>
+      <xs:element name="UOMask" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="playList">
+    <xs:sequence>
+      <xs:element name="PlayItem" type="playItem" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="subPaths" type="subPath" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="playItem">
+    <xs:sequence>
+      <xs:element name="Angle" type="clipInfo" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="connectionCondition" type="xs:int"/>
+      <xs:element name="inTime" type="xs:long"/>
+      <xs:element name="isDifferentAudios" type="xs:boolean"/>
+      <xs:element name="isMultiAngle" type="xs:boolean"/>
+      <xs:element name="isSeamlessAngleChange" type="xs:boolean"/>
+      <xs:element name="outTime" type="xs:long"/>
+      <xs:element name="playItemRandomAccessFlag" type="xs:boolean"/>
+      <xs:element name="stillMode" type="xs:int"/>
+      <xs:element name="stillTime" type="xs:int"/>
+      <xs:element name="stnTable" type="stnTable" minOccurs="0"/>
+      <xs:element name="uoMaskTable" type="uoMaskTable" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="clipInfo">
+    <xs:sequence>
+      <xs:element name="clipName" type="xs:string" minOccurs="0"/>
+      <xs:element name="stcId" type="xs:int"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="stnTable">
+    <xs:sequence>
+      <xs:element name="IGStream" type="igStreamEntry" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="PGTextSTStream" type="pgTextSTStreamEntry" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="pipPGTextSTStreamEntriesPlus" type="xs:int" minOccurs="0"/>
+      <xs:element name="PrimaryAudioStream" type="primaryAudioStreamEntry" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="PrimaryVideoStream" type="primaryVideoStreamEntry" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="SecondaryAudioStream" type="secondaryAudioStreamEntry" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="SecondaryVideoStream" type="secondaryVideoStreamEntry" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="igStreamEntry">
+    <xs:sequence>
+      <xs:element name="streamAttribute" type="streamAttribute" minOccurs="0"/>
+      <xs:element name="streamEntry" type="streamEntry" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="streamAttribute">
+    <xs:sequence>
+      <xs:element name="audioLanguageCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="audioPresentationType" type="audioPresentationType" minOccurs="0"/>
+      <xs:element name="charactorCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="frameRate" type="frameRate" minOccurs="0"/>
+      <xs:element name="IGLanguageCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="PGLanguageCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="samplingFrequency" type="samplingFrequency" minOccurs="0"/>
+      <xs:element name="textSTLanguageCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="videoFormat" type="videoFormat" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="streamCodingType" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="streamEntry">
+    <xs:sequence>
+      <xs:element name="refToStreamPIDOfMainClip" type="xs:int"/>
+      <xs:element name="refToStreamPIDOfSubClip" type="xs:int"/>
+      <xs:element name="refToSubClipEntryId" type="xs:int"/>
+      <xs:element name="refToSubPathId" type="xs:int"/>
+      <xs:element name="streamType" type="streamType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="pgTextSTStreamEntry">
+    <xs:sequence>
+      <xs:element name="streamAttribute" type="streamAttribute" minOccurs="0"/>
+      <xs:element name="streamEntry" type="streamEntry" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="primaryAudioStreamEntry">
+    <xs:sequence>
+      <xs:element name="streamAttribute" type="streamAttribute" minOccurs="0"/>
+      <xs:element name="streamEntry" type="streamEntry" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="primaryVideoStreamEntry">
+    <xs:sequence>
+      <xs:element name="streamAttribute" type="streamAttribute" minOccurs="0"/>
+      <xs:element name="streamEntry" type="streamEntry" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="secondaryAudioStreamEntry">
+    <xs:sequence>
+      <xs:element name="primaryAudioReferences" type="xs:int" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="streamAttribute" type="streamAttribute" minOccurs="0"/>
+      <xs:element name="streamEntry" type="streamEntry" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="secondaryVideoStreamEntry">
+    <xs:sequence>
+      <xs:element name="pipPGTextSTReferences" type="xs:int" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="secondaryAudioReferences" type="xs:int" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="streamAttribute" type="streamAttribute" minOccurs="0"/>
+      <xs:element name="streamEntry" type="streamEntry" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="subPath">
+    <xs:sequence>
+      <xs:element name="id" type="xs:int"/>
+      <xs:element name="isRepeatSubPath" type="xs:boolean"/>
+      <xs:element name="subPathType" type="subPathType" minOccurs="0"/>
+      <xs:element name="SubPlayItem" type="subPlayItem" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="subPlayItem">
+    <xs:sequence>
+      <xs:element name="isMultiClipEntries" type="xs:boolean"/>
+      <xs:element name="spConnectionCondition" type="xs:int"/>
+      <xs:element name="SubClipInfo" type="clipInfo" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="subPlayItemInTime" type="xs:long"/>
+      <xs:element name="subPlayItemOutTime" type="xs:long"/>
+      <xs:element name="syncPlayItemId" type="xs:int"/>
+      <xs:element name="syncStartPtsOfPlayItem" type="xs:long"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="playListMark">
+    <xs:sequence>
+      <xs:element name="Mark" type="mark" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="mark">
+    <xs:sequence>
+      <xs:element name="duration" type="xs:long"/>
+      <xs:element name="entryEsPid" type="xs:string" minOccurs="0"/>
+      <xs:element name="markTimeStamp" type="xs:long"/>
+      <xs:element name="playItemIdRef" type="xs:int"/>
+      <xs:element name="type" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="extensionData">
+    <xs:sequence>
+      <xs:element name="extDataEntry" type="extDataEntry" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="paddingL1" type="xs:int"/>
+      <xs:element name="extDataBlock" type="extDataBlock" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="extDataEntry">
+    <xs:sequence>
+      <xs:element name="ID1" type="xs:string" minOccurs="0"/>
+      <xs:element name="ID2" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="extDataBlock">
+    <xs:sequence>
+      <xs:element name="metadataBlockHeader" type="metadataBlockHeader" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="paddingX" type="xs:int"/>
+      <xs:element name="metadataBlockData" type="metadataBlockData" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="data" type="xs:base64Binary" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="blockType"/>
+  </xs:complexType>
+
+  <xs:complexType name="metadataBlockHeader">
+    <xs:sequence>
+      <xs:element name="refToPlayItemID" type="xs:int"/>
+      <xs:element name="refToSecondaryVideoStreamID" type="xs:int"/>
+      <xs:element name="pipTimelineType" type="pipTimelineType" minOccurs="0"/>
+      <xs:element name="isLumaKey" type="xs:boolean"/>
+      <xs:element name="isTrickPlaying" type="xs:boolean"/>
+      <xs:element name="upperLimitLumaKey" type="xs:int" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="metadataBlockData">
+    <xs:sequence>
+      <xs:element name="pipMetadataEntry" type="pipMetadataEntry" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="paddingY" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="pipMetadataEntry">
+    <xs:sequence>
+      <xs:element name="pipMetadataTimeStamp" type="xs:long"/>
+      <xs:element name="pipHorizontalPosition" type="xs:int"/>
+      <xs:element name="pipVerticalPosition" type="xs:int"/>
+      <xs:element name="pipScale" type="pipScaleType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="playbackType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RESERVED"/>
+      <xs:enumeration value="SEQUENTIAL"/>
+      <xs:enumeration value="RANDOM"/>
+      <xs:enumeration value="SHUFFLE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="audioPresentationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RESERVED_0"/>
+      <xs:enumeration value="SINGLE_MONO_CHANNEL"/>
+      <xs:enumeration value="RESERVED_2"/>
+      <xs:enumeration value="STEREO"/>
+      <xs:enumeration value="RESERVED_4"/>
+      <xs:enumeration value="RESERVED_5"/>
+      <xs:enumeration value="MULTI_CHANNEL"/>
+      <xs:enumeration value="RESERVED_7"/>
+      <xs:enumeration value="RESERVED_8"/>
+      <xs:enumeration value="RESERVED_9"/>
+      <xs:enumeration value="RESERVED_10"/>
+      <xs:enumeration value="RESERVED_11"/>
+      <xs:enumeration value="STEREO_AND_MULTI_CHANNEL"/>
+      <xs:enumeration value="RESERVED_13"/>
+      <xs:enumeration value="RESERVED_14"/>
+      <xs:enumeration value="RESERVED_15"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="frameRate">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RESERVED"/>
+      <xs:enumeration value="Hz_24000_1001"/>
+      <xs:enumeration value="Hz_24"/>
+      <xs:enumeration value="Hz_25"/>
+      <xs:enumeration value="Hz_30000_1001"/>
+      <xs:enumeration value="RESERVED_5"/>
+      <xs:enumeration value="Hz_50"/>
+      <xs:enumeration value="Hz_60000_1001"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="samplingFrequency">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RESERVED_0"/>
+      <xs:enumeration value="KHz_48"/>
+      <xs:enumeration value="RESERVED_2"/>
+      <xs:enumeration value="RESERVED_3"/>
+      <xs:enumeration value="KHz_96"/>
+      <xs:enumeration value="KHz_192"/>
+      <xs:enumeration value="RESERVED_6"/>
+      <xs:enumeration value="RESERVED_7"/>
+      <xs:enumeration value="RESERVED_8"/>
+      <xs:enumeration value="RESERVED_9"/>
+      <xs:enumeration value="RESERVED_10"/>
+      <xs:enumeration value="RESERVED_11"/>
+      <xs:enumeration value="KHz_48_AND_192"/>
+      <xs:enumeration value="RESERVED_13"/>
+      <xs:enumeration value="KHz_48_AND_96"/>
+      <xs:enumeration value="RESERVED_15"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="videoFormat">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RESERVED"/>
+      <xs:enumeration value="VIDEO_480i"/>
+      <xs:enumeration value="VIDEO_576i"/>
+      <xs:enumeration value="VIDEO_480p"/>
+      <xs:enumeration value="VIDEO_1080i"/>
+      <xs:enumeration value="VIDEO_720p"/>
+      <xs:enumeration value="VIDEO_1080p"/>
+      <xs:enumeration value="VIDEO_576p"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="streamType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RESERVED"/>
+      <xs:enumeration value="STREAM_FOR_PLAYITEM"/>
+      <xs:enumeration value="STREAM_FOR_SUBPATH"/>
+      <xs:enumeration value="STREAM_FOR_IN_MUX_SUBPATH"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="subPathType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RESERVED_0"/>
+      <xs:enumeration value="RESERVED_1"/>
+      <xs:enumeration value="PRIMARY_AUDIO_PRESENTATION"/>
+      <xs:enumeration value="INTERACTIVE_GRAPHICS_PRESENTATION"/>
+      <xs:enumeration value="TEXT_SUBTITLE_PRESENTATION"/>
+      <xs:enumeration value="OUT_OF_MUX_AND_SYNC"/>
+      <xs:enumeration value="OUT_OF_MUX_AND_ASYNC"/>
+      <xs:enumeration value="IN_MUX_AND_SYNC"/>
+      <xs:enumeration value="RESERVED_8"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="pipTimelineType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="reserved"/>
+      <xs:enumeration value="SYNCHRONOUS"/>
+      <xs:enumeration value="ASYNC_SUBPATH"/>
+      <xs:enumeration value="ASYNC_PLAYITEM"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="pipScaleType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="reserved"/>
+      <xs:enumeration value="NO_SCALING"/>
+      <xs:enumeration value="HALF_SCALING"/>
+      <xs:enumeration value="QUARTER_SCALING"/>
+      <xs:enumeration value="ONE_AND_HALF_SCALING"/>
+      <xs:enumeration value="FULL_SCREEN_SCALING"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="blockType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="pip_metadata"/>
+      <xs:enumeration value="unknown"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

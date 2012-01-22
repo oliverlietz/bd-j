@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="fail">
+    <target name="fail">
+      <fail>
+.
+
+This directory is not meant to be built.  This GRIN extension
+is provied as a source library; to use it in a project, add the
+appropriate source directories to your build file.  To see an example
+of this, or to test this framework, see GrinBunny.
+
+See README.txt under "Buliding" for more details.
+
+      </fail>
+    </target>
+</project>

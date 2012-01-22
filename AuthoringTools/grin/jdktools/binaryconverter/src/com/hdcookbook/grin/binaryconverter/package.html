@@ -1,0 +1,49 @@
+<html>
+<body>
+<p>
+This package contains a program that compiles a show file.
+It reads it, generates a binary show file, and optionally
+transforms all image assets to a mosaic.
+</p><p>
+Mosaic making is done using a
+fairly brute-force "first fit" algorithm that isn't completely
+optimal, but seems to work quite well in practice.
+When run, this program produces a modified set of assets 
+to be used with the show file.  The show file itself doesn't need to
+be modified, because a "map" file is produced that maps the filename
+of the original image to a set of coordinates within a matrix file.  Just
+package up the map file and the matrixes, and leave out the original
+images in the disc image.
+</p><p>
+This is a build-time tool that runs with the JDK.  It requires parts
+of the GRIN library to run, so you should probably just build the
+whole thing. 
+<p>
+In your application, you need to tell GRIN where the image map file
+is.  For debugging purposes, It's sometimes handy to set an xlet up so
+that it will work with either the discrete images or the mosaic, to
+speed build times.  In the HD cookbook menu, I did this, right after
+setting <code>AssetFinder</code>'s search path:
+</p>
+<pre>
+        if (AssetFinder.tryURL("images.map") != null) { 
+            if (Debug.LEVEL > 0) {
+                Debug.println("Found images.map, using mosaic.");
+            }
+            AssetFinder.setImageMap("images.map"); 
+        } else if (Debug.LEVEL > 0) {
+                Debug.println("No images.map, not using mosaic.");
+        }
+</pre>
+<p>
+As of this writing, the mosaic construction algorithm isn't fully
+optimized, and the mosaic image
+can only be in PNG.  Some players decode JPEG faster than PNG, but
+JPEG doesn't support alpha and you have to worry about setting the
+quality of JPEG output if you go that route.  This tool presently
+doesn't have a way of grouping related images together, which would
+be important for managing image loading and unloading if you can't
+just keep everything in memory.
+</p>
+</body>
+</html>

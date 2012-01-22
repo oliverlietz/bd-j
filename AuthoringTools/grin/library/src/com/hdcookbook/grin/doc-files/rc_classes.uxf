@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><umlet_diagram><element><type>com.umlet.element.base.Relation</type><coordinates><x>260</x><y>340</y><w>190</w><h>90</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..1
+m2=0..n
+within&gt;</panel_attributes><additional_attributes>170;40;170;70;20;70;20;20</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>340</x><y>300</y><w>290</w><h>80</h></coordinates><panel_attributes>/ChapterManager/
+--
+ 
+--
+/+handleRCEvent(KeyEvent) : boolean/
+/+handleAssemblyGridEvent(e) : boolean/</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>330</x><y>160</y><w>290</w><h>90</h></coordinates><panel_attributes>/Director/
+--
+ -currentChapter : Chapter
+--
+/+handleRCEvent(KeyEvent) : boolean/
+/+handleAssemblyGridEvent(e) : boolean/</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>460</x><y>230</y><w>40</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..n</panel_attributes><additional_attributes>20;20;20;70</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>250</x><y>96</y><w>150</w><h>84</h></coordinates><panel_attributes>lt=&lt;-
+m1=  1
+m2=0..1
+&lt;controls</panel_attributes><additional_attributes>20;64;20;34;130;34;130;64</additional_attributes></element><element><type>com.umlet.element.base.Note</type><coordinates><x>90</x><y>10</y><w>240</w><h>90</h></coordinates><panel_attributes>RCEvents are given to the 
+show, which sends them to 
+the segment, then the director.  
+By default, the Director forwards 
+to the current chapter manager.
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>19</x><y>340</y><w>191</w><h>190</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n
+rcHandlers&gt;</panel_attributes><additional_attributes>171;170;61;170;61;20</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>150</x><y>210</y><w>40</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..n</panel_attributes><additional_attributes>20;20;20;80</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>30</x><y>290</y><w>280</w><h>70</h></coordinates><panel_attributes>Segment
+--
+ 
+--
+~handleRCEvent(RCKeyEvent) : boolean</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>30</x><y>160</y><w>270</w><h>70</h></coordinates><panel_attributes>Show
+--
+ 
+--
++handleRCEvent(KeyEvent) : boolean</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>40</x><y>80</y><w>110</w><h>100</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>20;80;90;20</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>310</x><y>520</y><w>180</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>20;20;20;50;160;50;160;90</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>230</x><y>520</y><w>120</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>100;20;100;50;20;50;20;90</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>380</x><y>610</y><w>190</w><h>70</h></coordinates><panel_attributes>AssemblyGridRCHandler
+--
+-assembly : Assembly
+--
+ </panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>180</x><y>610</y><w>160</w><h>60</h></coordinates><panel_attributes>CommandRCHandler
+--
+-cmd[] : Command
+--</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>10</x><y>580</y><w>100</w><h>60</h></coordinates><panel_attributes>RCKeyEvent
+--
+-mask : int
+--</panel_attributes><additional_attributes></additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>90</x><y>520</y><w>130</w><h>100</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n
+&lt;handles
+</panel_attributes><additional_attributes>20;80;110;20</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>190</x><y>470</y><w>280</w><h>70</h></coordinates><panel_attributes>/RCHandler/
+--
+ ~handleRCEvent(RCKeyEvent) : boolean
+--</panel_attributes><additional_attributes></additional_attributes></element></umlet_diagram>

@@ -1,0 +1,48 @@
+
+<project name="BUMFGenerator" default="dist" basedir=".">
+    <description>
+        Build a tool that auto-generates bumf xml file.
+    </description>
+    
+  <!-- set global properties for this build -->
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="dist"  location="dist"/>
+    <property name="main.class"  value="net.java.bd.tools.bumfgenerator.BumfGenerator"/>
+    <property name="bumf.xml.src" location="../xmldata/bumf/src"/>
+    <property name="id.src" location="../id/src"/>
+    <target name="init">
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
+    </target>
+    <target name="compile" depends="init"
+        description="compile the source " >
+
+    <!-- rt.jar needsd to be in the bootclasspath for bumf.xml.src.  See CR 6476630 -->
+    <javac srcdir="${src}"
+           destdir="${build}"
+           bootclasspath="${java.home}/lib/rt.jar">
+           <src path="${src}"/> 
+           <src path="${bumf.xml.src}"/> 
+           <src path="${id.src}"/> 
+        </javac>
+     
+    </target>
+    <target name="jar" depends="compile">
+        <jar jarfile="${dist}/bumfgenerator.jar" basedir="${build}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="dist" depends="jar" if="hdc.distribution.dir"
+        description="generate the distribution">
+        <copy todir="${hdc.distribution.dir}" file="${dist}/bumfgenerator.jar"/>
+    </target>
+    <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+</project>

@@ -1,0 +1,42 @@
+<project name="soundsplit" default="soundsplit-dist" basedir=".">
+    <description>
+        Build a tool that converts a sound.bdmv into one or more .wav files.
+    </description>
+    
+  <!-- set global properties for this build -->
+  <property name="soundsplit-src" location="src"/>
+  <property name="soundsplit-build" location="build"/>
+  <property name="soundsplit-dist"  location="dist"/>
+  <property name="main.class"  value="net.java.bd.tools.BDJSoundSplitter"/>
+
+  <target name="soundsplit-init">
+	  <echo message="${soundsplit-build}"/>
+    <mkdir dir="${soundsplit-build}"/>
+  </target>
+
+  <target name="soundsplit-compile" depends="soundsplit-init"
+        description="compile the source " >
+    <javac srcdir="${soundsplit-src}" destdir="${soundsplit-build}"/>
+  </target>
+
+  <target name="soundsplit-jar" depends="soundsplit-compile"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${soundsplit-dist}"/>
+    <jar jarfile="${soundsplit-dist}/soundsplit.jar" basedir="${soundsplit-build}">
+        <manifest>
+	<attribute name="Main-Class" value="${main.class}"/>
+        </manifest>
+    </jar>
+  </target>
+  <target name="soundsplit-dist" depends="soundsplit-jar" if="hdc.distribution.dir"
+        description="copy the jar to the distribution dir">
+        <copy todir="${hdc.distribution.dir}" file="${soundsplit-dist}/soundsplit.jar"/>
+  </target>   
+  <target name="soundsplit-clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${soundsplit-build}"/>
+    <delete dir="${soundsplit-dist}"/>
+  </target>
+</project>
