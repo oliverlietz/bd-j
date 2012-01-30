@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.hdcookbook.grin</groupId>
+    <artifactId>hdcookbook</artifactId>
+    <version>1.1.0.657</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>com.hdcookbook.grin.io.xml</artifactId>
+  <name>hdcookbook grin io xml</name>
+  <packaging>jar</packaging>
+
+  <url>http://hdcookbook.com</url>
+
+  <dependencies>
+    <!-- hdcookbook -->
+    <dependency>
+      <groupId>com.hdcookbook.grin</groupId>
+      <artifactId>com.hdcookbook.grin-se</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.sun.tools.xjc.maven2</groupId>
+        <artifactId>maven-jaxb-plugin</artifactId>
+        <version>1.1.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
