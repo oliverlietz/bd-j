@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>net.java.bd.tools</groupId>
+    <artifactId>tools</artifactId>
+    <version>1.0.0.657</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>net.java.bd.tools.bdjo</artifactId>
+  <name>bdjo</name>
+  <packaging>jar</packaging>
+
+  <url>http://java.net/projects/hdcookbook</url>
+
+  <dependencies>
+    <!-- hdcookbook -->
+    <dependency>
+      <groupId>com.hdcookbook.grin</groupId>
+      <artifactId>com.hdcookbook.grin-me</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <finalName>bdjo</finalName>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>net.java.bd.tools.bdjo.Converter</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

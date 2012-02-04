@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>net.java.bd.tools</groupId>
+    <artifactId>tools</artifactId>
+    <version>1.0.0.657</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>net.java.bd.tools.playlist</artifactId>
+  <name>playlist</name>
+  <packaging>jar</packaging>
+
+  <url>http://java.net/projects/hdcookbook</url>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.sun.tools.jxc.maven2</groupId>
+        <artifactId>maven-jaxb-schemagen-plugin</artifactId>
+        <configuration>
+          <project>${project}</project>
+          <srcdir>${project.build.sourceDirectory}</srcdir>
+          <verbose>true</verbose>
+          <includes>
+            <include>net/java/bd/tools/playlist/MPLSObject.java</include>
+          </includes>
+          <schemas>
+            <schema>
+              <namespace>http://playlist.tools.bd.java.net</namespace>
+              <file>playlist.xsd</file>
+            </schema>
+          </schemas>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>net.java.bd.tools.playlist.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

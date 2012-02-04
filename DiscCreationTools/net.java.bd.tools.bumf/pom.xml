@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>net.java.bd.tools</groupId>
+    <artifactId>tools</artifactId>
+    <version>1.0.0.657</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>net.java.bd.tools.bumf</artifactId>
+  <name>bumf</name>
+  <packaging>jar</packaging>
+
+  <url>http://java.net/projects/hdcookbook</url>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
