@@ -189,14 +189,14 @@ public class Show implements AnimationClient {
     /**
      * Offset factor for use by a director's java code
      *
-     * @see getXOffset();
+     * @see #getXOffset();
      **/
     private int xOffset = 0;
 
     /**
      * Offset factor for use by a director's java code
      *
-     * @see getYOffset();
+     * @see #getYOffset();
      **/
     private int yOffset = 0;
 
@@ -954,7 +954,7 @@ public class Show implements AnimationClient {
      * @return true     If the mouse move is enqueued for an RC handler, and 
      *			thus is expected to be used.
      *
-     * @see #handleMousePressed(int, int)
+     * @see #handleMousePressed(int, int, boolean)
      * @see #handleKeyPressed(int)
      * @see Director#notifyMouseMoved(int, int)
      **/
@@ -1014,7 +1014,7 @@ public class Show implements AnimationClient {
      * @return true     If the mouse move is enqueued for an RC handler, and 
      *			thus is expected to be used.
      *
-     * @see #handleMouseMoved(int, int)
+     * @see #handleMouseMoved(int, int, boolean)
      * @see #handleKeyPressed(int)
      * @see Director#notifyMousePressed(int, int)
      **/
