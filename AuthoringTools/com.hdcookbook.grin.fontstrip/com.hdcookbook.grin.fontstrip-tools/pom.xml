@@ -32,12 +32,58 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>com.sun.tools.jxc.maven2</groupId>
+        <artifactId>maven-jaxb-schemagen-plugin</artifactId>
+        <configuration>
+          <project>${project}</project>
+          <srcdir>${project.build.sourceDirectory}</srcdir>
+          <verbose>true</verbose>
+          <includes>
+            <include>com/hdcookbook/grin/fontstrip/xml/InputData.java</include>
+          </includes>
+          <schemas>
+            <schema>
+              <namespace>http://fontstrip.grin.hdcookbook.com</namespace>
+              <file>fontstrip.xsd</file>
+            </schema>
+          </schemas>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <source>1.5</source>
           <target>1.5</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <finalName>fontstrip</finalName>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>com.hdcookbook.grin.fontstrip.Main</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
