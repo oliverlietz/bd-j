@@ -1,19 +1,10 @@
 # BD-J - Blu-ray Disc Java
 
-* http://en.wikipedia.org/wiki/BD-J
-* http://en.wikipedia.org/wiki/Blu-ray_Disc
-* http://blu-raydisc.com/
-* http://blu-raydisc.info/
-* http://www.oracle.com/technetwork/java/javame/javatv/
-* http://www.mhp.org/mhpgem10.htm
-* http://www.java.net/forums/mobile-embedded/blu-ray-disc-java 
-* http://plugins.netbeans.org/plugin/7949/bdprojecttype
+This repo contains mainly [mavenized](http://maven.apache.org/) tools from the [**HD Cookbook**](http://java.net/projects/hdcookbook/) project. To build the tools, [install](http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html) your [*BD-J Platform Definition*](http://java.net/projects/hdcookbook/pages/BDJPlatformDefinition) with `mvn install:install-file -Dfile=/path/to/classes.zip -DgroupId=bdj -DartifactId=bdj -Dversion=1.0 -Dpackaging=jar` in your local [Maven](http://maven.apache.org/) repo and run `mvn clean install` in [`AuthoringTools`](AuthoringTools) and [`DiscCreationTools`](DiscCreationTools) respectively.
 
-## HD Cookbook
-* http://jovial.com/hdcookbook/
-* http://java.net/projects/hdcookbook/
-* http://hdcookbook.com/
 
-## VideoLAN
-* http://www.videolan.org/vlc/
-* http://www.videolan.org/developers/libbluray.html
+![Blu-ray Disc™](http://blu-raydisc.com/Images/bdalogo.png)
+
+Trademark Notice:
+Blu-ray Disc™, Blu-ray™, Blu-ray 3D™, BD-Live™, BONUSVIEW™, BDXL™, AVCREC™,
+and the logos are trademarks of Blu-ray Disc Association.
