@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>{{ page.title }}</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="BD-J, Blu-ray Disc, Java, HD Cookbook"/>
+  <meta name="author" content="Oliver Lietz"/>
+  <link rel="stylesheet" type="text/css" href="assets/lib/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+  {% include header.xhtml %}
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <nav class="span2">
+        {% include nav.xhtml %}
+      </nav>
+      <div class="span10">
+        {{ content }}
+      </div>
+    </div>
+  </div>
+  {% include footer.xhtml %}
+  <script src="assets/lib/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
