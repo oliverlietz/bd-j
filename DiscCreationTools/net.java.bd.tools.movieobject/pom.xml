@@ -29,12 +29,6 @@
           <includes>
             <include>net/java/bd/tools/movieobject/MovieObjects.java</include>
           </includes>
-          <schemas>
-            <schema>
-              <namespace>http://movieobject.tools.bd.java.net</namespace>
-              <file>movieobject.xsd</file>
-            </schema>
-          </schemas>
         </configuration>
         <executions>
           <execution>

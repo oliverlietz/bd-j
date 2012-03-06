@@ -29,12 +29,6 @@
           <includes>
             <include>net/java/bd/tools/index/Index.java</include>
           </includes>
-          <schemas>
-            <schema>
-              <namespace>http://index.tools.bd.java.net</namespace>
-              <file>index.xsd</file>
-            </schema>
-          </schemas>
         </configuration>
         <executions>
           <execution>
