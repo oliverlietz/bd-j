@@ -1,7 +1,8 @@
 footer {
   bottom: 5px;
   color: #C0C0C0;
-  font-size: 8px;
+  font-size: 10px;
   left: 10px;
+  line-height: 100%;
   position: fixed;
 }
