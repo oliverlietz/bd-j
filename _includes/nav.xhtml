@@ -1,3 +1,9 @@
-        <ul>
-          <li><a href="/bd-j/documentation/hdcookbook.xhtml">HD Cookbook</a></li>
-        </ul>
+<ul class="nav nav-tabs nav-stacked">
+{% for node in site.pages %}
+  {% if page.url == node.url %}
+  <li class="active"><a href="{{ node.url }}" class="active">{{ node.title }}</a></li>
+  {% else %}
+  <li><a href="{{ node.url }}">{{ node.title }}</a></li>
+  {% endif %}
+{% endfor %}
+</ul>
