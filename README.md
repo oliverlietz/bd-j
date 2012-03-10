@@ -39,4 +39,6 @@ This repo contains mainly [mavenized](http://maven.apache.org/) tools from the [
 * `net.java.bd.tools.bdview` is broken ([runtime failure](https://gist.github.com/1916340))
 
 Trademark Notice:
+Oracle and Java are registered trademarks of Oracle and/or its affiliates.
 Blu-ray Disc™, Blu-ray™, Blu-ray 3D™, BD-Live™, BONUSVIEW™, BDXL™, AVCREC™, and the logos are trademarks of Blu-ray Disc Association.
+Other names may be trademarks of their respective owners.
