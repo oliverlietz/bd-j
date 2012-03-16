@@ -10,20 +10,20 @@ real tools, like Blu-print or Scenarist.  Indeed, the folks at
 Sony and Sonic have been extremely helpful to us, and we look
 forward to working together for a long time!
 
-* [bdjo](./net.java.bd.tools.bdjo/ "bdjo")
-* [bdview](./net.java.bd.tools.bdview/ "bdview")
-* [bumf](./net.java.bd.tools.bumf/ "bumf")
-* [bumfgenerator](./net.java.bd.tools.bumfgenerator/ "bumfgenerator")
-* [clpi](./net.java.bd.tools.clpi/ "clpi")
-* [cpistrip](./net.java.bd.tools.cpistrip/ "cpistrip")
-* [id](./net.java.bd.tools.id/ "id")
-* [index](./net.java.bd.tools.index/ "index")
-* [logger](./net.java.bd.tools.logger/ "logger")
-* [movieobject](./net.java.bd.tools.movieobject/ "movieobject")
-* [playlist](./net.java.bd.tools.playlist/ "playlist")
-* [security](./net.java.bd.tools.security/ "security")
-* [soundgen](./net.java.bd.tools.soundgen/ "soundgen")
-* [soundsplit](./net.java.bd.tools.soundsplit/ "soundsplit")
+* [bdjo](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.bdjo/ "bdjo")
+* [bdview](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.bdview/ "bdview")
+* [bumf](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.bumf/ "bumf")
+* [bumfgenerator](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.bumfgenerator/ "bumfgenerator")
+* [clpi](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.clpi/ "clpi")
+* [cpistrip](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.cpistrip/ "cpistrip")
+* [id](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.id/ "id")
+* [index](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.index/ "index")
+* [logger](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.logger/ "logger")
+* [movieobject](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.movieobject/ "movieobject")
+* [playlist](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.playlist/ "playlist")
+* [security](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.security/ "security")
+* [soundgen](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.soundgen/ "soundgen")
+* [soundsplit](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.soundsplit/ "soundsplit")
 
 ## What's not here?
 
