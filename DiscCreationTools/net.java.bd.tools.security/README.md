@@ -1,19 +1,32 @@
-<html>
-<head>
-<title>Security Tools</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-<style type="text/css">
-<!--
-BODY {
-        font-family:  Verdana, Arial, Helvetica, sans-serif
-}
--->
-</style>
-</head>
-<body>
-<h1><center>Security  Tools</center></h1>
-<p>
+# security
+
+The security tools can be accessed from the package <b>net.java.bd.tools.security</b>
+
+## BDsigner
+
+This tool will sign a JAR file containing a BD-J xlet for use
+in a Blu-ray Disc image.  BD-J requires a couple of headers not
+present in a normal Java SE signed JAR, and it has some specific
+requirements on the signing algorithms used.
+
+## BDCertGenerator
+
+This tool creates new certificate chain-- the root and the application
+certificate for use by authentication and authorization of BD-J
+applications
+
+## BDCredentialSigner
+
+This tool is for signing the application along with generating the
+credentials in the permission request file, for across disc access
+of the local storage. This tool is still evolving.
+We haven't got it successfully access the local storage yet on any
+of the players. However, we are working on this issue and we hope
+that we will have a working tool soon. In the meantime if you are
+curious about playing around using this tool, you are welcome to
+use it.
+
+
 
 This project contains the security tools required for developing BD-J
 Applications.
@@ -685,10 +698,3 @@ root certificate, signs the credentials and generates the PRF below:
         </tr>
     </tbody>
 </table>
-<hr>
-
-
-
-
-
-

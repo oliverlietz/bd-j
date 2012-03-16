@@ -1,7 +1,8 @@
-<html><body>
-<h2><center>PLAYER GRIN EXTENSION</center></h2>
+# Grin Media
 
-<h3>OVERVIEW</h3>
+## PLAYER GRIN EXTENSION
+
+### OVERVIEW
 <p>
 This directory contains a GRIN extension for simple media playback.
 It can be included with a GRIN-based xlet to control playing video.
@@ -68,7 +69,7 @@ to control the playlist will silently fail.
 An example of the use of this framework to control media can be
 found in <hdcookbook>/xlets/grin_samples/GrinBunny
 </p>
-<h3>PLAYLIST MARKS</h3>
+### PLAYLIST MARKS
 <p>
 This player has its own notion of playlist marks.  This takes the
 place of triggers, or BD playlist marks.  Implementing these in Java
@@ -129,7 +130,7 @@ that application startup is more influenced by the number of classes than it is
 by the size of those classes.
 </p>
 
-<h3>SHUTDOWN</h3>
+### SHUTDOWN
 <p>
 In any xlet that does player control using this framework, it is
 <i>essential</i> that the following code be executed exactly
@@ -143,7 +144,7 @@ This releases resources back to the player.  The MHP and BD-J
 spec reqire that resources be released in this way.
 </p>
 
-<h3>ARCHITECTURE AND EXTENSION</h3>
+### ARCHITECTURE AND EXTENSION
 <p>
 It might seem odd at first that there's no Player object in this,
 a media playback framework.  This was done for a couple of reasons:
@@ -202,7 +203,7 @@ is done by interacting with the VideoSource, and not with a player.  For
 some video sources, the VideoSource is implemented by controlling a
 JMF Player, and for others, it is implemented by controlling the stream.
 </p><p>
-<h3>BUILDING THE FRAMEWORK</h3>
+### BUILDING THE FRAMEWORK
 <p>
 As mentioned above, this extension is a source extension.  With these
 xlets, we've found that the best way to structure a build is to
@@ -241,4 +242,3 @@ these properties like this, in your vars.properties file:
 </pre><p>
 You can see all of this in action in the GrinBunny sample game.
 </p>
-</body></html>

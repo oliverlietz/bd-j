@@ -1,3 +1,11 @@
+# soundgen
+
+soundgen tool converts a set audio files in any formats supported by 
+javax.sound.sampled API to a single "sound.bdmv" file. In BD-J, interactive sound(s) 
+are stored in a file named "sound.bdmv". Please refer to section 5.6 of BD-ROM System Description 
+Part 3 Version 2.02 for the specification of sound.bdmv.
+
+
 In BD-J, interactive sound(s) are stored in a file named "sound.bdmv". Please refer to section 
 5.6 of BD-ROM  System Description Part 3 Version 2.02 for the specification of sound.bdmv.
 
@@ -24,7 +32,7 @@ For example, you can use Tritonous PCM-to-PCM codec by downloading couple of jar
 
     http://www.tritonus.org/plugins.html
 
-As of writing this README.txt file, the latest versions are here:
+As of writing this README file, the latest versions are here:
 
     http://www.tritonus.org/tritonus_share-0.3.6.jar 
     http://www.tritonus.org/tritonus_remaining-0.3.6.jar 
@@ -40,5 +48,3 @@ How to use Tritonous PCM codec?
 
     
 java -cp soundgen.jar:tritonus_share-0.3.6.jar:tritonus_remaining-0.3.6.jar net.java.bd.tools.BDJSoundGenerator <args>
-
-

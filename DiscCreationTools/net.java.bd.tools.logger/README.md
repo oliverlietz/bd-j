@@ -1,3 +1,10 @@
+# logger
+
+Logger can be used to log the application behavior at runtime, which can be useful
+especially on hardware players that do not give out System.out or System.err output by default.  
+See net.java.bd.tools.logger.XletLogger API description for the methods one can call.
+
+
 This is a tool to help debugging of an application on a player that does not support logging, such as a PS/3.
 
 Instead of using System.out and System.err, one can use

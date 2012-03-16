@@ -1,3 +1,5 @@
+# Grin IO XML
+
 This directory contains code to support an *experimental* XML syntax 
 for GRIN scene graph. This is referred as "Show XML" syntax.
 

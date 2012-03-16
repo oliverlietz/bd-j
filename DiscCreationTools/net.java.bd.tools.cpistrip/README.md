@@ -1,4 +1,17 @@
+# cpistrip
 
+cpistrip is a little hack that sets the "copy protection indicator"
+flag to 0 in a BD-ROM MPEG-2 transport stream file, or .m2ts.  It's
+useful if you have a BD-ROM disc image on your hard disc with unencrypted
+m2ts files, and you'd like to burn it on a BD-RE disc without AACS.
+A BD-ROM disc image burned to BD-RE with the AACS directory removed and
+with the CPI flag set false in each MPEG packet should play on any
+BD player that accepts BD-RE discs.
+
+By the way, if you have a PS/3, and you're seeing a "This disc is 
+invalid (80029906)" error when you try to play a BD-RE, try updating 
+to the latest PS/3 firmware, removing the AACS directory and running 
+this utility over your m2ts files.
 
 This program strips the Copy Permission Indicator flag from
 a BDAV MPEG-2 transport stream.  This takes longer to explain 

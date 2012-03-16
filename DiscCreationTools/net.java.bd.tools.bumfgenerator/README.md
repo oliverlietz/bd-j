@@ -1,4 +1,4 @@
-
+# bumfgenerator
 
 This directory contains a program that creates a directory with contents
 ready to upload to a BD-Live disc in a VFS update.  This directory contains
@@ -21,5 +21,3 @@ to .mpl
 A system that wants to do incremental VFS updates would need to be more
 sophisticated, tracking which files are already on the player and which
 names have been used.
-
-

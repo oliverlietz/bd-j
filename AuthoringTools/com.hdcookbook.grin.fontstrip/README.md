@@ -1,3 +1,4 @@
+# Grin FontStrip
 
 This directory holds GRIN extension feature for FontStrip.
 
