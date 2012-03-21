@@ -15,6 +15,9 @@ Part 3 Audio Visual Basic Specifications.
 Using this tool, you can write bdjo description as an XML document and convert 
 the same into a binary .bdjo file.
 
-When using XML Schema aware editor like NetBeans 6.0+, you can use the XML
-schema document "bdjo.xsd" to edit/validate your BDJO XML document. NetBeans 
-6.0+ Schema-aware XML completion feature is very handy.
+## usage
+
+    java -jar bdjo.jar 00000.xml 00000.bdjo
+    java -jar bdjo.jar 00000.bdjo 00000.xml
+
+bdjo also supports legacy JavaFX script (.fx).

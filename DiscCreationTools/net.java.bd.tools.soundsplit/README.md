@@ -11,7 +11,7 @@ format files. In BD-J, interactive sound(s) are stored in a file named "sound.bd
 Please refer to section 5.6 of BD-ROM System Description Part 3 Version 2.02 for the 
 specification of sound.bdmv.
 
-Tool usage:
+## usage
 
     java -jar soundsplit.jar [options] <sound.bdmv file>
 

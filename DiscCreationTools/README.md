@@ -10,6 +10,11 @@ real tools, like Blu-print or Scenarist.  Indeed, the folks at
 Sony and Sonic have been extremely helpful to us, and we look
 forward to working together for a long time!
 
+* all **disc creation tools** but `net.java.bd.tools.logger` are for desktop use with Java SE
+* all tools for desktop use are also [*shaded*](http://maven.apache.org/plugins/maven-shade-plugin/) (have their dependencies packed into a jar), so you can simply run `java -jar TOOL.jar`
+    * normal jar for use as library: `net.java.bd.tools.TOOL-VERSION.jar`
+    * shaded über-jar: `TOOL.jar`
+
 * [bdjo](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.bdjo/ "bdjo")
 * [bdview](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.bdview/ "bdview")
 * [bumf](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.bumf/ "bumf")

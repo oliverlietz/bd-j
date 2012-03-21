@@ -6,13 +6,10 @@ are stored in a file named "sound.bdmv". Please refer to section 5.6 of BD-ROM S
 Part 3 Version 2.02 for the specification of sound.bdmv.
 
 
-In BD-J, interactive sound(s) are stored in a file named "sound.bdmv". Please refer to section 
-5.6 of BD-ROM  System Description Part 3 Version 2.02 for the specification of sound.bdmv.
-
 This soundgen tool converts a set audio files in any formats supported by javax.sound.sampled 
 API to a single "sound.bdmv" file. 
 
-Tool usage:
+## usage
 
     java -jar soundgen.jar [-debug] <input sound files> <output sound.bdmv file>
 
@@ -46,5 +43,4 @@ There is a backup copy of the above mentioned Tritonous jar files at
 
 How to use Tritonous PCM codec?
 
-    
-java -cp soundgen.jar:tritonus_share-0.3.6.jar:tritonus_remaining-0.3.6.jar net.java.bd.tools.BDJSoundGenerator <args>
+    java -cp soundgen.jar:tritonus_share-0.3.6.jar:tritonus_remaining-0.3.6.jar net.java.bd.tools.BDJSoundGenerator <args>

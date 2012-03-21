@@ -4,36 +4,6 @@
 
 This repo contains mainly [mavenized](http://maven.apache.org/) tools from the [**HD Cookbook**](http://java.net/projects/hdcookbook/) project. To build the tools, [install](http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html) your [*BD-J Platform Definition*](http://java.net/projects/hdcookbook/pages/BDJPlatformDefinition) with `mvn install:install-file -Dfile=/path/to/classes.zip -DgroupId=bdj -DartifactId=bdj -Dversion=1.0 -Dpackaging=jar` in your local [Maven](http://maven.apache.org/) repo and run `mvn clean install` in [`AuthoringTools`](/oliverlietz/bd-j/tree/master/AuthoringTools) and [`DiscCreationTools`](/oliverlietz/bd-j/tree/master/DiscCreationTools) respectively.
 
-* **authoring tools** are for desktop use with [Java SE](http://www.oracle.com/technetwork/java/javase/) and BD use with [Java ME (CDC/PBP)](http://www.oracle.com/technetwork/java/javame/java-me-overview-402920.html)
-    <pre>
-├── com.hdcookbook.grin
-│   ├── com.hdcookbook.grin-me               Blu-ray Disk   Java ME   1.3/1.3
-│   └── com.hdcookbook.grin-se               desktop        Java SE   1.5/1.5
-│
-├── com.hdcookbook.grin.animator-sfaa        Blu-ray Disk   Java ME   1.3/1.3
-│
-├── com.hdcookbook.grin.binaryconverter      desktop        Java SE   1.5/1.5
-│
-├── com.hdcookbook.grin.fontstrip
-│   ├── com.hdcookbook.grin.fontstrip-me     Blu-ray Disk   Java ME   1.3/1.3
-│   ├── com.hdcookbook.grin.fontstrip-se     desktop        Java SE   1.5/1.5
-│   └── com.hdcookbook.grin.fontstrip-tools  desktop        Java SE   1.5/1.5
-│
-├── com.hdcookbook.grin.grinviewer           desktop        Java SE   1.5/1.5
-│
-├── com.hdcookbook.grin.io.xml               desktop        Java SE   1.5/1.5
-│
-├── com.hdcookbook.grin.media
-│   ├── com.hdcookbook.grin.media-me         Blu-ray Disk   Java ME   1.3/1.3
-│   └── com.hdcookbook.grin.media-se         desktop        Java SE   1.5/1.5
-│
-└── profiler                                 Blu-ray Disk   Java ME   1.3/1.3
-</pre>
-* all **disc creation tools** but `net.java.bd.tools.logger` are for desktop use with Java SE
-* all tools for desktop use are also [*shaded*](http://maven.apache.org/plugins/maven-shade-plugin/) (have their dependencies packed into a jar), so you can simply run `java -jar TOOL.jar`
-    * normal jar for use as library: `net.java.bd.tools.TOOL-VERSION.jar`
-    * shaded über-jar: `TOOL.jar`
-
 ### known issues
 * `com.hdcookbook.grin.io.xml` is broken ([compilation failure](https://gist.github.com/1916339))
 * `net.java.bd.tools.bdview` is broken ([runtime failure](https://gist.github.com/1916340))

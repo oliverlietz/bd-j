@@ -44,3 +44,7 @@ the near future, since it is the correct behavior.
 
 See the BD-ROM spec part 3-1 section 6.2.1 and the AACS spec part
 3.10.2 for details.
+
+## usage
+
+    java -jar cpistrip.jar < in.m2ts > out.m2ts
