@@ -100,7 +100,7 @@ Step 1: Generate the ceritficate{s} and key{s} for signing.
 
 Step 2: Sign the application jar using a key{s} generate above.
 
-### <a id="BDCert"/>Step 1: Certificate Generation:
+### <a name="BDCert"/>Step 1: Certificate Generation:
 
 BDCertGenerator tool can be used for generating certificates for
 the BD-J Platform. This tool generates three types of certificates
@@ -144,7 +144,7 @@ Here is the command line for generating an application certificate.
 
 Place the generated certificate file `app.discroot.crt` in the `BDMV/CERTIFICATE` and `BDMV/CERTIFCATE/BACKUP` directories.
 
-### <a id="BDSigner"/>Step 2: Signing application jar
+### <a name="BDSigner"/>Step 2: Signing application jar
 
 BDSigner tool can be used for signing the application jar. This tool can
 also be used for signing BUMF using the Binding Unit Root certificate. It can
@@ -187,7 +187,7 @@ file automatically. There is no way to specify extensions to
 the signature manifest file. So, it can not be used to sign
 jars for BD-J. 
 
-### <a id="BUMF"/>Signing BUMF
+### <a name="BUMF"/>Signing BUMF
 
 Here is an example of signing a BUMF using some of the options provided
 by the tools described above.
@@ -225,7 +225,7 @@ The tool prints the following debug messages:
     java -cp security.jar net.java.bd.tools.security.BDCertGenerator -binding 00000001
     java -cp security.jar net.java.bd.tools.security.BDSigner bumf.xml
 
-### <a id="ONLSIG"/>Online Signature generation
+### <a name="ONLSIG"/>Online Signature generation
 
 When a BD-J application tries to access network the player checks for online authorization for the disc.
 The online access is granted through online.sig, online.crt and online.crl files. 
@@ -258,7 +258,7 @@ If the app.discroot.crt file is not present then use -nodiscroot option as below
 
     java -cp security.jar net.java.bd.tools.security.BDSigner -debug -nodiscroot -onlinekey bda/keyfile.bin -onlinecrt bda/online.crt
 
-### <a id="ONLINE"/>OnlineKeyTool:
+### <a name="ONLINE"/>OnlineKeyTool:
 
 This tool enables importing the BDA provided private key file and the public key from
 online.crt file into a Java Keystore. A new keystore can be used or the keys can
@@ -287,7 +287,7 @@ The above command results in a keystore that contains a key entry set to
 the public and private online keys obtained from BDA. When no options are provided
 the <a href="#DEF">default</a> keystore parameters are used.
 
-### <a id="BDCred"/>Credential Generation and Signing:
+### <a name="BDCred"/>Credential Generation and Signing:
 
 BDCredentialSigner tool generates persistant file credentials and BUDA
 credentials for accessing the common data area across organizations (orgIDs).
@@ -319,7 +319,7 @@ In a real environment, both these processes are disjoint as described in
 a workflow above. The tool options for going with this workflow are described
 below.
 
-#### <a id="CREDGEN"/>Signing Credentials:
+#### <a name="CREDGEN"/>Signing Credentials:
 
 The command line option: `-gencred` generates the signed credentials.
 
@@ -342,7 +342,7 @@ The above command line results in a permission request file that is populated
 with credential elements containing the grantor's signature.
 The grantor certificate chain is store in the file: `grantorchain.crt` 
 
-#### <a id="CREDGEN"/>Signing Jar:
+#### <a name="CREDGEN"/>Signing Jar:
 
 The command line option: `-updatecerts` updates the certificates and signs the jar.
 
@@ -429,7 +429,7 @@ directory: com/foo/bar/bluray.MyApp.perm.
 The BDCredentialsSigner expects the whole path in the PRF
 argument for both credential and jar signing.
 
-### <a id="DEF"/>Tables of default values used:
+### <a name="DEF"/>Tables of default values used:
 
 #### Keystore:
 
