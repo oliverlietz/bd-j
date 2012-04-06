@@ -1,23 +1,15 @@
-<html><body>
-<style type="text/css">
-  P.pagebreak {page-break-before: always}
-</style>
-<h2><center>GRIN Animation Framework</center></h2>
-<p><center>
-<img width="543" height="298" src="drawopt.jpg">
-</center></p>
+---
+layout: main
+title: GRIN Animation Framework
+---
+<img src="drawopt.jpg" width="543" height="298" alt="optimized drawing"/>
 <h2>Introduction and Scope</h2>
 <p>
-<a href="../package-summary.html">This package</a> contains a highly
+GRIN Animation Framework is a highly
 efficient animation framework designed around the needs of Blu-ray Java
 and other TV devices that use PBP.  It provides support for doing 
 double-buffered animation with optimized drawing, so that a minimum of
 pixels are erased and copied with each frame.
-A high-level overview document
-can be found
-<a href="../../../../../../../animator.html">here</a>, or online at
-<a href="https://hdcookbook.dev.java.net/animator.html">
-https://hdcookbook.dev.java.net/animator.html</a>.
 </p>
 <h2>Animation Framework Overview</h2>
 <p>
@@ -33,14 +25,14 @@ make them part of a Show.  Here's a UML diagram illustrating the
 animation framework:
 </p>
 <p>
-<center><img src="animator_classes.jpg"></center>
+<img src="animator_classes.jpg" alt="animator classes"/>
 </p>
 <p>
-The menu xlet in <b>com.hdcookbook.bookmenu.menu</b> uses the GRIN
+The menu xlet in <strong>com.hdcookbook.bookmenu.menu</strong> uses the GRIN
 animation framework.
-The Gun Bunny game xlet in <b>com.hdcookbook.gunbunny</b> doesn't
+The Gun Bunny game xlet in <strong>com.hdcookbook.gunbunny</strong> doesn't
 use GRIN, but it has the same kind of frame pump.  Gun Bunny even
-lets you switch <i>dynamically</i> between direct draw, repaint draw and
+lets you switch <em>dynamically</em> between direct draw, repaint draw and
 SFAA.  With all three, it maintains time-based animation, dropping
 frames if it falls behind.
 </p>
@@ -119,7 +111,8 @@ that looks like this:
 <p>
 This creates an Animator worker thread that will display the show,
 by default at 23.976 times per second.
-</p><p>
+</p>
+<p>
 The animation loop within the <code>AnimationEngine</code> happens
 within a single animation thread, created by the engine.  In pseudocode,
 the flow of the animtion loop is:
@@ -147,7 +140,7 @@ the flow of the animtion loop is:
     }
 </pre>
     
-<h2><a name="optimized_drawing">Optimized Drawing</a></h2>
+<h2>Optimized Drawing</h2>
 <p>
 To achieve good drawing performance, it's essential to minimize drawing.
 This usually means avoiding the re-drawing of pixels that are the same as
@@ -155,7 +148,8 @@ they were in the last displayed frame of animation.  This can be difficult
 to figure out manually, so the animatiom framework contains support to
 help automate this text.  This is centered around the class
 <code>DrawRecord</code>.
-</p><p>
+</p>
+<p>
 An instance of the class <code>DrawRecord</code> represents a bit of
 drawing in a rectangular area of the screen.  Within that rectangle,
 your drawing can be fully opaque, or have some pixels that are transparent,
@@ -172,7 +166,8 @@ instances aren't included
 in the set of what is drawn in the current frame, those areas of the screen
 are automatically erased and re-drawn.  In the GRIN scene graph, every
 visual feature maintains its own <code>DrawRecord</code> instance.
-</p><p>
+</p>
+<p>
 The best way to visualize what's going on is to see it for yourself, live.
 The GrinView program has a function to do this.  Run the program
 <code>grin/scripts/shell/run_grinviewer.sh test</code>, and double-click
@@ -182,14 +177,16 @@ drawing," then on "+frame".  Now, just click on "next" a bunch of times.
 For each frame, it will show you the areas of the screen buffer that are
 erased in red, then the areas that are drawn in green, then it will show 
 you the result.
-</p><p>
+</p>
+<p>
 By default, this GRIN show selects a segment that makes pretty good use
 of drawing optimization (<code>S:DrawOpt.Opt.TargetAndGuarantee</code>).
 But to start, double-click on <code>S:DrawOpt.Unoptimized</code>.  You'll
 notice that a large area of the screen is updated with each frame:  the
 bounding rectangle of screen objects that change, in fact.
-</p><p>
-The framework <i>could</i> treat each <code>DrawRecord</code> as an independent
+</p>
+<p>
+The framework <em>could</em> treat each <code>DrawRecord</code> as an independent
 drawing operation, and try to merge only some of them together when
 necessary.  Unfortunately, this is a hard computational problem to solve - the
 most straightforward algorithm has O(n<sup>3</sup>) time complexity, which
@@ -198,7 +195,8 @@ number of inputs.  If you assume a complex scene broken down into 50
 drawing operations, each represented by a <code>DrawRecord</code>, then
 the execution time becomes proportional 50<sup>3</sup>, which is
 125,000 - a pretty big number.
-</p><p>
+</p>
+<p>
 There are "heuristic algorithms" that can attempt to do this more quickly,
 but they take CPU power, too.  For the GRIN aniamtion framework, we take
 a different approach.  Realizing that a BD-J disc has an author, we assume
@@ -209,7 +207,8 @@ should be grouped into the same bounding rectangle.  These groupings are called
 "draw targets."  For a simple animation there might be only one draw target,
 but if a few things are going on at once, it might make sense to have up to
 four or five draw targets.
-</p><p>
+</p>
+<p>
 This is what is done with the segment called <code>S:DrawOpt.Opt.Target</code>.
 Double-click on that, and step through the animation a few times.  You'll see
 that the turtles are in one draw target (the default target for the show,
@@ -217,14 +216,16 @@ that the turtles are in one draw target (the default target for the show,
 (<code>T:Bunny</code>), and the fading picture of the bunny with the
 shotgun in a third (<code>T:Picture</code>).  This results in much more
 efficient drawing.
-</p><p>
+</p>
+<p>
 Generally, you'll want to put objects that are close to each other in
 the same draw target.  It's OK if objects in different draw targets
 overlap - you'll notice that the objects in this sample move all over
 the place, and sometimes cover each other.  No matter how you assign 
-draw targets, the results will always display <i>correctly</i>, but
-if you assign them well, the screen will be repainted <i>faster</i>.
-</p><p>
+draw targets, the results will always display <em>correctly</em>, but
+if you assign them well, the screen will be repainted <em>faster</em>.
+</p>
+<p>
 In the sample GRIN script, there's a further level of optimization
 applied in the <code>S:DrawOpt.Opt.TargetAndGuarantee</code> segment.
 Here, a samll additional optimization is made:  A GRIN feature
@@ -243,10 +244,10 @@ The control flow of the animation engine is summarized in the following table:
 </p>
 <table border="3">
     <tr>
-	<td><b>AnimationEngine decides...</b></td>
-	<td><b>Method called in AnimationClient (e.g. Show)</b></td>
-	<td><b>Method called within the AnimationClient (e.g. the 
-	       Show's features)</b></td>
+	<td><strong>AnimationEngine decides...</strong></td>
+	<td><strong>Method called in AnimationClient (e.g. Show)</strong></td>
+	<td><strong>Method called within the AnimationClient (e.g. the 
+	       Show's features)</strong></td>
     </tr>
 	<td>1)  It's time to advance the logical model to the next frame</td>
 	<td>AnimationClient.nextFrame()</td>
@@ -296,4 +297,3 @@ it will form the basis of efficiently combining drawing down by
 scene graph frameworks like the GRIN scene graph, as well as drawing
 done directly in code.
 </p>
-</body></html>
