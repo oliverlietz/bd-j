@@ -9,7 +9,7 @@ GRIN stands for "Graphical Interactivity," and it's also sort of a play on SMIL.
 The connection between GRIN and SMIL is very loose.
 GRIN does deal with some of the same time-based and
 media-centric concerns that are generally associated with SMIL,
-but GRIN is really very different.  
+but GRIN is really very different.
 GRIN was written to support applications that
 are a fusion of procedural Java code and declarative elements - it doesn't
 try to be an all-encompassing declarative environment, complete with
@@ -19,30 +19,29 @@ scripting.
 GRIN provides:
 </p>
 <ul>
-    <li>Some declarative glue to help structure an application</li>
-    <li>A synchronization model so you don't have to deal too much
-        with multithreading</li>
-    <li>A consistent drawing/animation model</li>
-    <li>Translation and handling of remote control events</li>
-    <li>Some simple presentation elements.</li>
+  <li>Some declarative glue to help structure an application</li>
+  <li>A synchronization model so you don't have to deal too much with multithreading</li>
+  <li>A consistent drawing/animation model</li>
+  <li>Translation and handling of remote control events</li>
+  <li>Some simple presentation elements.</li>
 </ul>
 <p>
 GRIN is designed to be 
 extended with other presentation elements, including programmatic 
-elements, which can be arbitrarily complex - even up to a small video game.  
+elements, which can be arbitrarily complex - even up to a small video game.
 GRIN really doesn't try
 to address the overall control of an application; that's left for
-the developer to do in code.  The framework does provide a simple
+the developer to do in code. The framework does provide a simple
 state machine and timeline that might help structure application
-control, but use of this is entirely optional.  It's based on the
+control, but use of this is entirely optional. It's based on the
 Director construct, but a Show can be used without ever
 touching any of that.
 </p>
 <p>
 GRIN is intended to be used in highly interactive enhancements for
-TV, on GEM platforms like Blu-Ray, MHP and OCAP.  It's mostly meant
+TV, on GEM platforms like Blu-ray, MHP and OCAP. It's mostly meant
 for enhancements that are tied to video, though it could certainly
-be used when video is not present.  It might be applicable to non-TV 
+be used when video is not present. It might be applicable to non-TV 
 platforms, too.
 </p>
 <h2>License and Credits</h2>
@@ -56,16 +55,15 @@ Additionally, please consider the request in the file <a href="credits.html">cre
 An application can be structured like this:
 </p>
 <pre>
-       Component c = ...  the right kind of component
+       Component c = ... the right kind of component
        Show s = new Show();
-         ...  initialize s
+         ... initialize s
        AnimationClient[] clients = new AnimationClient[] { show };
        engine = new DirectDrawEngine();
        engine.setFps(24000);
        engine.initClients(clients);
        engine.initialize(this);
        engine.start();
-
 </pre>
 <p>
 A more complete example can be found in the HelloGrinWorld xlet
@@ -75,34 +73,29 @@ in the <a href="./animator/">Animation Framework Usage</a> document.
 <p>
 If an application gets an expose event, there's a 
 <code>repaintFrame()</code> method defined on <code>AnimationEngine</code>
-that will do the right thing.  When a remote control or keyboard event
+that will do the right thing. When a remote control or keyboard event
 is received that the <code>Show</code> should consider processing,
-it can call <code>s.handleRCEvent()</code>.  Image loading an other 
+it can call <code>s.handleRCEvent()</code>. Image loading an other 
 initialization happen automatically in a background thread.
 </p>
 <h2>Show</h2>
 <p>
-The center of the GRIN framework is called a "Show."  The central function
-of a show is to display a "Feature".  A feature is something that presents
+The center of the GRIN framework is called a "Show." The central function
+of a show is to display a "Feature". A feature is something that presents
 something sensory to the user, like an image, some text, or a sound.
 A set of features that are presented together are collected into a "Segment."
 A show can:
 </p>
 <ul>
-    <li>Move from any segment to any other segment in a thread-safe
-        manner, without worrying about synchronization.</li>
-    <li>Manage initialization, e.g. loading large in-memory objects
-        like images and sounds.</li>
-    <li>Automatically move to another segment when initialization or an
-        animation within the segment finishes.</li>
-    <li>Assemble visual elements using a simple text file that
-        is parsed when the show is created (usually shortly after
-	the application starts).</li>
+  <li>Move from any segment to any other segment in a thread-safe manner, without worrying about synchronization.</li>
+  <li>Manage initialization, e.g. loading large in-memory objects like images and sounds.</li>
+  <li>Automatically move to another segment when initialization or an animation within the segment finishes.</li>
+  <li>Assemble visual elements using a simple text file that is parsed when the show is created (usually shortly after the application starts).</li>
 </ul>
 <p>
-A show doesn't provide any real control logic or application state.  That's
-left to the Director.  Director is just an interface declaration; it has
-to be implemented by an application implementing this framework.  Director
+A show doesn't provide any real control logic or application state. That's
+left to the Director. Director is just an interface declaration; it has
+to be implemented by an application implementing this framework. Director
 is an interface that needs to be implemented by the xlet; it's the show's
 "handle" back to the xlet, and can be used by commands within the show
 to refer back to the containing xlet, e.g. to call methods.
@@ -114,11 +107,11 @@ A UML class diagram illustrating the some aspects of the design is given below:
 <img src="show_classes.jpg" alt="show classes"/>
 </p>
 <p>
-A show can be assembled from a simple show file.  This file is parsed and
+A show can be assembled from a simple show file. This file is parsed and
 turned into an efficient binary representation that can be quickly loaded
-by an xlet.  This text file format is adequate, especially for hand-written
-samples, but it's not really designed to be incorporated into a  professional
-workflow.  A functional equivalent using XML has been developed by
+by an xlet. This text file format is adequate, especially for hand-written
+samples, but it's not really designed to be incorporated into a professional
+workflow. A functional equivalent using XML has been developed by
 <a href="http://www.javelindvd.com/">Javelin</a>, and we plan to use
 the FX/Script language to express a show file soon.
 </p>
@@ -133,30 +126,27 @@ Here's BNF describing the syntax of a show file:
 A string can be a sequence of characters delimited by whitespace,
 or it can be enclosed in double-quotes, with backslash as an
 escape characer if you need double-quote or backslash within a
-string.  Strings may contain newlines.
+string. Strings may contain newlines.
 </p>
 <p>
 A show can include a <code>$include</code> directive that looks like this:
 </p>
 <pre>
-
     ...
-
     $include some_file.txt ;
-
 </pre>
 <p>
 The string "<code>$include</code>" must not be inside quotation marks, 
 but the file name
-(like other normal strings) may be.  The included file is searched for on
+(like other normal strings) may be. The included file is searched for on
 the search path used for all show assets.
 </p>
 <h2>Features</h2>
 <p>
 The entities actually displayed by a director are called
-"features."  The GRIN framework provides some simple features,
+"features". The GRIN framework provides some simple features,
 for images, image sequences, assemblies of a collection of features,
-and text.  It also provides support for application-defined
+and text. It also provides support for application-defined
 features that can be made a part of the text file describing a
 show.
 </p>
@@ -166,12 +156,12 @@ show.
 <h2>Remote Control Handling</h2>
 <p>
 The GRIN framework can do two things with remote control
-keypresses:  It can translate them into an appication-defined
-command, or it can use them to select visual elements.  The latter
-is done with an AssemblyGridRCHandler instance.  It supports
+keypresses: It can translate them into an appication-defined
+command, or it can use them to select visual elements. The latter
+is done with an AssemblyGridRCHandler instance. It supports
 arrow-key navigation, plus a special case for the colored keys.
 When new elements are selected and/or activated, it can (for
-example) change the part of an assembly that's activated.  This
+example) change the part of an assembly that's activated. This
 can be used to build buttons, while still giving the application
 author complete control over the UI appearance.
 </p>
@@ -180,15 +170,15 @@ author complete control over the UI appearance.
 </p>
 <h2>Commands</h2>
 <p>
-Commands are used as a glue to bind the framework together.  Actions,
+Commands are used as a glue to bind the framework together. Actions,
 like selecting a segment or a part of a feature assembly are done using
-a command.  Events are also sent from a Show to its director using
+a command. Events are also sent from a Show to its director using
 commands.
 </p>
 <p>
-When a command is executed, it is done in a thread-safe manner.  If
+When a command is executed, it is done in a thread-safe manner. If
 a Scene isn't in a state where it's safe to execute the command,
-execution is deferred until it is safe.  One example of a time it's
+execution is deferred until it is safe. One example of a time it's
 not safe to execute a command is when a segment is drawing to the screen
 (or a screen buffer); if the state of the segment changed in the middle
 of drawing, inconsistent results might be drawn.
@@ -202,44 +192,44 @@ The commands defined by GRIN are illustrated below:
 <p>
 Commands must be "compiled", including application-defined commands.
 This really just means turning a command string into an instance of
-a subclass of Command.  It should include resolving any references in
+a subclass of Command. It should include resolving any references in
 the command; this is faster, and it allows errors to be caught more
 easily.
 </p>
 <p>
 The show compiler has an innovative feature to conveniently write
-commands in Java:  the <code>java_command</code>.  This lets you put a
+commands in Java: the <code>java_command</code>. This lets you put a
 bit of Java source code in the show file, and have that code get triggered
-like any other GRIN command.  Behind the scenes, the GRIN show compiler
+like any other GRIN command. Behind the scenes, the GRIN show compiler
 generates a single Java class that contains all of these code snippets,
-and selection code to execute the right one.  The generated code can
+and selection code to execute the right one. The generated code can
 reference the method parameter <code>grinCaller</code> to get a reference
 to the Show in which the command was enqueued.
 </p>
 <h2>Synchronization</h2>
 <p>
-GRIN has a very simple synchronization model.  The most important
-external lock is the lock on the show object.  Everything that might
+GRIN has a very simple synchronization model. The most important
+external lock is the lock on the show object. Everything that might
 need to synchronize on the show lock needs to synchronize on it first.
 </p>
 <p>
 Any change to a show's state (or the "show model" if you prefer that
-term out of MVC theory) needs to be synchronized on the show.  Further,
+term out of MVC theory) needs to be synchronized on the show. Further,
 changes other than purely visual changes need to be synchronized into the
 "frame pump" loop, which is basically:
 </p>
 <pre>
           for frame 1 to to infinity
-	      wait until it's time to display frame
-	      update model
-	      render show to screen
-	  rof
+          wait until it's time to display frame
+          update model
+          render show to screen
+      rof
 </pre>
 <p>
-This is facilitated with a command model.  At any time, you can
-always call <code>show.runCommand(Command)</code>, from any thread.  This does
+This is facilitated with a command model. At any time, you can
+always call <code>show.runCommand(Command)</code>, from any thread. This does
 not require the show lock; it only synchronizes on the internal lock
-used for a queue, so this is very thread-safe and simple.  When you
+used for a queue, so this is very thread-safe and simple. When you
 call <code>runCommand()</code>, it queues the command for later execution,
 at the right point in the frame pump loop.
 The queue class it uses was even designed so that it will almost never
@@ -249,35 +239,35 @@ garbage by using it.
 <p>
 As an example of the reliance on commands, consider the method
 used to move a show to a new segment, 
-<code>show.activateSegment(Segment)</code>.  This works by queueing
+<code>show.activateSegment(Segment)</code>. This works by queueing
 up a command to activate the given segment when the frame pump is in
-the right state.  By the way, it doesn't allocate a new command object
+the right state. By the way, it doesn't allocate a new command object
 to do this - again, we're careful about generating heap traffic.
 </p>
 <h2>Image Mosaics</h2>
 <p>
 Image loading can take a significant part of the start-up time of
-an xlet.  With typical players, it's faster to load one big image
-rather than several small images.  Thus, it's a good idea to combine
-several images into an "image mosaic".  The GRIN scene graph can use
-an image within a mosaic anywhere an image can be used.  At runtime, you 
+an xlet. With typical players, it's faster to load one big image
+rather than several small images. Thus, it's a good idea to combine
+several images into an "image mosaic". The GRIN scene graph can use
+an image within a mosaic anywhere an image can be used. At runtime, you 
 can use images
 within an image mosaic even if you don't use the rest of the GRIN
 library, by just using the image classes 
-in <code>com.hdcookbook.grin.util</code>.  At compile time, you can combine
+in <code>com.hdcookbook.grin.util</code>. At compile time, you can combine
 images into one or more mosaics by making a special "mosaics" file.
 This file is compiled just like a GRIN show file.
 </p>
 <p>
-In your xlet, you might want to have more than one show file.  If you
+In your xlet, you might want to have more than one show file. If you
 do this, you might want to have multiple show files pool their images
 in one set of mosaics, or you might want to have seperate sets of mosaics.
-You can do either with the show compiler <code>GrinCompiler</code>.  If
+You can do either with the show compiler <code>GrinCompiler</code>. If
 you want a set of shows to share mosaic defintions, simply compile them
 all at the same time, by passing in the different show files on the
-command line in one compiler run.  Even if you only have one show file,
+command line in one compiler run. Even if you only have one show file,
 you'll probably want to also have a mosaics file, so you can control
-the name of the generated mosaics file, and its parameters.  Just pass
+the name of the generated mosaics file, and its parameters. Just pass
 the mosaics defintion file on the command line along with the show
 files, and <code>GrinCompiler</code> will build up a set of image
 mosaics for the show(s) according to the declarations in the mosaics
@@ -297,20 +287,20 @@ in this BNF, and not repeated here.
 <h2>Memory Management and GC</h2>
 <p>
 As was alluded to above, the GRIN framework tries very hard to avoid
-creating unnecessary heap objects.  This should avoid the possibility
-of objectionable pauses due to GC.  As is usually the case in any
+creating unnecessary heap objects. This should avoid the possibility
+of objectionable pauses due to GC. As is usually the case in any
 xlet, it's a good idea to call <code>System.gc()</code> after
 initialization, because initialization code tends to generate a lot
 of garbage, and if you're going to pause for a bit, initialization is
-the time to do it.  For a show, this point comes after parsing the show
+the time to do it. For a show, this point comes after parsing the show
 file.
 </p>
 <h2>Animation Loop</h2>
 <p>
 For the animation loop GRIN relies on the 
 <a href="./animator/">Animation Framework</a>
-in <code>com.hdcookbook.grin.animator</code>.  A GRIN <code>Show</code>
-implements the <code>AnimationClient</code> interface.  Because the
+in <code>com.hdcookbook.grin.animator</code>. A GRIN <code>Show</code>
+implements the <code>AnimationClient</code> interface. Because the
 framework's <code>AnimationEngine</code> can support multiple clients
 that draw in a defined stacking order, GRIN drawing can appear above or
 below drawing down by any other Java code.
@@ -318,9 +308,9 @@ below drawing down by any other Java code.
 <h2>Programmatically Controlling Show Nodes</h2>
 <p>
 GRIN is a declarative scene graph, but you can also programmatically
-set certain node values.  This, in effect, uses Java code in the way
-that scripting languages are commonly used.  When you do this, it's 
-very important to observe some strict rules around threading.  In 
+set certain node values. This, in effect, uses Java code in the way
+that scripting languages are commonly used. When you do this, it's 
+very important to observe some strict rules around threading. In 
 the GRIN model, you're only permitted to make changes to show 
 nodes with the Show lock held, either from the body of an executing 
 command, or from within the method
@@ -328,33 +318,26 @@ command, or from within the method
 </p>
 <p>
 An example of changing parameters of show nodes using Java is
-in the "Playground" test (xlets/tests/functional/Playground).  See
+in the "Playground" test (xlets/tests/functional/Playground). See
 the show <code>main_show.txt</code> for an example of a scene graph
-that's set up to be modified from Java.  This modification is done
+that's set up to be modified from Java. This modification is done
 in the show file itself (inside a <code>java_command</code>), and in a
 method of <code>MainDirector</code> that's invoked from that
-<code>java_command</code>.  The <code>java_command</code> is
+<code>java_command</code>. The <code>java_command</code> is
 invoked in every frame, by simply having a repeating timer of length 1.
 </p>
 <ul>
-    <li>The x and y position of the center point used for scaling in a
-        <code>scaling_model</code>.  A <code>scaling_model</code> can
-	be attached to features of type <code>fixed_image</code>, 
-	<code>image_sequence</code> or <code>box</code>.</li>
-    <li>The x any y scale factor of a <code>scaling_model</code>.</li>
-    <li>The x and y offset values int a <code>translator_model</code>
-        attached to one or more <code>translator</code> features.</li>
-    <li>The text contents of a <code>text</code> feature.</li>
-    <li>The AlphaComposite value of a <code>fade</code> feature.</li>
-    <li>The currently active sub-feature of an <code>assembly</code>
-        feature.  You can change this with either an <code>activate_part</code>
-	command or by calling <code>Assembly.setCurrentFeature()</code>
-	directly.</li>
+  <li>The x and y position of the center point used for scaling in a <code>scaling_model</code>. A <code>scaling_model</code> can be attached to features of type <code>fixed_image</code>, <code>image_sequence</code> or <code>box</code>.</li>
+  <li>The x any y scale factor of a <code>scaling_model</code>.</li>
+  <li>The x and y offset values int a <code>translator_model</code> attached to one or more <code>translator</code> features.</li>
+  <li>The text contents of a <code>text</code> feature.</li>
+  <li>The AlphaComposite value of a <code>fade</code> feature.</li>
+  <li>The currently active sub-feature of an <code>assembly</code> feature. You can change this with either an <code>activate_part</code> command or by calling <code>Assembly.setCurrentFeature()</code> directly.</li>
 </ul>
 <p>
 Many of the nodes that can be programmed also do linear interpolation with
-built-in ranges.  As a rule, if you want to set a value from Java, you can't
-also be trying to change it with an active interpolation.  Further, when you
+built-in ranges. As a rule, if you want to set a value from Java, you can't
+also be trying to change it with an active interpolation. Further, when you
 set a value from Java, it stays set to that new value throughout the execution
 of the xlet; there is no mechanism to recover the default value set in the
 show file.
@@ -362,8 +345,8 @@ show file.
 <h2>Extending GRIN</h2>
 <p>
 GRIN was designed to be extended, by adding new feature types and
-new remote control handler types.  Adding a new feature does require
-that you adhere to some needed structure.  In addition to writing a
+new remote control handler types. Adding a new feature does require
+that you adhere to some needed structure. In addition to writing a
 runtime class to implement your new feature, you need to write a method
 to read instantiate a feature from the GRIN binary file, and you need
 to write a Java SE subclass of your feature that knows how to write out
@@ -371,9 +354,9 @@ that binary file format.
 </p>
 <p>
 The SE version of your feature can, if you wish, include compile-time
-processing.  That is, when the GRIN compiler is run to create a binary
+processing. That is, when the GRIN compiler is run to create a binary
 file, the SE subclass of your feature can do any computation you want it
-to do.  This can include modifying the scene graph, even by injecting
+to do. This can include modifying the scene graph, even by injecting
 a new node as the parent of your feature, and making every every node
 in the show that referred to your feature refer to this new parent, instead.
 In this way, you can declare a new node type in the show file, but implement
@@ -381,25 +364,25 @@ your node as a collection of already existing node types.
 </p>
 <p>
 To see an example of adding a feature, see 
-<code>xlets/tests/functional/Playground</code>.  As of this writing, this
+<code>xlets/tests/functional/Playground</code>. As of this writing, this
 included three extension features, <code>Arc</code>,
 <code>BouncingArc</code> and 
-<code>ImageFrame</code>.  In the <code>src</code> directory,
+<code>ImageFrame</code>. In the <code>src</code> directory,
 you'll find <code>Arc.java</code> and <code>ImageFrame.java</code>, which
-are the runtime support for these features.  In the <code>se_src</code> 
+are the runtime support for these features. In the <code>se_src</code> 
 directory, you'll find <code>SEArc.java</code>,
 <code>SEBouncingArc.java</code> and 
 <code>SEImageFrame.java</code>,
 which are the SE versions of these extensions, complete with the
-<code>writeInstanceData()</code> methods.  The bouncing arc feature
+<code>writeInstanceData()</code> methods. The bouncing arc feature
 compiles into an arc under a translation, with a translator model that has
-pre-computed bounce coordinates.  You'll also find the
+pre-computed bounce coordinates. You'll also find the
 extension parser for these new features, in 
-<code>PlaygroundExtensionParser.java</code>.  
+<code>PlaygroundExtensionParser.java</code>.
 </p>
 <p>
 A more substantive example of a "standard" extension is the media
-player, in <code>AuthoringTools/grin/extensions/media</code>.  It's
+player, in <code>AuthoringTools/grin/extensions/media</code>. It's
 used in the GrinBunny game in 
 <code>xlets/grin_samples/GrinBunny</code>, which can serve as a model
 for how to set up the vars.properties file to build in extensions from
@@ -408,7 +391,7 @@ multiple sources.
 <h2>Building Notes</h2>
 <p>
 When you build the javadocs, be sure to copy the directory
-<code>com/hdcookbook/grin/docs</code>.  If you build the test
+<code>com/hdcookbook/grin/docs</code>. If you build the test
 program in com.hdcookbook.grin.test, be sure to include
 <code>com/hdcookbook/grin/test/assets</code> in the JAR file.
 </p>
@@ -420,12 +403,12 @@ hdcookbook.dev.java.net repository.
 <h2>Launching GRIN</h2>
 <p>
 A test program for the GRIN framework is provided in the package
-<strong>com.hdcookbook.grin.test</strong>.  Please consult the package documentation
-for details.  You can launch GRIN using Java SE - this is documented in
+<strong>com.hdcookbook.grin.test</strong>. Please consult the package documentation
+for details. You can launch GRIN using Java SE - this is documented in
 the package documentation for <strong>com.hdcookbook.grin.test.bigjdk</strong>.
 The <code>GuiGenericMain</code> class there is a nice little tool for
 browsing around a show file, and seeing what different segments look
-like.  Finally, you can see a pretty complete demonstration of using
+like. Finally, you can see a pretty complete demonstration of using
 GRIN in the xlet in <strong>com.hdcookbook.bookmenu.menu</strong>.
 </p>
 <h2>Note about UML diagrams</h2>
@@ -434,16 +417,16 @@ The UML diagrams were made with a program called <a href="http://www.umlet.com/"
 </p>
 <h2>Change Log</h2>
 <p>
-Beginning with version 1.0, only major chages will be captured here.  
+Beginning with version 1.0, only major chages will be captured here.
 For information about the detailed changes in each putback since then, 
 please consult the source code repository.
 </p>
 <ul>
-  <li><strong>Version 0.0, circa October 2004</strong>  First version of GRIN developed
+  <li><strong>Version 0.0, circa October 2004</strong> First version of GRIN developed
       for "Ryan's Life" demo, in collaboration with Mark Johnson at Technicolor
       and Cédric Monnier and Nicolas Mériau at NDS France (née Canal+ 
-      Technologies).  Segments were called "phases," and assemblies and 
-      image sequences existed already.  This version was shown at a demo 
+      Technologies). Segments were called "phases," and assemblies and 
+      image sequences existed already. This version was shown at a demo 
       at the DVD Forum, running on a commercial
       CanalSatellite STB running pJava and MHP.</li>
   <li><strong>Version 0.1, Dec. 19 2006</strong>
@@ -472,7 +455,7 @@ please consult the source code repository.
   <li><strong>Version 0.1.4, Jan. 1 2007</strong>
   <ul>
      <li>Added a GUI to let you explore a show's segments, and drive
-         the animation.  See GuiGenericMain.</li>
+         the animation. See GuiGenericMain.</li>
      <li>Added end_commands to translation feature.</li>
      <li>Made translator take a list of features to be translated, instead
          of just one.</li>
@@ -480,67 +463,67 @@ please consult the source code repository.
   <li><strong>Version 0.1.4, Jan. 1 2007</strong> fixes a minor bug in Translator</li>
   <li><strong>Version 0.1.5, May 3 2007</strong> BSD license update</li>
   <li><strong>Version 0.1.6, May 18 2007</strong> Added new (and very cool)
-      visual rc handler.  See com.hdcookbook.grin.VisualRCHandler for
-      details.  Mouse handling isn't quite done yet, but otherwise it
+      visual rc handler. See com.hdcookbook.grin.VisualRCHandler for
+      details. Mouse handling isn't quite done yet, but otherwise it
       works great.</li>
   <li><strong>Version 0.1.7, May 19, 2007</strong> 
   <ul>
       <li>Made mouse events work
-      with visual RC handler.  Run GrinTestRyan to see it work; the
+      with visual RC handler. Run GrinTestRyan to see it work; the
       first menu was set up with mouse coords on the visual rc handler.</li>
       <li>Added support for multi-line text features.</li>
   </ul></li>
-  <li><strong>Version 0.1.8, May 29, 2007</strong>  Added support for image
+  <li><strong>Version 0.1.8, May 29, 2007</strong> Added support for image
       mosaics, including mosaic builder in
       com.hdcookbook.grin.build.mosaic.</li>
-  <li><strong>Version 0.9, June 18 2007</strong>  Many changes that have not
-      been documented yet.  Finalizing hdcookbook for the HD Cookbook
-      DVD.  Update coming soon with documentation, but I'm putting this
+  <li><strong>Version 0.9, June 18 2007</strong> Many changes that have not
+      been documented yet. Finalizing hdcookbook for the HD Cookbook
+      DVD. Update coming soon with documentation, but I'm putting this
       one out now to restore hdcookbook.dev.java.net, which just
       changed from CVS to SVN.</li>
-  <li><strong>Version 0.9.1, June 25 2007</strong>  Fleshed out the javadoc
-      comments.  Here are some of the major new features introduced
+  <li><strong>Version 0.9.1, June 25 2007</strong> Fleshed out the javadoc
+      comments. Here are some of the major new features introduced
       in version 0.9:
       <ul>
         <li> An automatic image mosaic creator, to speed xlet load times.</li>
-	<li> A new "visual" remote control handler that's very powerful
-	     and general.</li>
-	<li> A feature for fade in/fade out effects, a feature for
-	     SRC_OVER graphics-to-graphics blending of features, and
-	     one for clipping.</li>
-	<li> Good support for xlet feature extensions that modify the
-	     behavior of other features.  This is a very powerful
-	     technique.</li>
-	<li> Some nice additions to "GuiGenereicMain," the show
-	     script browser for  big JDK.  It now lets you see
-	     the UI composited over a background image when you
-	     stop the frame pump, or you take a snapshot.  This is
-	     really useful for generating "screenshots" if you're
-	     writing a book :-)</li>
-	<li> Added <code>Command.deferNextCommands()</code> so that
-	     the frame pump can be allowed to catch up after a
-	     time-consuming command.</li>
-	<li> Many cleanups and documentation improvements</li>
+    <li> A new "visual" remote control handler that's very powerful
+         and general.</li>
+    <li> A feature for fade in/fade out effects, a feature for
+         SRC_OVER graphics-to-graphics blending of features, and
+         one for clipping.</li>
+    <li> Good support for xlet feature extensions that modify the
+         behavior of other features. This is a very powerful
+         technique.</li>
+    <li> Some nice additions to "GuiGenereicMain," the show
+         script browser for big JDK. It now lets you see
+         the UI composited over a background image when you
+         stop the frame pump, or you take a snapshot. This is
+         really useful for generating "screenshots" if you're
+         writing a book :-)</li>
+    <li> Added <code>Command.deferNextCommands()</code> so that
+         the frame pump can be allowed to catch up after a
+         time-consuming command.</li>
+    <li> Many cleanups and documentation improvements</li>
       </ul>
       Version 0.9.1 is very close to what will be on the DVD in the book.
       I know this to be true, because the deadline for getting the disc
       image out is this Friday, in four days.</li>
-  <li> <strong>Version 1.0, June 27 2007</strong>  
+  <li> <strong>Version 1.0, June 27 2007</strong>
        <ul>
          <li>Fixed up some bugs in the BDJO
-	   and such that were caught for us by a disc verifier.  This is
-	   the version going in the book.  I'll archive it to a ZIP file
-	   soon.</li>
-	 <li>Mosaic maker now reads its asses with java.io.File rather
-	     than Class.getResource()</li>
-	 <li>Build scripts now work on Windows (using the Unix utils
-	     from <a href="http://unxutils.sourceforge.net/">http://unxutils.sourceforge.net/</a>).</li>
+       and such that were caught for us by a disc verifier. This is
+       the version going in the book. I'll archive it to a ZIP file
+       soon.</li>
+     <li>Mosaic maker now reads its asses with java.io.File rather
+         than Class.getResource()</li>
+     <li>Build scripts now work on Windows (using the Unix utils
+         from <a href="http://unxutils.sourceforge.net/">http://unxutils.sourceforge.net/</a>).</li>
       </ul></li>
   <li> <strong>Version 1.1.0, November 4, 2007</strong>
-      Added the animation framework.  Subsequent putbacks will make Show
+      Added the animation framework. Subsequent putbacks will make Show
       take advantage of the optimized drawing that this framework helps enable.</li>
   <li> <strong>Versions after 1.1.0</strong>
-       Moved project to subversion repository.  For versions after Nov. 4,
+       Moved project to subversion repository. For versions after Nov. 4,
        see the subversion revision log, e.g. with the <code>svn log</code>
        command from the base directory of the repository.</li>
 </ul>
