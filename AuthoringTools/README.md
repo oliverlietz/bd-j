@@ -18,6 +18,8 @@ used to create BD-J applications.
 │   ├── com.hdcookbook.grin.fontstrip-se     desktop        Java SE   1.5/1.5
 │   └── com.hdcookbook.grin.fontstrip-tools  desktop        Java SE   1.5/1.5
 │
+├── com.hdcookbook.grin.grin-maven-plugin    desktop        Java SE   1.5/1.5
+│
 ├── com.hdcookbook.grin.grinviewer           desktop        Java SE   1.5/1.5
 │
 ├── com.hdcookbook.grin.io.xml               desktop        Java SE   1.5/1.5
