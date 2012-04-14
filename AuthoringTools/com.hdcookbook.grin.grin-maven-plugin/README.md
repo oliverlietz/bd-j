@@ -2,6 +2,7 @@
 
 compiles GRIN show files from text to binary and makes optimized mosaics from shows
 
+    <pre>
   <build>
     <plugins>
       <plugin>
@@ -23,3 +24,4 @@ compiles GRIN show files from text to binary and makes optimized mosaics from sh
       [...]
     </plugins>
   </build>
+</pre>
