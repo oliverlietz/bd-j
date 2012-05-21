@@ -28,5 +28,5 @@ used to create BD-J applications.
 │   ├── com.hdcookbook.grin.media-me         Blu-ray Disk   Java ME   1.3/1.3
 │   └── com.hdcookbook.grin.media-se         desktop        Java SE   1.5/1.5
 │
-└── profiler                                 Blu-ray Disk   Java ME   1.3/1.3
+└── profiler                                 desktop        Java SE   1.5/1.5
 </pre>
