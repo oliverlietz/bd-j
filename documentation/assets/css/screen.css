@@ -1,19 +1,30 @@
+html {
+  height: 101%;
+}
+
 body {
-  padding-top: 60px;
+  height: 100%;
 }
 
 footer {
-  background: none repeat scroll 0 0 #FFFFFF;
-  bottom: 0;
+  background-color: #333333;
   color: #C0C0C0;
   font-size: 10px;
-  left: 10px;
+  height: 100px;
   line-height: 100%;
-  padding: 0 0 5px 10px;
-  position: fixed;
-  width: 100%
+  margin-top: -100px;
+  padding: 10px 0 0 0;
+  position: relative;
 }
 
-#container {
-  padding-bottom: 55px;
+#main {
+  padding-bottom: 100px;
+}
+
+#wrapper {
+  min-height: 100%;
+}
+
+#main-wrapper {
+  padding-top: 70px;
 }
