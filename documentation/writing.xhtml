@@ -1,23 +1,25 @@
 ---
 layout: main
-title: writing
+title: Writing to BD-RE and BD-R
 ---
   <h2>Mac OS X</h2>
   <h3><a href="http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man8/newfs_udf.8.html">newfs_udf</a></h3>
   <p>You can create an UDF 2.50 formatted disc with Mac OS and write files to it with Finder, <code>cp</code> or other tools.</p>
   <h4>usage:</h4>
   <p>where <code>rdisk2</code> is your BD drive</p>
-  <pre>newfs_udf -r 2.50 /dev/rdisk2</pre>
+  <pre>newfs_udf -r 2.50 /dev/rdisk2 -v BDUDF</pre>
   <p>to prevent the super-clever Mac OS from writing useless crap to your disc, execute the following commands:<br/>(<code>su</code> is required to remove <code>.Trashes</code>)</p>
-  <p>where <code>BDUDF</code> is your Blu-ray Disc</p>
-  <pre>
-    sudo su
-    cd /Volumes/BDUDF
-    touch .fseventsd/no_log
-    rm -fR .Spotlight-V100
-    touch .Spotlight-V100
-    rm -fR .Trashes
-    touch .Trashes</pre>
+  <p>where <code>BDUDF</code> is your Blu-ray Disc/Volume</p>
+  <pre>sudo su
+cd /Volumes/BDUDF
+touch .fseventsd/no_log
+rm .fseventsd/fseventsd-uuid
+rm -fR .Spotlight-V100
+touch .Spotlight-V100
+rm -fR .Trashes
+touch .Trashes</pre>
+  <h4>warning:</h4>
+  <p>Writing (large) files to your BD can damage the UDF file system, which results in input/output errors, a crashing Disk Utility and kernel panics.</p>
   <h3><a href="http://www.roxio.com/enu/products/toast/">Toast 11 Titanium</a></h3>
   <p><a href="#" rel="tooltip" title="Toast 9 was also capable of writing Blu-ray Discs, but does not work on Lion.">Toast 11</a> is capable of writing Blu-ray Discs (without the High-Def/Blu-ray Disc Plug-in).</p>
   <p><em>Dynamic Writing</em> is quite useless as it creates an <code>UDF 2.01</code> formatted disc.</p>
@@ -26,5 +28,5 @@ title: writing
   <p>right click on BD drive, select format and <code>UDF 2.50</code> for file system</p>
   <h3><a href="http://www.imgburn.com/">ImgBurn</a></h3>
   <p><a href="http://www.netblender.com/main/resources/wikipapers/how-to-burn-bd-rre-with-imgburn/">NetBlender: How to Burn a BD-R/RE with ImgBurn</a></p>
-  <h3>Nero Burning ROM</h3>
-  <h3>CyberLink Power2Go</h3>
+  <h3><a href="http://www.nero.com/enu/nero-burning-rom11-overview.html">Nero Burning ROM</a></h3>
+  <h3><a href="http://www.cyberlink.com/products/power2go/overview_en_US.html">CyberLink Power2Go</a></h3>
