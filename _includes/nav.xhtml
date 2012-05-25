@@ -1,9 +1,11 @@
-<ul class="nav nav-tabs nav-stacked">
+<nav>
+  <ul class="nav nav-tabs nav-stacked">
 {% for node in site.pages %}
   {% if page.url == node.url %}
-  <li class="active"><a href="/bd-j{{ node.url }}" class="active">{{ node.title }}</a></li>
+    <li class="active"><a href="/bd-j{{ node.url }}" class="active">{{ node.title }}</a></li>
   {% else %}
-  <li><a href="/bd-j{{ node.url }}">{{ node.title }}</a></li>
+    <li><a href="/bd-j{{ node.url }}">{{ node.title }}</a></li>
   {% endif %}
 {% endfor %}
-</ul>
+  </ul>
+</nav>
