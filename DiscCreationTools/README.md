@@ -19,7 +19,7 @@ forward to working together for a long time!
 * [bdview](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.bdview/ "bdview")
 * [bumf](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.bumf/ "bumf")
 * [bumfgenerator](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.bumfgenerator/ "bumfgenerator")
-* [clpi](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.clpi/ "clpi")
+* [clipinf](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.clipinf/ "clipinf")
 * [cpistrip](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.cpistrip/ "cpistrip")
 * [id](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.id/ "id")
 * [index](/oliverlietz/bd-j/tree/master/DiscCreationTools/net.java.bd.tools.index/ "index")

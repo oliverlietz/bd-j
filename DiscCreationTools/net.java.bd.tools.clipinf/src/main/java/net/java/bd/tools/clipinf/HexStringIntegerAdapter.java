@@ -51,42 +51,36 @@
  *             A copy of the license(s) governing this code is located
  *             at https://hdcookbook.dev.java.net/misc/license.html
  */
-package net.java.bd.tools.clpi;
+package net.java.bd.tools.clipinf;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.helpers.DefaultValidationEventHandler;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
+ * This class is to support custom marshalling of hex string to
+ * Java int.
  *
- * @author ggeorg
+ * @author A. Sundararajan
  */
-public class CLPIReader {
+public class HexStringIntegerAdapter extends XmlAdapter<String, Integer> {
 
-    public static byte[] xreadBinary(DataInputStream dis) throws IOException {
-        byte[] bytes = new byte[4096];
-        int bytesRead = dis.read(bytes);
-        byte[] result = new byte[bytesRead];
-        System.arraycopy(bytes, 0, result, 0, bytesRead);
-        return result;
+    public Integer unmarshal(String str) throws Exception {
+        // handle non-hex input as well.
+        if (str.startsWith("0x") || str.startsWith("0X")) {
+            return (int) Long.parseLong(str.substring(2), 16);
+        } else {
+            return (int) Long.parseLong(str);
+        }
     }
 
-    public CLPIObject readBinary(DataInputStream din) throws IOException {
-        CLPIObject clpiObject = new CLPIObject();
-        clpiObject.readObject(din);
-        return clpiObject;
-    }
-
-    public CLPIObject readXml(InputStream reader) throws JAXBException {
-        String className = CLPIObject.class.getName();
-        String pkgName = className.substring(0, className.lastIndexOf('.'));
-        JAXBContext jc = JAXBContext.newInstance(pkgName);
-        Unmarshaller u = jc.createUnmarshaller();
-        u.setEventHandler(new DefaultValidationEventHandler());
-        return (CLPIObject) u.unmarshal(reader);
+    // we always marshal as hex string
+    public String marshal(Integer value) throws Exception {
+        String str = Integer.toHexString(value);
+        StringBuilder sb = new StringBuilder();
+        sb.append("0x");
+        for (int i = 0, p = 8 - str.length(); i < p; i++) {
+            sb.append('0');
+        }
+        sb.append(str);
+        return sb.toString();
     }
 }

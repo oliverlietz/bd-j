@@ -53,8 +53,8 @@
  */
 package net.java.bd.tools.bdview.bdj;
 
-import net.java.bd.tools.clpi.CLPIReader;
-import net.java.bd.tools.clpi.CLPIObject;
+import net.java.bd.tools.clipinf.CLPIReader;
+import net.java.bd.tools.clipinf.CLPIObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -72,7 +72,7 @@ import net.java.bd.tools.bdjo.BDJOReader;
 import net.java.bd.tools.bdjo.BDJOWriter;
 import net.java.bd.tools.bdview.events.OpenBDEvent;
 import net.java.bd.tools.bdview.events.SafeBDEvent;
-import net.java.bd.tools.clpi.CLPIWriter;
+import net.java.bd.tools.clipinf.CLPIWriter;
 import net.java.bd.tools.id.Id;
 import net.java.bd.tools.id.IdReader;
 import net.java.bd.tools.id.IdWriter;

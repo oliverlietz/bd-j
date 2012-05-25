@@ -51,7 +51,7 @@
  *             A copy of the license(s) governing this code is located
  *             at https://hdcookbook.dev.java.net/misc/license.html
  */
-package net.java.bd.tools.clpi;
+package net.java.bd.tools.clipinf;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

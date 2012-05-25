@@ -51,36 +51,109 @@
  *             A copy of the license(s) governing this code is located
  *             at https://hdcookbook.dev.java.net/misc/license.html
  */
-package net.java.bd.tools.clpi;
+package net.java.bd.tools.clipinf;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- * This class is to support custom marshalling of hex string to
- * Java short.
  *
- * @author A. Sundararajan
+ * @author ggeorg
  */
-public class HexStringShortAdapter extends XmlAdapter<String, Short> {
+@XmlType(propOrder = {"streamPID", "const0x15", "attr", "unknownvalue1",
+    "name"})
+public class Subtitle {
 
-    public Short unmarshal(String str) throws Exception {
-        // handle non-hex input as well.
-        if (str.startsWith("0x") || str.startsWith("0X")) {
-            return (short) Integer.parseInt(str.substring(2), 16);
-        } else {
-            return (short) Integer.parseInt(str);
-        }
+    private short streamPID;
+    private Byte const0x15;
+    private Byte attr;
+    private int unknownvalue1;
+    private String name;
+
+    public Subtitle() {
+        // Nothing to do here!
     }
 
-    // we always marshal as hex string
-    public String marshal(Short value) throws Exception {
-        String str = Integer.toHexString(value);
-        StringBuilder sb = new StringBuilder();
-        sb.append("0x");
-        for (int i = 0, p = 4 - str.length(); i < p; i++) {
-            sb.append('0');
+    public short getStreamPID() {
+        return streamPID;
+    }
+
+    public void setStreamPID(short streamPID) {
+        this.streamPID = streamPID;
+    }
+
+    @XmlJavaTypeAdapter(HexStringByteAdapter.class)
+    public Byte getConst0x15() {
+        return const0x15;
+    }
+
+    public void setConst0x15(Byte const0x15) {
+        this.const0x15 = const0x15;
+    }
+
+    @XmlJavaTypeAdapter(HexStringByteAdapter.class)
+    public Byte getAttr() {
+        return attr;
+    }
+
+    public void setAttr(Byte attr) {
+        this.attr = attr;
+    }
+
+    public int getUnknownvalue1() {
+        return unknownvalue1;
+    }
+
+    public void setUnknownvalue1(int unknownvalue1) {
+        this.unknownvalue1 = unknownvalue1;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void readObject(DataInputStream din) throws IOException {
+        // 16 bit stream PID
+        // 8 bit constvalue (0x15)
+        // 8 bit attr
+        // 32 bit unknownvalue1
+        // 8*12 bit subtitle name
+        // 32 bit reserved for future use (?)
+
+        streamPID = din.readShort();
+        System.out.println("Subtitle streamPID=" + streamPID);
+
+        const0x15 = din.readByte();
+        System.out.println("Subtitle const0x15=" + const0x15);
+
+        attr = din.readByte();
+        System.out.println("Subtitle attr=" + attr);
+
+        unknownvalue1 = din.readInt();
+        System.out.println("Subtitle unknown1=" + unknownvalue1);
+
+        name = StringIOHelper.readISO646String(din, 12);
+        System.out.println("Subtitle name=" + name);
+
+        din.skipBytes(4);
+    }
+
+    public void writeObject(DataOutputStream out) throws IOException {
+        out.writeShort(getStreamPID());
+        out.write(getConst0x15());
+        out.write(getAttr());
+        out.writeInt(this.getUnknownvalue1());
+        out.write(StringIOHelper.getISO646Bytes(getName()));
+
+        for (int i = 0; i < 4; i++) {
+            out.write(0);    // 8 bit zero
         }
-        sb.append(str);
-        return sb.toString();
     }
 }

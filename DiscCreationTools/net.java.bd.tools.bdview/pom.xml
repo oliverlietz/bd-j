@@ -25,7 +25,7 @@
     </dependency>
     <dependency>
       <groupId>net.java.bd.tools</groupId>
-      <artifactId>net.java.bd.tools.clpi</artifactId>
+      <artifactId>net.java.bd.tools.clipinf</artifactId>
     </dependency>
     <dependency>
       <groupId>net.java.bd.tools</groupId>

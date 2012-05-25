@@ -53,7 +53,7 @@
  */
 package net.java.bd.tools.bdview.bdj;
 
-import net.java.bd.tools.clpi.CLPIObject;
+import net.java.bd.tools.clipinf.CLPIObject;
 import org.jdesktop.application.AbstractBean;
 
 /**

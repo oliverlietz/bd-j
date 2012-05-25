@@ -51,26 +51,40 @@
  *             A copy of the license(s) governing this code is located
  *             at https://hdcookbook.dev.java.net/misc/license.html
  */
-package net.java.bd.tools.clpi;
+package net.java.bd.tools.clipinf;
 
-import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
+ * This class is to support custom marshalling of hex string to
+ * Java byte.
  *
  * @author A. Sundararajan
- * @author ggeorg
  */
-public class HexStringBinaryAdapter extends XmlAdapter<String, byte[]> {
+public class HexStringByteAdapter extends XmlAdapter<String, Byte> {
 
-    public byte[] unmarshal(String str) throws Exception {
+    public Byte unmarshal(String str) throws Exception {
+        // handle non-hex input as well.
         if (str.startsWith("0x") || str.startsWith("0X")) {
-            return DatatypeConverter.parseHexBinary(str.substring(2));
+            return (byte) Integer.parseInt(str.substring(2), 16);
+        } else {
+            return (byte) Short.parseShort(str);
         }
-        return DatatypeConverter.parseHexBinary(str);
     }
 
-    public String marshal(byte[] value) throws Exception {
-        return "0x" + DatatypeConverter.printHexBinary(value);
+    // we always marshal as hex string
+    public String marshal(Byte value) throws Exception {
+        String str = Integer.toHexString(value);
+        int length = str.length();
+        if (length > 2) {
+            str = str.substring(length - 2, length);
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("0x");
+        for (int i = 0, p = 2 - str.length(); i < p; i++) {
+            sb.append('0');
+        }
+        sb.append(str);
+        return sb.toString();
     }
 }

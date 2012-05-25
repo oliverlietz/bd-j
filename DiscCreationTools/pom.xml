@@ -22,7 +22,7 @@
     <module>net.java.bd.tools.bdview</module>
     <module>net.java.bd.tools.bumf</module>
     <module>net.java.bd.tools.bumfgenerator</module>
-    <module>net.java.bd.tools.clpi</module>
+    <module>net.java.bd.tools.clipinf</module>
     <module>net.java.bd.tools.cpistrip</module>
     <module>net.java.bd.tools.id</module>
     <module>net.java.bd.tools.index</module>
@@ -49,7 +49,7 @@
       </dependency>
       <dependency>
         <groupId>net.java.bd.tools</groupId>
-        <artifactId>net.java.bd.tools.clpi</artifactId>
+        <artifactId>net.java.bd.tools.clipinf</artifactId>
         <version>1.0.0.657</version>
       </dependency>
       <dependency>
@@ -173,6 +173,7 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -185,6 +186,7 @@
           </execution>
         </executions>
       </plugin>
+      -->
     </plugins>
   </build>
 

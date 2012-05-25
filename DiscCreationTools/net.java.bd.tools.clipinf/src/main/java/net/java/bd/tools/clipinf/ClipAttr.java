@@ -51,13 +51,11 @@
  *             A copy of the license(s) governing this code is located
  *             at https://hdcookbook.dev.java.net/misc/license.html
  */
-package net.java.bd.tools.clpi;
+package net.java.bd.tools.clipinf;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -65,103 +63,108 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *
  * @author ggeorg
  */
-@XmlType(propOrder = {"const0x0001", "const0x0100", "subtitles"})
-public class SubtitleAttr {
+@XmlType(propOrder = {"const0x00010000", "const0x00000100", "const0x1001",
+    "inTime", "outTime"})
+public class ClipAttr {
 
-    private Short const0x0001;
-    private Short const0x0100;
-    private Subtitle[] subtitles;
+    private Integer const0x00010000;
+    private Integer const0x00000100;
+    private Short const0x1001;
+    private int inTime;
+    private int outTime;
 
-    public SubtitleAttr() {
+    public ClipAttr() {
         // Nothing to do here!
     }
 
+    @XmlJavaTypeAdapter(HexStringIntegerAdapter.class)
+    public Integer getConst0x00010000() {
+        return const0x00010000;
+    }
+
+    public void setConst0x00010000(Integer const0x00010000) {
+        this.const0x00010000 = const0x00010000;
+    }
+
+    @XmlJavaTypeAdapter(HexStringIntegerAdapter.class)
+    public Integer getConst0x00000100() {
+        return const0x00000100;
+    }
+
+    public void setConst0x00000100(Integer const0x00000100) {
+        this.const0x00000100 = const0x00000100;
+    }
+
     @XmlJavaTypeAdapter(HexStringShortAdapter.class)
-    public Short getConst0x0001() {
-        return const0x0001;
+    public Short getConst0x1001() {
+        return const0x1001;
     }
 
-    public void setConst0x0001(Short const0x0001) {
-        this.const0x0001 = const0x0001;
+    public void setConst0x1001(Short const0x1001) {
+        this.const0x1001 = const0x1001;
     }
 
-    @XmlJavaTypeAdapter(HexStringShortAdapter.class)
-    public Short getConst0x0100() {
-        return const0x0100;
+    public int getInTime() {
+        return inTime;
     }
 
-    public void setConst0x0100(Short const0x0100) {
-        this.const0x0100 = const0x0100;
+    public void setInTime(int inTime) {
+        this.inTime = inTime;
     }
 
-    @XmlElement(name = "Subtitle")
-    public Subtitle[] getSubtitles() {
-        return subtitles;
+    public int getOutTime() {
+        return outTime;
     }
 
-    public void setSubtitles(Subtitle[] subTitles) {
-        this.subtitles = subTitles;
+    public void setOutTime(int outTime) {
+        this.outTime = outTime;
     }
 
     public void readObject(DataInputStream din) throws IOException {
         // 32 bit length
-        // 16 bit constvalue1
-        // 32 bit reserved for future use (?)
-        // 16 bit constvalue2
-        // 8 bit number of dubtitles
-        // 16 bit reserved for future use (?)
+        // 32 bit constvalue1
+        // 32 bit constvalue2
+        // 16 bit constvalue3
+        //
+        // 32 bit reserved_for_word_align
+        //
+        // 32 bit in time in 45KHz
+        // 32 bit end time in 45KHz
 
         int length = din.readInt();
-        System.out.println("SubtitleAttr length=" + length);
+        System.out.println("ClipAttr length=" + length);
 
-        const0x0001 = din.readShort();
-        System.out.println("SubtitleAttr const0x0001=" + const0x0001);
+        const0x00010000 = din.readInt();
+        System.out.println("ClipAttr const0x00010000=" + const0x00010000);
+
+        const0x00000100 = din.readInt();
+        System.out.println("ClipAttr const0x00000100=" + const0x00000100);
+
+        const0x1001 = din.readShort();
+        System.out.println("ClipAttr const0x1001=" + const0x1001);
 
         din.skipBytes(4);
 
-        const0x0100 = din.readShort();
-        System.out.println("SubtitleAttr const0x0100=" + const0x0100);
+        inTime = din.readInt();
+        System.out.println("ClipAttr inTime=" + inTime + " (" + inTime / 45000 + "seconds)");
 
-        byte numOfSubtitles = din.readByte();
-        System.out.println("SubtitleAttr number of subtitles=" + numOfSubtitles);
-
-        din.skipBytes(1);
-
-        subtitles = new Subtitle[numOfSubtitles];
-
-        for (int i = 0; i < numOfSubtitles; i++) {
-            subtitles[i] = new Subtitle();
-            subtitles[i].readObject(din);
-        }
+        outTime = din.readInt();
+        System.out.println("ClipAttr outTime=" + outTime + " (" + outTime / 45000 + "seconds)");
     }
 
     public void writeObject(DataOutputStream out) throws IOException {
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream substream = new DataOutputStream(baos);
-
-        int numOfSubtitles = getSubtitles() == null ? 0 : getSubtitles().length;
-
-        substream.writeShort(getConst0x0001());
+        out.writeInt(22);  // length (0x00000016)
+        out.writeInt(getConst0x00010000());
+        out.writeInt(getConst0x00000100());
+        out.writeShort(getConst0x1001());
 
         for (int i = 0; i < 4; i++) {
-            substream.write(0);    // 8 bit zero
+            out.write(0);    // 8 bit zero
         }
 
-        substream.writeShort(getConst0x0100());
-        substream.write(numOfSubtitles);
+        out.writeInt(getInTime());
+        out.writeInt(getOutTime());
 
-        substream.write(0); // 8 bit zero
-
-        for (int i = 0; i < numOfSubtitles; i++) {
-            subtitles[i].writeObject(substream);
-        }
-
-        substream.flush();
-        substream.close();
-
-        byte[] data = baos.toByteArray();
-        out.writeInt(data.length);
-        out.write(data);
+        System.out.println("ClipAttr: " + 22 + " ?= " + (out.size() - 4));
     }
 }

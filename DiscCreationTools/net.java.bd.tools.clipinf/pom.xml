@@ -11,8 +11,8 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>net.java.bd.tools.clpi</artifactId>
-  <name>clpi</name>
+  <artifactId>net.java.bd.tools.clipinf</artifactId>
+  <name>clipinf</name>
   <packaging>jar</packaging>
 
   <url>http://java.net/projects/hdcookbook</url>
@@ -37,10 +37,10 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <finalName>clpi</finalName>
+              <finalName>clipinf</finalName>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>net.java.bd.tools.clpi.Main</mainClass>
+                  <mainClass>net.java.bd.tools.clipinf.Main</mainClass>
                 </transformer>
               </transformers>
             </configuration>

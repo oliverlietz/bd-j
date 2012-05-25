@@ -51,7 +51,7 @@
  *             A copy of the license(s) governing this code is located
  *             at https://hdcookbook.dev.java.net/misc/license.html
  */
-package net.java.bd.tools.clpi;
+package net.java.bd.tools.clipinf;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -63,108 +63,113 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *
  * @author ggeorg
  */
-@XmlType(propOrder = {"const0x00010000", "const0x00000100", "const0x1001",
-    "inTime", "outTime"})
-public class ClipAttr {
+@XmlType(propOrder = {"const0x00010001", "const0x10110004", "unknownvalue1",
+    "unknownvalue2", "const0x0000000e", "bytes"})
+public class AddrMap {
 
-    private Integer const0x00010000;
-    private Integer const0x00000100;
-    private Short const0x1001;
-    private int inTime;
-    private int outTime;
+    private Integer const0x00010001;
+    private Integer const0x10110004;
+    private Short unknownvalue1;
+    private Short unknownvalue2;
+    private Integer const0x0000000e;
+    private byte[] bytes;
 
-    public ClipAttr() {
+    public AddrMap() {
         // Nothing to do here!
     }
 
     @XmlJavaTypeAdapter(HexStringIntegerAdapter.class)
-    public Integer getConst0x00010000() {
-        return const0x00010000;
+    public Integer getConst0x00010001() {
+        return const0x00010001;
     }
 
-    public void setConst0x00010000(Integer const0x00010000) {
-        this.const0x00010000 = const0x00010000;
+    public void setConst0x00010001(Integer const0x00010001) {
+        this.const0x00010001 = const0x00010001;
     }
 
     @XmlJavaTypeAdapter(HexStringIntegerAdapter.class)
-    public Integer getConst0x00000100() {
-        return const0x00000100;
+    public Integer getConst0x10110004() {
+        return const0x10110004;
     }
 
-    public void setConst0x00000100(Integer const0x00000100) {
-        this.const0x00000100 = const0x00000100;
+    public void setConst0x10110004(Integer const0x10110004) {
+        this.const0x10110004 = const0x10110004;
     }
 
     @XmlJavaTypeAdapter(HexStringShortAdapter.class)
-    public Short getConst0x1001() {
-        return const0x1001;
+    public Short getUnknownvalue1() {
+        return unknownvalue1;
     }
 
-    public void setConst0x1001(Short const0x1001) {
-        this.const0x1001 = const0x1001;
+    public void setUnknownvalue1(Short unknownvalue1) {
+        this.unknownvalue1 = unknownvalue1;
     }
 
-    public int getInTime() {
-        return inTime;
+    @XmlJavaTypeAdapter(HexStringShortAdapter.class)
+    public Short getUnknownvalue2() {
+        return unknownvalue2;
     }
 
-    public void setInTime(int inTime) {
-        this.inTime = inTime;
+    public void setUnknownvalue2(Short unknownvalue2) {
+        this.unknownvalue2 = unknownvalue2;
     }
 
-    public int getOutTime() {
-        return outTime;
+    @XmlJavaTypeAdapter(HexStringIntegerAdapter.class)
+    public Integer getConst0x0000000e() {
+        return const0x0000000e;
     }
 
-    public void setOutTime(int outTime) {
-        this.outTime = outTime;
+    public void setConst0x0000000e(Integer const0x0000000e) {
+        this.const0x0000000e = const0x0000000e;
+    }
+
+    @XmlJavaTypeAdapter(HexStringBinaryAdapter.class)
+    public byte[] getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
     }
 
     public void readObject(DataInputStream din) throws IOException {
         // 32 bit length
-        // 32 bit constvalue1
-        // 32 bit constvalue2
-        // 16 bit constvalue3
-        //
-        // 32 bit reserved_for_word_align
-        //
-        // 32 bit in time in 45KHz
-        // 32 bit end time in 45KHz
+        // 32 bit constvalue1 (0x00010001)
+        // 32 bit constvalue2 (0x10110004)
+        // 16 bit unknownvalue1
+        // 16 bit unknownvalue2
+        // 32 bit constvalue3 (0x0000000e)
+        // mapping data ...
 
         int length = din.readInt();
-        System.out.println("ClipAttr length=" + length);
+        System.out.println("AddrMap length=" + length);
 
-        const0x00010000 = din.readInt();
-        System.out.println("ClipAttr const0x00010000=" + const0x00010000);
+        const0x00010001 = din.readInt();
+        System.out.println("AddrMap const0x00010001=" + const0x00010001);
 
-        const0x00000100 = din.readInt();
-        System.out.println("ClipAttr const0x00000100=" + const0x00000100);
+        const0x10110004 = din.readInt();
+        System.out.println("AddrMap const0x10110004=" + const0x10110004);
 
-        const0x1001 = din.readShort();
-        System.out.println("ClipAttr const0x1001=" + const0x1001);
+        unknownvalue1 = din.readShort();
+        System.out.println("AddrMap unknownvalue1=" + unknownvalue1);
 
-        din.skipBytes(4);
+        unknownvalue2 = din.readShort();
+        System.out.println("AddrMap unknownvalue2=" + unknownvalue2);
 
-        inTime = din.readInt();
-        System.out.println("ClipAttr inTime=" + inTime + " (" + inTime / 45000 + "seconds)");
+        const0x0000000e = din.readInt();
+        System.out.println("AddrMap const0x0000000e=" + const0x0000000e);
 
-        outTime = din.readInt();
-        System.out.println("ClipAttr outTime=" + outTime + " (" + outTime / 45000 + "seconds)");
+        bytes = new byte[length - 16];
+        din.read(bytes);
     }
 
     public void writeObject(DataOutputStream out) throws IOException {
-        out.writeInt(22);  // length (0x00000016)
-        out.writeInt(getConst0x00010000());
-        out.writeInt(getConst0x00000100());
-        out.writeShort(getConst0x1001());
-
-        for (int i = 0; i < 4; i++) {
-            out.write(0);    // 8 bit zero
-        }
-
-        out.writeInt(getInTime());
-        out.writeInt(getOutTime());
-
-        System.out.println("ClipAttr: " + 22 + " ?= " + (out.size() - 4));
+        out.writeInt(bytes.length + 16);
+        out.writeInt(this.getConst0x00010001());
+        out.writeInt(this.getConst0x10110004());
+        out.writeShort(this.getUnknownvalue1());
+        out.writeShort(this.getUnknownvalue2());
+        out.writeInt(this.getConst0x0000000e());
+        out.write(bytes);
     }
 }

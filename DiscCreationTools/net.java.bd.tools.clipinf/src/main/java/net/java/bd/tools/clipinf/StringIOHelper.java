@@ -1,12 +1,12 @@
-/*
+/*  
  * Copyright (c) 2010, Sun Microsystems, Inc.
- *
+ * 
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
+ * 
  *  * Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  *  * Redistributions in binary form must reproduce the above copyright
@@ -15,7 +15,7 @@
  *  * Neither the name of Sun Microsystems nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -27,66 +27,64 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- *  Note:  In order to comply with the binary form redistribution
- *         requirement in the above license, the licensee may include
- *         a URL reference to a copy of the required copyright notice,
- *         the list of conditions and the disclaimer in a human readable
+ * 
+ *  Note:  In order to comply with the binary form redistribution 
+ *         requirement in the above license, the licensee may include 
+ *         a URL reference to a copy of the required copyright notice, 
+ *         the list of conditions and the disclaimer in a human readable 
  *         file with the binary form of the code that is subject to the
- *         above license.  For example, such file could be put on a
- *         Blu-ray disc containing the binary form of the code or could
- *         be put in a JAR file that is broadcast via a digital television
- *         broadcast medium.  In any event, you must include in any end
- *         user licenses governing any code that includes the code subject
- *         to the above license (in source and/or binary form) a disclaimer
- *         that is at least as protective of Sun as the disclaimers in the
+ *         above license.  For example, such file could be put on a 
+ *         Blu-ray disc containing the binary form of the code or could 
+ *         be put in a JAR file that is broadcast via a digital television 
+ *         broadcast medium.  In any event, you must include in any end 
+ *         user licenses governing any code that includes the code subject 
+ *         to the above license (in source and/or binary form) a disclaimer 
+ *         that is at least as protective of Sun as the disclaimers in the 
  *         above license.
- *
+ * 
  *         A copy of the required copyright notice, the list of conditions and
- *         the disclaimer will be maintained at
+ *         the disclaimer will be maintained at 
  *         https://hdcookbook.dev.java.net/misc/license.html .
  *         Thus, licensees may comply with the binary form redistribution
  *         requirement with a text file that contains the following text:
- *
+ * 
  *             A copy of the license(s) governing this code is located
  *             at https://hdcookbook.dev.java.net/misc/license.html
  */
-package net.java.bd.tools.bdview.util;
+package net.java.bd.tools.clipinf;
 
-import net.java.bd.tools.clipinf.CLPIObject;
-import net.java.bd.tools.clipinf.CLPIWriter;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.bind.JAXBException;
-import org.jdesktop.beansbinding.Converter;
+import java.io.UnsupportedEncodingException;
 
-/**
+/*
+ * A helper class for converting byte array in bslbf 
+ * (bit serial, leftmost bit first) format to String and back.
  *
  * @author ggeorg
  */
-public class CLPIObjectConverter extends Converter<CLPIObject, String> {
+public class StringIOHelper {
 
-    @Override
-    public String convertForward(CLPIObject value) {
-        ByteArrayOutputStream xml = new ByteArrayOutputStream();
+    public static String iso646String(byte[] buf) {
         try {
-            DataOutputStream dout = new DataOutputStream(new BufferedOutputStream(xml));
-            new CLPIWriter().writeXml(value, dout);
-            dout.close();
-        } catch (IOException ex) {
-            Logger.getLogger(CLPIObjectConverter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JAXBException ex) {
-            Logger.getLogger(IndexObjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+            return new String(buf, "ISO646-US");
+        } catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException(uee);
         }
-        return xml.toString();
     }
 
-    @Override
-    public CLPIObject convertReverse(String value) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public static String readISO646String(DataInputStream dis, int len)
+            throws IOException {
+        byte[] buf = new byte[len];
+        dis.read(buf);
+        return iso646String(buf);
+    }
+
+    public static byte[] getISO646Bytes(String str) {
+        try {
+            return str.getBytes("ISO646-US");
+        } catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException(uee);
+        }
     }
 }

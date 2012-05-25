@@ -51,40 +51,75 @@
  *             A copy of the license(s) governing this code is located
  *             at https://hdcookbook.dev.java.net/misc/license.html
  */
-package net.java.bd.tools.clpi;
+package net.java.bd.tools.clipinf;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 /**
- * This class is to support custom marshalling of hex string to
- * Java byte.
+ * This tool translates XXXXX.clpi to an xml format and back.
  *
- * @author A. Sundararajan
+ * @author ggeorg
  */
-public class HexStringByteAdapter extends XmlAdapter<String, Byte> {
+public class Main {
 
-    public Byte unmarshal(String str) throws Exception {
-        // handle non-hex input as well.
-        if (str.startsWith("0x") || str.startsWith("0X")) {
-            return (byte) Integer.parseInt(str.substring(2), 16);
-        } else {
-            return (byte) Short.parseShort(str);
+    public static void main(String[] args) throws Exception {
+
+        if (args.length < 2) {
+            System.out.println("Missing input and output arguments");
+            usage();
         }
+
+        String input = args[0];
+        String output = args[1];
+
+        if (!((input.toLowerCase().endsWith(".xml") || input.toLowerCase().endsWith(".clpi"))
+                && (output.toLowerCase().endsWith(".xml") || output.toLowerCase().endsWith(".clpi")))) {
+            System.out.println("Input and output can only have xml or clpi extension.");
+            usage();
+        }
+
+        if (!new File(input).exists()) {
+            System.out.println("File " + input + " not found.");
+            usage();
+        }
+
+        CLPIObject idObject = null;
+        FileInputStream fin = new FileInputStream(input);
+        DataInputStream din = new DataInputStream(new BufferedInputStream(fin));
+        if (input.toLowerCase().endsWith("xml")) {
+            idObject = new CLPIReader().readXml(din);
+        } else {
+            idObject = new CLPIReader().readBinary(din);
+        }
+        din.close();
+
+        FileOutputStream fout = new FileOutputStream(output);
+        DataOutputStream dout = new DataOutputStream(new BufferedOutputStream(fout));
+        if (output.toLowerCase().endsWith("xml")) {
+            new CLPIWriter().writeXml(idObject, dout);
+        } else {
+            new CLPIWriter().writeBinary(idObject, dout);
+        }
+        dout.close();
     }
 
-    // we always marshal as hex string
-    public String marshal(Byte value) throws Exception {
-        String str = Integer.toHexString(value);
-        int length = str.length();
-        if (length > 2) {
-            str = str.substring(length - 2, length);
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append("0x");
-        for (int i = 0, p = 2 - str.length(); i < p; i++) {
-            sb.append('0');
-        }
-        sb.append(str);
-        return sb.toString();
+    public static void usage() {
+        System.out.println("\n\nThis is a tool to convert a CLPI file to xml format and back.\n\n");
+        System.out.println("Usage:");
+        System.out.println("\n" + Main.class.getName() + " Input Output \n");
+        System.out.println("where Input can be one of");
+        System.out.println("   location of XXXXX.clpi");
+        System.out.println("   location of XXXXX.xml");
+        System.out.println("and the Output can be one of");
+        System.out.println("   XXXXX.clpi");
+        System.out.println("   XXXXX.xml");
+
+        System.exit(1);
     }
 }
