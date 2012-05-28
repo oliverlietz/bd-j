@@ -33,6 +33,9 @@
         <configuration>
           <source>1.3</source>
           <target>1.3</target>
+          <compilerArguments>
+            <bootclasspath>${bdj.bootclasspath}</bootclasspath>
+          </compilerArguments>
         </configuration>
       </plugin>
     </plugins>

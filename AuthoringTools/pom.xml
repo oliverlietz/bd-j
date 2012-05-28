@@ -15,6 +15,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <bdj.bootclasspath>${settings.localRepository}/bdj/bdj/1.0/bdj-1.0.jar</bdj.bootclasspath>
   </properties>
 
   <modules>
