@@ -15,7 +15,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <bdj.bootclasspath>${settings.localRepository}/bdj/bdj/1.0/bdj-1.0.jar</bdj.bootclasspath>
+    <bdj.profile>enhanced</bdj.profile>
+    <bdj.version>2.41</bdj.version>
+    <bdj.bootclasspath>${settings.localRepository}/bdj/bdj/${bdj.version}/bdj-${bdj.version}-${bdj.profile}.jar</bdj.bootclasspath>
   </properties>
 
   <modules>
@@ -83,7 +85,8 @@
       <dependency>
         <groupId>bdj</groupId>
         <artifactId>bdj</artifactId>
-        <version>1.0</version>
+        <classifier>${bdj.profile}</classifier>
+        <version>${bdj.version}</version>
       </dependency>
       <!-- jdesktop -->
       <dependency>

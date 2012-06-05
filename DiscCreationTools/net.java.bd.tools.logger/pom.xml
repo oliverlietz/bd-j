@@ -22,6 +22,7 @@
     <dependency>
       <groupId>bdj</groupId>
       <artifactId>bdj</artifactId>
+      <classifier>${bdj.profile}</classifier>
       <scope>provided</scope>
     </dependency>
   </dependencies>
