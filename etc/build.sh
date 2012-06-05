@@ -1,8 +1,12 @@
 #!/bin/sh
 #
 #		BD-J Platform Definition
+#
 #		Bill Foote, bill.foote@sun.com, billf@jovial.com
 #		January 18, 2009
+#
+#       Oliver Lietz
+#       June 2012
 #
 #  This shell script can be used to build a unified set of platform
 #  documentation of the BD-J platform, and a set of "compilation stubs"
@@ -22,7 +26,7 @@
 #
 #     *  The BD-J JavaDocStubs, available from the Blu-ray Disc
 #	 association.  An application can be found at
-# 	 http://blu-raydisc.info/license_app/javadocstubs_apps.php.
+# 	 http://blu-raydisc.info/license-app/javadocstubs-app.php
 #
 #     *  The GEM Stubs for Packaged Media Target (GEM 1.0.3) (August 2008),
 #	 available from http://www.mhp.org/mhpgem10.htm
@@ -54,9 +58,8 @@
 #  you download into this directory.
 #
 #  Next, obtain the BD-J JavaDocStubs from the BDA.  You'll eventually
-#  get a file from the BDA called 
-#  BD-ROM_Part3-2_v3.4_javadoc_080623-src-stubs.jar .  Copy this file into
-#  the originals directory.
+#  get a file from the BDA called V2.41-Part3-2_JavaStub.zip.
+#  Copy this file into the originals directory.
 #
 #  Now, get a copy of the "Stubs for Packaged Media Target (GEM 1.0.3),
 #  under the GEM 1.0.3 heading at http://www.mhp.org/mhpgem10.htm .
@@ -73,12 +76,12 @@
 #  1.0b" in fp10b.zip, and "Personal Basis Profile (PBP), version 1.0b
 #  in pbp10b.zip.  Your originals directory should now have these files:
 #
-#	BD-ROM_Part3-2_v3.4_javadoc_080623-src-stubs.jar
 #	fp10b.zip
 #	jsse103.zip
 #	jtv111.zip
 #	mug226-gem_packaged_media.zip
 #	pbp10b.zip
+#	V2.41-Part3-2_JavaStub.zip
 #
 #
 #
@@ -88,8 +91,8 @@
 #
 #	sh build.sh
 #
-#  The shell script relies on a few very common programs:  unzip, zip, javac, 
-#  and javadoc.
+#  The shell script relies on a few very common programs:  unzip, javac, jar, 
+#  javadoc and mvn.
 
 #
 # First, we unpack all of the source.  
@@ -99,7 +102,8 @@ mkdir tmp
 cd tmp
 mkdir bda
 cd bda
-unzip ../../originals/BD-ROM_Part3-2_v3.4_javadoc_080623-src-stubs.jar
+unzip ../../originals/V2.41-Part3-2_JavaStub.zip
+unzip V2.41-Part3-2_JavaStub.jar
 cd ..
 unzip ../originals/fp10b.zip
 unzip ../originals/jtv111.zip
@@ -116,25 +120,27 @@ rm -rf ../interactive
 mkdir ../interactive
 mkdir classes
 GEM=mug226-gem_packaged_media/gem_packaged_media/interactive/src
+
 find fp10b -name '*.java' -print > files.list
 find pbp10b -name '*.java' -print >> files.list
 find jsse103 -name '*.java' -print >> files.list
 find jtv111 -name '*.java' -print >> files.list
 find $GEM -name '*.java' -print >> files.list
 find bda -name '*.java' -print >> files.list
-javac -bootclasspath classes -d classes -source 1.3 -target 1.3 \
-	-sourcepath fp10b:pbp10b:jsse103:jtv111:$GEM:bda \
-	@files.list
+
+javac -bootclasspath classes -d classes -source 1.3 -target 1.3 -sourcepath fp10b:pbp10b:jsse103:jtv111:$GEM:bda @files.list
+
 cd classes
-zip -r ../../interactive/classes.zip *
+
+jar cf bdj-interactive.jar .
+mvn install:install-file -Dfile=bdj-interactive.jar -DgroupId=bdj -DartifactId=bdj -Dclassifier=interactive -Dversion=2.41 -Dpackaging=jar
+
 cd ..
 rm -rf classes
 mkdir ../interactive/html
-javadoc -bootclasspath ../interactive/html -d ../interactive/html \
-	-source 1.3 \
-	-tag implementation:a:"Implementation note:" \
-	-sourcepath fp10b:pbp10b:jsse103:jtv111:$GEM:bda \
-	@files.list
+
+javadoc -bootclasspath ../interactive/html -d ../interactive/html -source 1.3 -tag implementation:a:"Implementation note:" -sourcepath fp10b:pbp10b:jsse103:jtv111:$GEM:bda @files.list
+
 rm files.list
 
 #
@@ -149,26 +155,27 @@ rm -rf ../enhanced
 mkdir ../enhanced
 mkdir classes
 GEM=mug226-gem_packaged_media/gem_packaged_media/enhanced/src
+
 find fp10b -name '*.java' -print > files.list
 find pbp10b -name '*.java' -print >> files.list
 find jtv111 -name '*.java' -print >> files.list
 find $GEM -name '*.java' -print >> files.list
 find bda -name '*.java' -print >> files.list
-javac -bootclasspath classes -d classes -source 1.3 -target 1.3 \
-	-sourcepath fp10b:pbp10b:jtv111:$GEM:bda \
-	@files.list
+
+javac -bootclasspath classes -d classes -source 1.3 -target 1.3 -sourcepath fp10b:pbp10b:jtv111:$GEM:bda @files.list
+
 cd classes
-zip -r ../../enhanced/classes.zip *
+
+jar cf bdj-enhanced.jar .
+mvn install:install-file -Dfile=bdj-enhanced.jar -DgroupId=bdj -DartifactId=bdj -Dclassifier=enhanced -Dversion=2.41 -Dpackaging=jar
+
 cd ..
 rm -rf classes
 mkdir ../enhanced/html
-javadoc -bootclasspath ../enhanced/html -d ../enhanced/html \
-	-source 1.3 \
-	-tag implementation:a:"Implementation note:" \
-	-sourcepath fp10b:pbp10b:jtv111:$GEM:bda \
-	@files.list
-rm files.list
 
+javadoc -bootclasspath ../enhanced/html -d ../enhanced/html -source 1.3 -tag implementation:a:"Implementation note:" -sourcepath fp10b:pbp10b:jtv111:$GEM:bda @files.list
+
+rm files.list
 
 #
 #  All done!
@@ -181,14 +188,43 @@ echo ""
 echo ""
 echo "If the above ran without any serious problems, you should now have"
 echo 'two directories:  "enhanced" and "interactive".  These contain the'
-echo "compilation stubs and HTML javadocs for these two profiles, in the"
-echo 'file "classes.zip" and the directory "html" respectively.'
+echo "HTML javadocs for these two profiles."
 echo ""
-echo "You can refer to the HTML documentation, and you can use the classes.zip"
-echo "file to compile BD-J applications, either using"
-echo '"javac -bootclasspath classes.zip" or by configuring your IDE'
-echo "appropriately."
+echo "Your local Maven repo should now contain to new artifacts:"
+echo " bdj-2.41-enhanced.jar for enhanced profile"
+echo "and"
+echo " bdj-2.41-interactive.jar for interactive profile."
 echo ""
+echo "To build BD-J applications with Maven, use the following"
+echo "configuration:"
+echo ""
+echo "  <dependencies>"
+echo "    <dependency>"
+echo "      <groupId>bdj</groupId>"
+echo "      <artifactId>bdj</artifactId>"
+echo "      <classifier>enhanced</classifier>"
+echo "      <version>2.41</version>"
+echo "      <scope>provided</scope>"
+echo "    </dependency>"
+echo "  </dependencies>"
+echo ""
+echo "  <build>"
+echo "    <plugins>"
+echo "      <plugin>"
+echo "        <groupId>org.apache.maven.plugins</groupId>"
+echo "        <artifactId>maven-compiler-plugin</artifactId>"
+echo "        <configuration>"
+echo "          <source>1.3</source>"
+echo "          <target>1.3</target>"
+echo "          <compilerArguments>"
+echo "            <bootclasspath>\${settings.localRepository}/bdj/bdj/2.41/bdj-2.41-enhanced.jar</bootclasspath>"
+echo "          </compilerArguments>"
+echo "        </configuration>"
+echo "      </plugin>"
+echo "    </plugins>"
+echo "  </build>"
+echo ""
+echo "replace enhanced by interactive to compile for interactive profile"
 echo ""
 
 # End of build.sh
