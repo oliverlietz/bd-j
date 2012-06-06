@@ -59,5 +59,6 @@ nav {
 @media screen and (min-width: 1280px) {
   nav {
     position: fixed;
+    z-index: 1049;
   }
 }
