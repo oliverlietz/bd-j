@@ -13,6 +13,7 @@ footer {
   height: 100px;
   line-height: 100%;
   margin-top: -100px;
+  min-width: 640px;
   padding: 10px 0 0 0;
   position: relative;
 }
@@ -26,7 +27,7 @@ nav {
 
 .container {
   padding: 0 10px;
-  width: 640px;
+  width: 620px;
 }
 
 #github {
@@ -43,7 +44,7 @@ nav {
 
 #main-wrapper {
   position: relative;
-  top: 60px;
+  padding-top: 60px;
 }
 
 #wrapper {
