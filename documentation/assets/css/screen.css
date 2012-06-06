@@ -18,27 +18,46 @@ footer {
 }
 
 nav {
-  left: 50px;
+  left: 10px;
   position: fixed;
-  top: 50px;
+  top: 60px;
+  width: 300px;
+}
+
+.container {
+  padding: 0 10px;
+  width: 640px;
+}
+
+#github {
+  border: 0px;
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  z-index: 1050;
 }
 
 #main {
-  padding-bottom: 100px;
+  padding-bottom: 110px;
+}
+
+#main-wrapper {
+  position: relative;
+  top: 60px;
 }
 
 #wrapper {
   min-height: 100%;
 }
 
-#main-wrapper {
-  padding-top: 70px;
+@media screen and (max-width: 1279px) {
+  nav {
+    position: relative;
+  }
 }
 
-#github {
-  border: 0;
-  left: 0;
-  position: fixed;
-  top: 0;
-  z-index: 1050;
+@media screen and (min-width: 1280px) {
+  nav {
+    position: fixed;
+  }
 }
