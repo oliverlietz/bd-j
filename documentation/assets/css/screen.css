@@ -23,6 +23,7 @@ nav {
   position: fixed;
   top: 60px;
   width: 300px;
+  z-index: 999;
 }
 
 .container {
@@ -60,6 +61,5 @@ nav {
 @media screen and (min-width: 1280px) {
   nav {
     position: fixed;
-    z-index: 1049;
   }
 }
