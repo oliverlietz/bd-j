@@ -248,7 +248,7 @@ The control flow of the animation engine is summarized in the following table:
   <tbody>
     <tr>
       <td>1) It's time to advance the logical model to the next frame</td>
-      <td>AnimationClient.nextFrame()</td>
+      <td>#nextFrame()</td>
       <td>Each feature on the screen updates its internal data model to the state it should be in for the next frame</td>
     </tr>
     <tr>
@@ -258,12 +258,12 @@ The control flow of the animation engine is summarized in the following table:
     </tr>
     <tr>
       <td>2.a) Tell each client it's about to be displayed</td>
-      <td>AnimationClient.setCaughtUp()</td>
+      <td>#setCaughtUp()</td>
       <td></td>
     </tr>
     <tr>
       <td>2.b) Find out where each AnimationClient plans to draw</td>
-      <td>AnimationClient.addDisplayAreas(RenderingContext)</td>
+      <td>#addDisplayAreas(RenderingContext)</td>
       <td>Each visual feature calls RenderContext.addArea(DrawRecord) to record this frame's drawing operations</td>
     </tr>
     <tr>
@@ -273,7 +273,7 @@ The control flow of the animation engine is summarized in the following table:
     </tr>
     <tr>
       <td>2.d) For each damage rectangle, ask the clients to draw into the screen buffer</td>
-      <td>AnimationClient.paintFrame(Graphics2D)</td>
+      <td>#paintFrame(Graphics2D)</td>
       <td>Each visual feature paints itself, as clipped by the Graphics2D's clip rect</td>
     </tr>
     <tr>
