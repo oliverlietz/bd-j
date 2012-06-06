@@ -31,6 +31,10 @@ nav {
   width: 620px;
 }
 
+.navbar .container {
+  width: 620px;
+}
+
 #github {
   border: 0px;
   position: fixed;
