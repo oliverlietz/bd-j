@@ -38,7 +38,7 @@ Here is the list of tools we currently have available:
 
 ## Introduction to Blu-ray Security
 
-A Blu-ray disc with signed JAR files must contain an Application Root 
+A Blu-ray disc with signed JAR files must contain an Application Root
 Certificate. This is often just called a "Root Certificate," and it is
 described in part 3-2 section 12.2.7. The application root certificate is
 stored on the optical disc as app.discroot.crt. A signed JAR file is
@@ -75,8 +75,8 @@ signing the JAR with the private key of the keypair used to generate the leaf
 certificate. In Blu-ray, the leaf certificate must contain the organization
 ID associated with the JAR.
 
-For VFS updates, the binding unit manifest file (BUMF) is signed with a 
-different keypair. This keypair is the one used to generate 
+For VFS updates, the binding unit manifest file (BUMF) is signed with a
+different keypair. This keypair is the one used to generate
 the Binding Unit Root Certificate. This is specified in part
 3-2 sections 12.2.8.1.2 and 12.2.8.1.3, and the certificate for
 this root keypair is stored in the file bu.discroot.root.
@@ -128,7 +128,7 @@ adding an orgID in the certificate.
 And finally, if the certificate type is "binding" an orgID corresponding
 to the one used in the bumf.xml (or whatever BUMF file name is) must be used.
 
-For other options type: 
+For other options type:
 
     java -cp security.jar net.java.bd.tools.security.BDCertGenerator -help
 
@@ -169,23 +169,23 @@ The signing key for the BDSigner to sign the jars is generated in Step 1.
 
 Here is the command line for signing the jar.
 
-    java -cp security.jar net.java.bd.tools.security.BDSigner 00000.jar 
+    java -cp security.jar net.java.bd.tools.security.BDSigner 00000.jar
 
-BDSigner is built on top of JDK's jarsigner which is bundled in tools.jar 
- 
+BDSigner is built on top of JDK's jarsigner which is bundled in tools.jar
+
 #### Why can't we just use the standard "jarsigner" tool in Java SE?
 
-Blu-ray specification requires an extra header in the signature 
-manifest file in signed jar files. The signature manifest file 
-must have an attribute called "BDJ-Signature-Version" with the 
+Blu-ray specification requires an extra header in the signature
+manifest file in signed jar files. The signature manifest file
+must have an attribute called "BDJ-Signature-Version" with the
 value of "1.0". Please refer to the section "12.1.4.2" of the
 "System Description Blu-ray Disc Read-Only Format - Part 3
 Audio Visual Basic Specifications" - DRAFT Version 2.02".
 
-The "jarsigner" tool in Java SE generates signature manifest 
-file automatically. There is no way to specify extensions to 
+The "jarsigner" tool in Java SE generates signature manifest
+file automatically. There is no way to specify extensions to
 the signature manifest file. So, it can not be used to sign
-jars for BD-J. 
+jars for BD-J.
 
 ### <a name="BUMF"/>Signing BUMF
 
@@ -198,12 +198,12 @@ password: mystorepass
 
 Here is the command line to generate a binding unit root certificate.
 
-    java -cp security.jar net.java.bd.tools.security.BDCertGenerator -binding -keystore binding.store -storepass mystorepass -alias mybinder -keypass mypass -debug 00000001 
+    java -cp security.jar net.java.bd.tools.security.BDCertGenerator -binding -keystore binding.store -storepass mystorepass -alias mybinder -keypass mypass -debug 00000001
 
 The tool prints the following debug messages:
 
     Certificate stored in file <bu.discroot.crt>
-    Starting the verfication for certificate file:bu.discroot.crt 
+    Starting the verfication for certificate file:bu.discroot.crt
     Checking the certiticate
 	Done with the verification for the certificate file:bu.discroot.crt
 
@@ -228,7 +228,7 @@ The tool prints the following debug messages:
 ### <a name="ONLSIG"/>Online Signature generation
 
 When a BD-J application tries to access network the player checks for online authorization for the disc.
-The online access is granted through online.sig, online.crt and online.crl files. 
+The online access is granted through online.sig, online.crt and online.crl files.
 The online.crt and online.crl are provided by BDA and online.sig file is generated
 using the credentials obtained from BDA.
 
@@ -311,7 +311,7 @@ With no options specified this tool does both tasks, i.e generates signed
 credentials (Grantor) and updates certificates and signs the jar file (Grantee).
 This is useful in testing environments.
 
-For more options type: 
+For more options type:
 
     java -cp security.jar net.java.bd.tools.security.BDCredentialSigner -help
 
@@ -324,7 +324,7 @@ below.
 The command line option: `-gencred` generates the signed credentials.
 
 *Input*: Permission request file, access to grantor's private key (by means
-of keystore) for signing and application disc root certificate of the grantee. 
+of keystore) for signing and application disc root certificate of the grantee.
 
 *Output*: A permission request file with signed credentials and
 the grantor's certificate chain stored in the file:	`grantorchain.crt`
@@ -340,7 +340,7 @@ The default values save on typing.
 
 The above command line results in a permission request file that is populated
 with credential elements containing the grantor's signature.
-The grantor certificate chain is store in the file: `grantorchain.crt` 
+The grantor certificate chain is store in the file: `grantorchain.crt`
 
 #### <a name="CREDGEN"/>Signing Jar:
 
@@ -356,7 +356,7 @@ to be signed.
 
 #### Example:
 
-    java -cp security.jar net.java.bd.tools.security.BDCredentialSigner -updatecert -gacerts grantorchain.crt bluray.MyXlet.perm 00000.jar 
+    java -cp security.jar net.java.bd.tools.security.BDCredentialSigner -updatecert -gacerts grantorchain.crt bluray.MyXlet.perm 00000.jar
 
 If none of the above options are specified, then the tool performs both
 the steps above
@@ -373,14 +373,14 @@ to be signed
 
 This example shows use of custom values for key related information.
 
-    java -cp security.jar net.java.bd.tools.security.BDCredentialSigner -gastore GA.keystore -gastorepass GApass -gaalias GA -gakeypass GApass -store GE.keystore -storepass GEpass -alias GE -keypass GEpass myxlet/bluray.MyXlet.perm 00000.jar 
+    java -cp security.jar net.java.bd.tools.security.BDCredentialSigner -gastore GA.keystore -gastorepass GApass -gaalias GA -gakeypass GApass -store GE.keystore -storepass GEpass -alias GE -keypass GEpass myxlet/bluray.MyXlet.perm 00000.jar
 
 #### Permission Request File Example
 
 Below is an example of a PRF created by the Grantee before sending it to the
-Grantor for signing. 
+Grantor for signing.
 The PRF has all fields of persistent file credentials but the
-<signature> and the <certchainfileid> elements. 
+<signature> and the <certchainfileid> elements.
 
 Consider the following PRF, that is requesting a write access to a file:
 "01/4000/tmp.txt" located in the Application Data Area of another disk
@@ -403,7 +403,7 @@ that belongs to an OrgID:7fff3456. The access validity is from now, till
 The Grantor received the above PRF, and Grantee's application disc
 root certificate, signs the credentials and generates the PRF below:
 
-The output PRF with `-gencred` option: 
+The output PRF with `-gencred` option:
 
       ......
       <persistentfilecredential>
@@ -425,7 +425,7 @@ The output PRF with `-gencred` option:
 it would appear inside the jar bundle. For example: if the
 application sources that require PRF are placed in a package
 called: com.foo.bar, then the PRF file should be placed in a
-directory: com/foo/bar/bluray.MyApp.perm. 
+directory: com/foo/bar/bluray.MyApp.perm.
 The BDCredentialsSigner expects the whole path in the PRF
 argument for both credential and jar signing.
 
