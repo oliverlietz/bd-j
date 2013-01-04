@@ -49,7 +49,7 @@ public class GrinCompilerMojo extends AbstractMojo {
     /**
      * the directory where this mojo puts generated sources and resources
      *
-     * @parameter expression="${basedir}/target/generated-sources/grin
+     * @parameter expression="${basedir}/target/generated-sources/grin"
      */
     private File outputDirectory;
 
