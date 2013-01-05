@@ -459,7 +459,7 @@ public class BumfGenerator {
             JAXBException {
         JAXBContext jc = JAXBContext.newInstance("net.java.bd.tools.bumf");
         Marshaller m = jc.createMarshaller();
-        m.setProperty("com.sun.xml.internal.bind.namespacePrefixMapper",
+        m.setProperty("com.sun.xml.bind.namespacePrefixMapper",
                 new NamespacePrefixMapperImpl());
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         OutputStream os = new BufferedOutputStream(new FileOutputStream(output));

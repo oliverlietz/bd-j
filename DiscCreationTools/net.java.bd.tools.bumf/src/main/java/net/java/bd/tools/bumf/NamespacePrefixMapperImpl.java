@@ -53,7 +53,7 @@
  */
 package net.java.bd.tools.bumf;
 
-import com.sun.xml.internal.bind.marshaller.NamespacePrefixMapper;
+import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
 public class NamespacePrefixMapperImpl extends NamespacePrefixMapper {
 
