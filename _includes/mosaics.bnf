@@ -1,0 +1,45 @@
+    mosaics ::= "mosaics" mosaic* "end_mosaics"
+
+    mosaic ::= "mosaic" file_name mosaic_part* ";"
+    	# file_name is the name of the PNG image that will contain the mosaic.
+	# If the same mosaic_part is repeated, the result is undefined.
+
+    mosaic_part ::=   max_width | max_height | max_pixels
+    		    | min_width | num_widths | take_all_images
+    		    | image_files | add_image_files | skip_image_files
+
+    max_width ::= "max_width" integer	
+    	# <= 4096 recommended, cf. 3-2 G.6
+
+    max_height ::= "max_height" integer 
+    	# <= 4096 recommended, cf. 3-2 G.6
+
+    max_pixels ::= "max_pixels" integer
+	# Total <= 5,963,776 (profile 1) or <= 8,060,928 (profile2)
+	# recommended, cf. 3-2 G.6
+
+    min_width ::= "min_width" integer
+    	# Minimum width to consider using for mosaic
+
+    num_widths ::= "num_width" integer
+    	# Number of different widths to consider when looking for 
+	# best mosaic.  See com.hdcookbook.grin.mosaic.Mosaic.
+
+    take_all_images ::= "take_all_images" boolean
+	# If set to true, this mosaic will include all images that aren't
+	# part of another mosaic.
+
+    image_files ::= "image_files" "{" file_name* "}"
+    	# A list of the image files to consider for inclusion in this
+	# mosaic.  An image file is only included if it is actually used
+	# in a show.
+
+    add_image_files ::= "add_image_files" "{" file_name* "}"
+	# A list of image files to include in the mosaic, whether or not
+	# it's actually used in a show.  Use this for images you want
+	# to include to use from your xlet, using the ManagedImage class.
+	# Each image will appear in only one mosaic, even if it's listed in
+	# the add_image_files part of multiple mosaics.
+
+    skip_image_files ::= "skip_image_files" "{" file_name* "}"
+	# A list of image files 
