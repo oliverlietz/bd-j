@@ -1,9 +1,5 @@
 html {
-  height: 101%;
-}
-
-body {
-  height: 100%;
+  overflow-y: scroll;
 }
 
 footer {
@@ -31,8 +27,8 @@ nav {
   width: 620px;
 }
 
-.navbar .container {
-  width: 620px;
+.navbar {
+  width: 100%;
 }
 
 #github {
