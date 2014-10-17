@@ -1,6 +1,7 @@
 <nav>
   <ul class="nav nav-pills nav-stacked">
-{% for node in site.pages %}
+{% assign nodes = site.pages | sort: "title" %}
+{% for node in nodes %}
   {% if page.url == node.url %}
     <li class="active"><a href="/bd-j{{ node.url }}" class="active">{{ node.title }}</a></li>
   {% else %}
