@@ -2,7 +2,7 @@
 
 ![Blu-ray Disc™](http://blu-raydisc.com/Images/bdalogo.png)
 
-This repo contains mainly [mavenized](http://maven.apache.org/) tools from the [**HD Cookbook**](http://java.net/projects/hdcookbook/) project. To build the tools, [set up](/oliverlietz/bd-j/tree/master/etc/build.sh) your [*BD-J Platform Definition*](http://java.net/projects/hdcookbook/pages/BDJPlatformDefinition) and run `mvn clean install` in [`AuthoringTools`](/oliverlietz/bd-j/tree/master/AuthoringTools) and [`DiscCreationTools`](/oliverlietz/bd-j/tree/master/DiscCreationTools) respectively.
+This repo contains mainly [mavenized](http://maven.apache.org/) tools from the [**HD Cookbook**](http://java.net/projects/hdcookbook/) project. To build the tools, [set up](./etc/build.sh) your [*BD-J Platform Definition*](http://java.net/projects/hdcookbook/pages/BDJPlatformDefinition) and run `mvn clean install` in [`AuthoringTools`](./AuthoringTools) and [`DiscCreationTools`](./DiscCreationTools) respectively.
 
 
 ### known issues
