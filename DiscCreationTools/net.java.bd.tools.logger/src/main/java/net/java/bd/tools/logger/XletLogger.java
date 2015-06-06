@@ -189,23 +189,43 @@ public class XletLogger {
         
         Screen.setVisible(b);
     }
+
+    /**
+     * Called to enable/disable remote control input.  This must be
+     * called before anything else (like logging a message) causes us
+     * to be initialized.
+     *
+     * @return true if initialization succeeded
+     **/
+    public static boolean initializeSetup(boolean remoteControlEnabled) {
+        synchronized(XletLogger.class) {
+            if (initialized) {
+                return false;
+            } else {
+                initialize(remoteControlEnabled);
+                initialized = true;
+                return true;
+            }
+        }
+    }
     
     private static void checkInitialized() {
         synchronized(XletLogger.class) {
             if (!initialized) {
-                initialize();
+                initialize(true);
                 initialized = true;
             }
         }
     }
     
-    private static void initialize() {
+    private static void initialize(boolean remoteControlEnabled) {
         HScene scene = HSceneFactory.getInstance().getDefaultHScene(); 
         scene.setBackgroundMode(HScene.BACKGROUND_FILL);
  
         // initiate LogDialog component to display log on the screen
         Screen.setRootContainer(scene);  
-        XletLogDialog logDialog = new XletLogDialog();
+        XletLogDialog logDialog = new XletLogDialog(remoteControlEnabled);
+
         logDialog.compose();
         Logger.addObserver(logDialog);
         Logger.addObserver(new SystemOutLogObserver());

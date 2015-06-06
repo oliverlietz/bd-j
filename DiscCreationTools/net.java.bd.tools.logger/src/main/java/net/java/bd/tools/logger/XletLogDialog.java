@@ -60,13 +60,19 @@ import net.java.bd.tools.logger.Logger.Observer;
 
 public class XletLogDialog extends BaseLogDialog implements Observer {
 
+    private final static String rcLogLegend =
+        "1 | 2 | 3 Reload From File | 4 | 5 | 6 | 7 | 8 | 9 Clear Log | "
+        + "0 Hide/Show";
     /**
      * 
      */
     public XletLogDialog() {
-        super("XLET LOG", 
-            "1 | 2 | 3 Reload From File | 4 | 5 | 6 | 7 | 8 | 9 Clear Log | 0 Hide/Show",
-            BOTTOM_POSITION);
+        this(true);
+    }
+
+    public XletLogDialog(boolean remoteControlEnabled) {
+        super("XLET LOG", (remoteControlEnabled ? rcLogLegend : ""),
+              BOTTOM_POSITION, remoteControlEnabled);
     }
     
     

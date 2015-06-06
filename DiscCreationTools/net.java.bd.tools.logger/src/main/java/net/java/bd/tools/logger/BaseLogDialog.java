@@ -89,6 +89,8 @@ public abstract class BaseLogDialog extends Container
     protected LwLog lLog;
     // whether the Log Dialog is visible or pseudo-hidden
     protected boolean visible = true;
+    private final boolean remoteControlEnabled;
+
 
     /** 
      * Constructor for the screen called from a prev component
@@ -96,6 +98,19 @@ public abstract class BaseLogDialog extends Container
      * @param lp
      */
     public BaseLogDialog(String logTitle, String logLegend, int position) {
+        this(logTitle, logLegend, position, true);
+    }
+
+
+    /** 
+     * Constructor for the screen called from a prev component
+     * @param prev
+     * @param lp
+     */
+    public BaseLogDialog(String logTitle, String logLegend, int position,
+                         boolean remoteControlEnabled)
+    {
+        this.remoteControlEnabled = remoteControlEnabled;
         this.logTitle = logTitle;
         this.logLegend = logLegend;
         this.position = position;
@@ -126,7 +141,9 @@ public abstract class BaseLogDialog extends Container
         legendText.setLocation(0, Screen.getVisibleHeight() - stringHeight);
         legendText.setSize(Screen.getVisibleWidth(), stringHeight);
 
-        addKeyListener(this);
+        if (remoteControlEnabled) {
+            addKeyListener(this);
+        }
         addFocusListener(this);
     }
 
